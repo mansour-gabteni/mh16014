@@ -2,7 +2,6 @@
 
 global $_MODULE;
 $_MODULE = array();
-
 $_MODULE['<{themeconfigurator}prestashop>themeconfigurator_e92dabb4907f1957cabc469cca4deefc'] = 'Конфигуратор шаблона';
 $_MODULE['<{themeconfigurator}prestashop>themeconfigurator_cf8fdaf6e745133c90516eb9b74e31c3'] = 'Настройка основных элементов вашего шаблона.';
 $_MODULE['<{themeconfigurator}prestashop>themeconfigurator_dd2eaa9871e00e3c9242934ce942c27c'] = 'Более 800 премиальных шаблонов! Просмотрите сейчас!';
@@ -18,7 +17,7 @@ $_MODULE['<{themeconfigurator}prestashop>themeconfigurator_b9f5c797ebbf55adccdd8
 $_MODULE['<{themeconfigurator}prestashop>themeconfigurator_f4f70727dc34561dfde1a3c529b6205c'] = 'Настройки';
 $_MODULE['<{themeconfigurator}prestashop>themeconfigurator_c9cc8cce247e49bae79f15173ce97354'] = 'Сохранить';
 $_MODULE['<{themeconfigurator}prestashop>themeconfigurator_4351cfebe4b61d8aa5efa1d020710005'] = 'См.';
-$_MODULE['<{themeconfigurator}prestashop>themeconfigurator_3b41baf5b2f335fc796a083a1945116b'] = 'Ваши посетители не увидят этот инструмент во фронт-офисе, он доступен только вам.';
+$_MODULE['<{themeconfigurator}prestashop>themeconfigurator_3b41baf5b2f335fc796a083a1945116b'] = 'Ваши посетители не увидят этот инструмент в фронт-офисе, он досрупен только вам.';
 $_MODULE['<{themeconfigurator}prestashop>themeconfigurator_6e3670bb5e3826106c5243b242cc52d9'] = 'Показать ссылки на учетные записи вашего магазина в соцсетях (Twitter, Facebook и т.д.)';
 $_MODULE['<{themeconfigurator}prestashop>themeconfigurator_1334ff714a38e8004e9cdc755baa5afb'] = 'Показать контактную информацию';
 $_MODULE['<{themeconfigurator}prestashop>themeconfigurator_2f4fe84a25dc0024c9e80b4efd1d68f6'] = 'Показать кнопки соцсетей на странице товара';
@@ -42,7 +41,6 @@ $_MODULE['<{themeconfigurator}prestashop>items_2c92d496fa8efe3d5b2b38c185f9b7f7'
 $_MODULE['<{themeconfigurator}prestashop>items_91081fbf39583a57fdde5efa138d0564'] = 'Хук, к которму должно прикрепляться изображение';
 $_MODULE['<{themeconfigurator}prestashop>items_100eb3bd7b79830fe86288a63e13d485'] = 'Загрузить изображение';
 $_MODULE['<{themeconfigurator}prestashop>items_6fed80a8c8ded2f5e14a687e4a443abc'] = 'Ширина изображения';
-$_MODULE['<{themeconfigurator}prestashop>items_d399848208da8b80a306af0fd62bb03f'] = 'пикс.';
 $_MODULE['<{themeconfigurator}prestashop>items_2aa3aa9d021c7cfffb5afa08f52fbc51'] = 'Высота изображения';
 $_MODULE['<{themeconfigurator}prestashop>items_0eff773cf33456a033e913f6ed18045c'] = 'Ссылка';
 $_MODULE['<{themeconfigurator}prestashop>items_78698b9b0fa4eaac0876da3a900d5024'] = 'Открывать ссылку в новой вкладке/странице';
@@ -57,7 +55,6 @@ $_MODULE['<{themeconfigurator}prestashop>new_2c92d496fa8efe3d5b2b38c185f9b7f7'] 
 $_MODULE['<{themeconfigurator}prestashop>new_b9b371458ab7c314f88b81c553f6ce51'] = 'Хук';
 $_MODULE['<{themeconfigurator}prestashop>new_be53a0541a6d36f6ecb879fa2c584b08'] = 'Изображение';
 $_MODULE['<{themeconfigurator}prestashop>new_6fed80a8c8ded2f5e14a687e4a443abc'] = 'Ширина изображения';
-$_MODULE['<{themeconfigurator}prestashop>new_21de26caa6bcfc936378c4e45d235bd9'] = 'пикс.';
 $_MODULE['<{themeconfigurator}prestashop>new_2aa3aa9d021c7cfffb5afa08f52fbc51'] = 'Высота изображения';
 $_MODULE['<{themeconfigurator}prestashop>new_e6b391a8d2c4d45902a23a8b6585703d'] = 'URL';
 $_MODULE['<{themeconfigurator}prestashop>new_4c87eb073eb09f42281d7e67aeacb223'] = 'Открывать ссылку в новой вкладке/странице';
@@ -72,6 +69,3 @@ $_MODULE['<{themeconfigurator}prestashop>live_configurator_9a2c00f5f6df185a8d7d4
 $_MODULE['<{themeconfigurator}prestashop>live_configurator_ea3aba27f515989b46d990e95a097818'] = 'Выберите шрифт';
 $_MODULE['<{themeconfigurator}prestashop>live_configurator_526d688f37a86d3c3f27d0c5016eb71d'] = 'Сброс';
 $_MODULE['<{themeconfigurator}prestashop>live_configurator_c9cc8cce247e49bae79f15173ce97354'] = 'Сохранить';
-
-
-return $_MODULE;

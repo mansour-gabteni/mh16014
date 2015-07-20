@@ -153,9 +153,15 @@
 								</span>
 							{/if}
 						{/if}
+						{if isset($param_product_url)}	
+						<a class="button lnk_view btn btn-default" href="{$product.link|escape:'html':'UTF-8'}#{$param_product_url}" title="{l s='View'}">
+							<span>{if (isset($product.customization_required) && $product.customization_required)}{l s='Customize'}{else}{l s='More'}{/if}</span>
+						</a>
+						{else}
 						<a class="button lnk_view btn btn-default" href="{$product.link|escape:'html':'UTF-8'}" title="{l s='View'}">
 							<span>{if (isset($product.customization_required) && $product.customization_required)}{l s='Customize'}{else}{l s='More'}{/if}</span>
 						</a>
+						{/if}
 					</div>
 					{if isset($product.color_list)}
 						<div class="color-list-container">{$product.color_list}</div>

@@ -54,7 +54,8 @@ class AddressFormatCore extends ObjectModel
 		'lastname',
 		'address1',
 		'city',
-		'Country:name');
+		'Country:name'
+	);
 
 	public static $forbiddenPropertyList = array(
 		'deleted',

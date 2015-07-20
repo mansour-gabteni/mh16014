@@ -1,0 +1,24 @@
+*ERROR* 	2015/07/15 - 13:51:22: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where id_product=79
+				 		 and id_product_attribute = 1737' at line 4<br /><br /><pre>update ps_product_attribute  
+				 		set 
+				 		price =  
+				 		where id_product=79
+				 		 and id_product_attribute = 1737</pre> at line 646 in file classes/db/Db.php
+*ERROR* 	2015/07/15 - 17:20:53: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Орматек' за такой чудный наматрасник . ))))))))))' at line 6<br /><br /><pre>INSERT INTO  `ps_product_comment` (
+			`id_product` ,`id_customer` , `id_guest`, `title` ,
+			`content`,`customer_name` ,`grade` ,
+			`validate` ,`deleted` ,`date_add`)
+			VALUES ( '92',  '0', null,null,  
+			'Это просто Чудо какое то. Моему восторгу нет придела. Перина , сделала меня счастливым человеком. Какое же наслаждение на ней спать.....СПАСИБО ' Орматек' за такой чудный наматрасник . ))))))))))))))))))))))00',  'Натали',  '5.0',  '1',  '0',  '2015-01-25');</pre> at line 646 in file classes/db/Db.php
+*ERROR* 	2015/07/15 - 17:25:29: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Орматек' за такой чудный наматрасник . ))))))))))' at line 6<br /><br /><pre>INSERT INTO  `ps_product_comment` (
+			`id_product` ,`id_customer` , `id_guest`, `title` ,
+			`content`,`customer_name` ,`grade` ,
+			`validate` ,`deleted` ,`date_add`)
+			VALUES ( '92',  '0', null,null,  
+			'Это просто Чудо какое то. Моему восторгу нет придела. Перина , сделала меня счастливым человеком. Какое же наслаждение на ней спать.....СПАСИБО ' Орматек' за такой чудный наматрасник . ))))))))))))))))))))))00',  'Натали',  '5.0',  '1',  '0',  '2015-01-25');</pre> at line 646 in file classes/db/Db.php
+*ERROR* 	2015/07/15 - 17:29:05: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Орматек' за такой чудный наматрасник \. \)\)\)\)\' at line 6<br /><br /><pre>INSERT INTO  `ps_product_comment` (
+			`id_product` ,`id_customer` , `id_guest`, `title` ,
+			`content`,`customer_name` ,`grade` ,
+			`validate` ,`deleted` ,`date_add`)
+			VALUES ( '92',  '0', null,null,  
+			'Это просто Чудо какое то\. Моему восторгу нет придела\. Перина , сделала меня счастливым человеком\. Какое же наслаждение на ней спать\.\.\.\.\.СПАСИБО ' Орматек' за такой чудный наматрасник \. \)\)\)\)\)\)\)\)\)\)\)\)\)\)\)\)\)\)\)\)\)\)00',  'Натали',  '5.0',  '1',  '0',  '2015-01-25');</pre> at line 646 in file classes/db/Db.php

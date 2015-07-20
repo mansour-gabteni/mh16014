@@ -1,6 +1,6 @@
 <?php
 /*
-* 2007-2014 PrestaShop
+* 2007-2015 PrestaShop
 *
 * NOTICE OF LICENSE
 *
@@ -19,7 +19,7 @@
 * needs please refer to http://www.prestashop.com for more information.
 *
 *  @author PrestaShop SA <contact@prestashop.com>
-*  @copyright  2007-2014 PrestaShop SA
+*  @copyright  2007-2015 PrestaShop SA
 *  @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *  International Registered Trademark & Property of PrestaShop SA
 */
@@ -39,7 +39,7 @@ class Dashtrends extends Module
 	{
 		$this->name = 'dashtrends';
 		$this->tab = 'dashboard';
-		$this->version = '0.7.3';
+		$this->version = '0.7.4';
 		$this->author = 'PrestaShop';
 
 		$this->push_filename = _PS_CACHE_DIR_.'push/trends';
@@ -47,6 +47,7 @@ class Dashtrends extends Module
 
 		parent::__construct();
 		$this->displayName = $this->l('Dashboard Trends');
+		$this->description = $this->l('Adds a block with a graphical representation of the development of your store(s) based on selected key data.');
 		$this->ps_versions_compliancy = array('min' => '1.6', 'max' => _PS_VERSION_);
 	}
 
@@ -68,6 +69,9 @@ class Dashtrends extends Module
 
 	public function hookDashboardZoneTwo($params)
 	{
+		$this->context->smarty->assign(array(
+			'currency' => $this->context->currency
+		));
 		return $this->display(__FILE__, 'dashboard_zone_two.tpl');
 	}
 
@@ -99,11 +103,11 @@ class Dashtrends extends Module
 		}
 		else
 		{
-			$tmp_data['visits'] = AdminStatsControllerCore::getVisits(false, $date_from, $date_to, 'day');
-			$tmp_data['orders'] = AdminStatsControllerCore::getOrders($date_from, $date_to, 'day');
-			$tmp_data['total_paid_tax_excl'] = AdminStatsControllerCore::getTotalSales($date_from, $date_to, 'day');
-			$tmp_data['total_purchases'] = AdminStatsControllerCore::getPurchases($date_from, $date_to, 'day');
-			$tmp_data['total_expenses'] = AdminStatsControllerCore::getExpenses($date_from, $date_to, 'day');
+			$tmp_data['visits'] = AdminStatsController::getVisits(false, $date_from, $date_to, 'day');
+			$tmp_data['orders'] = AdminStatsController::getOrders($date_from, $date_to, 'day');
+			$tmp_data['total_paid_tax_excl'] = AdminStatsController::getTotalSales($date_from, $date_to, 'day');
+			$tmp_data['total_purchases'] = AdminStatsController::getPurchases($date_from, $date_to, 'day');
+			$tmp_data['total_expenses'] = AdminStatsController::getExpenses($date_from, $date_to, 'day');
 		}
 
 		return $tmp_data;
@@ -282,7 +286,7 @@ class Dashtrends extends Module
 				//$chart_data[$chart_key][] = array(1000 * $key, $calibration ? min(10, $value / $calibration) : 0);
 
 			if ($this->dashboard_data_compare)
-				foreach ($this->dashboard_data_compare[$chart_key] as $key => $value)					
+				foreach ($this->dashboard_data_compare[$chart_key] as $key => $value)
 					$chart_data_compare[$chart_key][] = array($key, $value);
 					// min(10) is there to limit the growth to 1000%, beyond this limit it becomes unreadable
 					/*$chart_data_compare[$chart_key][] = array(

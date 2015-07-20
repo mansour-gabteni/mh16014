@@ -39,7 +39,7 @@ class StatsSales extends ModuleGraph
 	{
 		$this->name = 'statssales';
 		$this->tab = 'analytics_stats';
-		$this->version = '1.2.3';
+		$this->version = '1.2.4';
 		$this->author = 'PrestaShop';
 		$this->need_instance = 0;
 
@@ -85,8 +85,8 @@ class StatsSales extends ModuleGraph
 			<div class="alert alert-warning">
 				<h4>'.$this->l('About order statuses').'</h4>
 				<p>
-					'.$this->l('In your Back-office, you can modify the following order statuses: Awaiting Check Payment, Payment Accepted, Preparation in Progress, Shipping, Delivered, Canceled, Refund, Payment Error, Out of Stock, and Awaiting Bank Wire Payment.').'<br />
-					'.$this->l('These order statuses cannot be removed from the Back-office; however you have the option to add more.').'
+					'.$this->l('In your Back Office, you can modify the following order statuses: Awaiting Check Payment, Payment Accepted, Preparation in Progress, Shipping, Delivered, Canceled, Refund, Payment Error, Out of Stock, and Awaiting Bank Wire Payment.').'<br />
+					'.$this->l('These order statuses cannot be removed from the Back Office; however you have the option to add more.').'
 				</p>
 			</div>
 			<div class="alert alert-info">

@@ -35,7 +35,7 @@ class HomeFeatured extends Module
 	{
 		$this->name = 'homefeatured';
 		$this->tab = 'front_office_features';
-		$this->version = '1.6.2';
+		$this->version = '1.6.4';
 		$this->author = 'PrestaShop';
 		$this->need_instance = 0;
 
@@ -115,7 +115,7 @@ class HomeFeatured extends Module
 	{
 		if (isset($this->context->controller->php_self) && $this->context->controller->php_self == 'index')
 			$this->context->controller->addCSS(_THEME_CSS_DIR_.'product_list.css');
-		$this->context->controller->addCSS(($this->_path).'homefeatured.css', 'all');
+		$this->context->controller->addCSS(($this->_path).'css/homefeatured.css', 'all');
 	}
 
 	public function _cacheProducts()

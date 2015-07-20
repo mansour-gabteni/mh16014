@@ -33,7 +33,7 @@ class BlockCart extends Module
 	{
 		$this->name = 'blockcart';
 		$this->tab = 'front_office_features';
-		$this->version = '1.5.6';
+		$this->version = '1.5.7';
 		$this->author = 'PrestaShop';
 		$this->need_instance = 0;
 
@@ -65,7 +65,17 @@ class BlockCart extends Module
 			$nbTotalProducts += (int)$product['cart_quantity'];
 		$cart_rules = $params['cart']->getCartRules();
 
-		$base_shipping = $params['cart']->getOrderTotal($useTax, Cart::ONLY_SHIPPING);
+		if (empty($cart_rules))
+			$base_shipping = $params['cart']->getOrderTotal($useTax, Cart::ONLY_SHIPPING);
+		else
+		{
+			$base_shipping_with_tax    = $params['cart']->getOrderTotal(true, Cart::ONLY_SHIPPING);
+			$base_shipping_without_tax = $params['cart']->getOrderTotal(false, Cart::ONLY_SHIPPING);
+			if ($useTax)
+				$base_shipping = $base_shipping_with_tax;
+			else
+				$base_shipping = $base_shipping_without_tax;
+		}
 		$shipping_cost = Tools::displayPrice($base_shipping, $currency);
 		$shipping_cost_float = Tools::convertPrice($base_shipping, $currency);
 		$wrappingCost = (float)($params['cart']->getOrderTotal($useTax, Cart::ONLY_WRAPPING));
@@ -84,8 +94,8 @@ class BlockCart extends Module
 			{
 				$shipping_cost = Tools::displayPrice(0, $currency);
 				$shipping_cost_float = 0;
-				$cart_rule['value_real'] -= Tools::convertPrice($params['cart']->getOrderTotal(true, Cart::ONLY_SHIPPING), $currency);
-				$cart_rule['value_tax_exc'] = Tools::convertPrice($params['cart']->getOrderTotal(false, Cart::ONLY_SHIPPING), $currency);
+				$cart_rule['value_real'] -= Tools::convertPrice($base_shipping_with_tax, $currency);
+				$cart_rule['value_tax_exc'] = Tools::convertPrice($base_shipping_without_tax, $currency);
 			}
 			if ($cart_rule['gift_product'])
 			{
@@ -121,8 +131,8 @@ class BlockCart extends Module
 		$this->smarty->assign(array(
 			'products' => $products,
 			'customizedDatas' => Product::getAllCustomizedDatas((int)($params['cart']->id)),
-			'CUSTOMIZE_FILE' => _CUSTOMIZE_FILE_,
-			'CUSTOMIZE_TEXTFIELD' => _CUSTOMIZE_TEXTFIELD_,
+			'CUSTOMIZE_FILE' => Product::CUSTOMIZE_FILE,
+			'CUSTOMIZE_TEXTFIELD' => Product::CUSTOMIZE_TEXTFIELD,
 			'discounts' => $cart_rules,
 			'nb_total_products' => (int)($nbTotalProducts),
 			'shipping_cost' => $shipping_cost,

@@ -32,17 +32,9 @@
 
 {total_discounts} 
 
-ПОДАРОЧНАЯ УПАКОВКА 
-
-{total_wrapping} 
-
 ДОСТАВКА 
 
 {total_shipping} 
-
-ВСЕГО НДС 
-
-{total_tax_paid} 
 
 ИТОГО К ОПЛАТЕ 
 
@@ -53,8 +45,6 @@
 СПОСОБ ОПЛАТЫ: {payment} 		 
 
 {delivery_block_txt} 
-
-{invoice_block_txt} 
 
 Вы можете просмотреть ваш заказ и
 скачать счет в разделе "История

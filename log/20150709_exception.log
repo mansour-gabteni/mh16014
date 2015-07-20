@@ -1,0 +1,6 @@
+*ERROR* 	2015/07/09 - 02:30:54: Unknown column 'id_product' in 'where clause'<br /><br /><pre>update ps_product_attribute_shop  
+				 		set 
+				 		price = 7190 
+				 		where id_product=5
+				 		 and id_product_attribute = 10
+				 		  and id_shop = 1</pre> at line 646 in file classes/db/Db.php

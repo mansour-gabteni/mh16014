@@ -2,7 +2,6 @@
 
 global $_MODULE;
 $_MODULE = array();
-
 $_MODULE['<{statsdata}prestashop>statsdata_a51950bf91ba55cd93a33ce3f8d448c2'] = 'Обработка данных статистики';
 $_MODULE['<{statsdata}prestashop>statsdata_c77dfd683d0d76940e5e04cb24e8bce1'] = 'Для использования статистики включите этот модуль.';
 $_MODULE['<{statsdata}prestashop>statsdata_20015706a8cbd457cbb6ea3e7d5dc9b3'] = 'Конфигурация обновлена';
@@ -16,6 +15,3 @@ $_MODULE['<{statsdata}prestashop>statsdata_339acfd90b82e91ce9141ec75e4bff24'] = 
 $_MODULE['<{statsdata}prestashop>statsdata_c0e4406117ba4c29c4d66e3069ebf3d3'] = 'Обнаружение плагинов';
 $_MODULE['<{statsdata}prestashop>statsdata_e4af29282b3a403c2b23c2a516bba889'] = 'Обнаружение плагинов загружает при первом посещении дополнительный файл JavaScript размером 20КБ.';
 $_MODULE['<{statsdata}prestashop>statsdata_c9cc8cce247e49bae79f15173ce97354'] = 'Сохранить';
-
-
-return $_MODULE;

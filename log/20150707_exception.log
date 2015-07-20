@@ -1,0 +1,20 @@
+*ERROR* 	2015/07/07 - 14:33:18: Unknown column 'id_product202' in 'where clause'<br /><br /><pre>select id_product
+		from ps_egormprod
+		where id_product202</pre> at line 646 in file classes/db/Db.php
+*ERROR* 	2015/07/07 - 14:44:15: Db->executeS() must be used only with select, show, explain or describe queries at line 503 in file classes/db/Db.php
+*ERROR* 	2015/07/07 - 14:45:06: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '://ormatek.com/products/6721)' at line 3<br /><br /><pre>insert into ps_egormprod
+			(`id_product`, `id_shop`, `product_url`) VALUES 
+			(205,null,http://ormatek.com/products/6721)</pre> at line 646 in file classes/db/Db.php
+*ERROR* 	2015/07/07 - 15:42:26: Db->executeS() must be used only with select, show, explain or describe queries at line 503 in file classes/db/Db.php
+*ERROR* 	2015/07/07 - 15:43:07: Db->executeS() must be used only with select, show, explain or describe queries at line 503 in file classes/db/Db.php
+*ERROR* 	2015/07/07 - 15:43:23: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'INNER' at line 1<br /><br /><pre> INNER </pre> at line 646 in file classes/db/Db.php
+*ERROR* 	2015/07/07 - 15:48:53: Db->executeS() must be used only with select, show, explain or describe queries at line 503 in file classes/db/Db.php
+*ERROR* 	2015/07/07 - 16:36:15: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '` ,
+			`content`,`customer_name` ,`grade` ,
+			`validate` ,`deleted` ,`date_ad' at line 2<br /><br /><pre>INSERT INTO  `gb_live`.`ps_product_comment` (
+			`id_product` ,`id_customer` , `id_guest`, title` ,
+			`content`,`customer_name` ,`grade` ,
+			`validate` ,`deleted` ,`date_add`)
+			VALUES ( '5',  '0', null,null,  
+			'Купили уже третий матрас Flex Standart. На первом проспали 8 лет, после чего немного потерял жесткость.
+Ребенку перед школой тоже приобрели такой же, спит на нем уже  4-й год, матрас как новый. Считаю, что очень хорошие ортопедические свойства и качество.  Рекомендую всем - отличный матрас, особенно за такие  деньги.',  'Елена',  '5.0',  '1',  '0',  '2014-08-02 18:07:53');</pre> at line 646 in file classes/db/Db.php

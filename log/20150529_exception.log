@@ -1,0 +1,4 @@
+*ERROR* 	2015/05/29 - 14:57:51: Template 'T:\home\production.ru\www/themes/ap_funiture/view.tpl' not found at line 66 in file classes/controller/ModuleFrontController.php
+*ERROR* 	2015/05/29 - 14:58:15: Template 'T:\home\production.ru\www/themes/ap_funiture/view.tpl' not found at line 66 in file classes/controller/ModuleFrontController.php
+*ERROR* 	2015/05/29 - 14:58:18: Template 'T:\home\production.ru\www/themes/ap_funiture/view.tpl' not found at line 66 in file classes/controller/ModuleFrontController.php
+*ERROR* 	2015/05/29 - 16:46:15: Template 'view.tpl' not found at line 66 in file classes/controller/ModuleFrontController.php

@@ -1,0 +1,88 @@
+*ERROR* 	2015/07/01 - 01:40:58: Unknown column 'ps_product_lang.id_shop' in 'where clause'<br /><br /><pre>select ps_category.id_category,
+					ps_category.date_upd,
+					ps_category_lang.link_rewrite  
+					from ps_category
+					inner join ps_category_lang on	
+						ps_category.id_category = ps_category_lang.id_category
+					where ps_product_lang.id_shop = 1
+					and ps_category.active = 1
+					and ps_category.id_parent = 2</pre> at line 646 in file classes/db/Db.php
+*ERROR* 	2015/07/01 - 01:52:58: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 9<br /><br /><pre>select ps_category.id_category,
+					ps_category.date_upd,
+					ps_category_lang.link_rewrite  
+					from ps_category
+					inner join ps_category_lang on	
+						ps_category.id_category = ps_category_lang.id_category
+					where ps_category_lang.id_shop = 1
+					and ps_category.active = 1
+					and ps_category.level_depth IN ()</pre> at line 646 in file classes/db/Db.php
+*ERROR* 	2015/07/01 - 01:53:15: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 9<br /><br /><pre>select ps_category.id_category,
+					ps_category.date_upd,
+					ps_category_lang.link_rewrite  
+					from ps_category
+					inner join ps_category_lang on	
+						ps_category.id_category = ps_category_lang.id_category
+					where ps_category_lang.id_shop = 1
+					and ps_category.active = 1
+					and ps_category.level_depth IN ()</pre> at line 646 in file classes/db/Db.php
+*ERROR* 	2015/07/01 - 01:53:25: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 9<br /><br /><pre>select ps_category.id_category,
+					ps_category.date_upd,
+					ps_category_lang.link_rewrite  
+					from ps_category
+					inner join ps_category_lang on	
+						ps_category.id_category = ps_category_lang.id_category
+					where ps_category_lang.id_shop = 1
+					and ps_category.active = 1
+					and ps_category.level_depth IN ()</pre> at line 646 in file classes/db/Db.php
+*ERROR* 	2015/07/01 - 01:53:51: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 9<br /><br /><pre>select ps_category.id_category,
+					ps_category.date_upd,
+					ps_category_lang.link_rewrite  
+					from ps_category
+					inner join ps_category_lang on	
+						ps_category.id_category = ps_category_lang.id_category
+					where ps_category_lang.id_shop = 1
+					and ps_category.active = 1
+					and ps_category.level_depth IN ()</pre> at line 646 in file classes/db/Db.php
+*ERROR* 	2015/07/01 - 11:51:54: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'from ps_egmultishop_pages
+			where id_shop=1 
+			and ptype = 'deliveryconditio' at line 2<br /><br /><pre>select
+			from ps_egmultishop_pages
+			where id_shop=1 
+			and ptype = 'deliverycondition' and id_url=1</pre> at line 646 in file classes/db/Db.php
+*ERROR* 	2015/07/01 - 16:02:00: Unknown column 'ps_product_lang.date_upd' in 'field list'<br /><br /><pre>select ps_product_lang.id_product, 
+		   				ps_product_lang.link_rewrite, ps_product_lang.date_upd
+					from ps_product
+					inner join ps_product_lang on	
+						ps_product.id_product = ps_product_lang.id_product
+					inner join ps_category_lang on
+						ps_category_lang.id_category = ps_product.id_category_default
+					where ps_product_lang.id_shop = 1
+					and ps_category_lang.link_rewrite='namatrasniki'
+					and	ps_product.active = 1</pre> at line 646 in file classes/db/Db.php
+*ERROR* 	2015/07/01 - 23:35:56: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'by 2 desc' at line 9<br /><br /><pre>select ps_category.id_category,
+					date(ps_category.date_upd) date_upd,
+					ps_category_lang.link_rewrite  
+					from ps_category
+					inner join ps_category_lang on	
+						ps_category.id_category = ps_category_lang.id_category
+					where ps_category_lang.id_shop = 1
+					and ps_category.active = 1
+					and ps_category.level_depth >= 3order by 2 desc</pre> at line 646 in file classes/db/Db.php
+*ERROR* 	2015/07/01 - 23:36:36: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'by 2 desc' at line 9<br /><br /><pre>select ps_category.id_category,
+					date(ps_category.date_upd) date_upd,
+					ps_category_lang.link_rewrite  
+					from ps_category
+					inner join ps_category_lang on	
+						ps_category.id_category = ps_category_lang.id_category
+					where ps_category_lang.id_shop = 1
+					and ps_category.active = 1
+					and ps_category.level_depth >= 3order by 2 desc</pre> at line 646 in file classes/db/Db.php
+*ERROR* 	2015/07/01 - 23:36:44: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'by 2 desc' at line 9<br /><br /><pre>select ps_category.id_category,
+					date(ps_category.date_upd) date_upd,
+					ps_category_lang.link_rewrite  
+					from ps_category
+					inner join ps_category_lang on	
+						ps_category.id_category = ps_category_lang.id_category
+					where ps_category_lang.id_shop = 1
+					and ps_category.active = 1
+					and ps_category.level_depth >= 3order by 2 desc</pre> at line 646 in file classes/db/Db.php

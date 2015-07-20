@@ -33,7 +33,7 @@ class BlockCategories extends Module
 	{
 		$this->name = 'blockcategories';
 		$this->tab = 'front_office_features';
-		$this->version = '2.8.7';
+		$this->version = '2.8.9';
 		$this->author = 'PrestaShop';
 
 		$this->bootstrap = true;
@@ -127,23 +127,26 @@ class BlockCategories extends Module
 	{
 		if (is_null($id_category))
 			$id_category = $this->context->shop->getCategory();
-
 		$children = array();
 		if (isset($resultParents[$id_category]) && count($resultParents[$id_category]) && ($maxDepth == 0 || $currentDepth < $maxDepth))
 			foreach ($resultParents[$id_category] as $subcat)
 				$children[] = $this->getTree($resultParents, $resultIds, $maxDepth, $subcat['id_category'], $currentDepth + 1);
-
-		if (!isset($resultIds[$id_category]))
-			return false;
-
+		if (isset($resultIds[$id_category])) 
+		{
+			$link = $this->context->link->getCategoryLink($id_category, $resultIds[$id_category]['link_rewrite']);
+			$name = $resultIds[$id_category]['name'];
+			$desc = $resultIds[$id_category]['description'];
+		}
+		else
+			$link = $name = $desc = '';
+			
 		$return = array(
 			'id' => $id_category,
-			'link' => $this->context->link->getCategoryLink($id_category, $resultIds[$id_category]['link_rewrite']),
-			'name' =>  $resultIds[$id_category]['name'],
-			'desc'=>  $resultIds[$id_category]['description'],
+			'link' => $link,
+			'name' => $name,
+			'desc'=> $desc,
 			'children' => $children
 		);
-
 		return $return;
 	}
 
@@ -402,7 +405,7 @@ class BlockCategories extends Module
 							array(
 								'id' => 'current_parent',
 								'value' => 3,
-								'label' => $this->l('Current category, unless it has no subcategories, then parent one')
+								'label' => $this->l('Current category, unless it has no subcategories, in which case the parent category of the current category is used')
 							),
 						)
 					),

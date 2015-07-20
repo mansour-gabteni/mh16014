@@ -1,0 +1,12 @@
+*ERROR* 	2015/07/17 - 11:26:44: Unknown column 'mu.addr1_chem' in 'field list'<br /><br /><pre>SELECT mu.`city_name`, mu.`city1_name`, mu.`city2_name`, mu.phone
+				, mu.addr1, mu.addr1_chem 
+				FROM `ps_shop_url` su
+				INNER JOIN `ps_egmultishop_url` mu ON
+					mu.`id_url`=su.`id_shop_url`
+				WHERE su.`domain` = 'matras-house.ru'</pre> at line 646 in file classes/db/Db.php
+*ERROR* 	2015/07/17 - 11:39:29: Unknown column 'ma.engname' in 'field list'<br /><br /><pre>SELECT mu.`city_name`, mu.`city1_name`, mu.`city2_name`, mu.phone
+				, mu.addr1, mu.chema, ma.engname
+				FROM `ps_shop_url` su
+				INNER JOIN `ps_egmultishop_url` mu ON
+					mu.`id_url`=su.`id_shop_url`
+				WHERE su.`domain` = 'kazan.matras-house.ru'</pre> at line 646 in file classes/db/Db.php

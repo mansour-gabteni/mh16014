@@ -2491,7 +2491,7 @@
   ),
   'MetaCore' => 
   array (
-    'path' => 'classes/Meta.php',
+    'path' => 'override/classes/Meta.php',
     'type' => 'class',
     'override' => false,
   ),
@@ -2515,7 +2515,7 @@
   ),
   'ModuleCore' => 
   array (
-    'path' => 'classes/module/Module.php',
+    'path' => 'override/classes/module/Module.php',
     'type' => 'abstract class',
     'override' => false,
   ),
@@ -3281,6 +3281,18 @@
     'type' => 'class',
     'override' => false,
   ),
+  'RobotsController' => 
+  array (
+    'path' => '',
+    'type' => 'class',
+    'override' => false,
+  ),
+  'RobotsControllerCore' => 
+  array (
+    'path' => 'controllers/front/RobotsController.php',
+    'type' => 'class',
+    'override' => false,
+  ),
   'Scene' => 
   array (
     'path' => '',
@@ -3337,7 +3349,7 @@
   ),
   'ShopCore' => 
   array (
-    'path' => 'classes/shop/Shop.php',
+    'path' => 'override/classes/shop/Shop.php',
     'type' => 'class',
     'override' => false,
   ),
@@ -3361,7 +3373,7 @@
   ),
   'ShopUrlCore' => 
   array (
-    'path' => 'classes/shop/ShopUrl.php',
+    'path' => 'override/classes/shop/ShopUrl.php',
     'type' => 'class',
     'override' => false,
   ),

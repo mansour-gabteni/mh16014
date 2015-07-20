@@ -1,0 +1,15 @@
+*ERROR* 	2015/07/02 - 00:03:33: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'date_upd,
+					ps_category_lang.link_rewrite' at line 13<br /><br /><pre>select ps_category.id_category,
+					date(ps_category.date_upd) date_upd,
+					ps_category_lang.link_rewrite  
+					from ps_category
+					inner join ps_category_lang on	
+						ps_category.id_category = ps_category_lang.id_category
+					inner join ps_category_product on
+						ps_category_product.id_category = ps_category.id_category
+					where ps_category_lang.id_shop = 1
+					and ps_category.active = 1
+					and ps_category.level_depth >= 2
+					group by ps_category.id_category,
+					date(ps_category.date_upd) date_upd,
+					ps_category_lang.link_rewrite</pre> at line 646 in file classes/db/Db.php

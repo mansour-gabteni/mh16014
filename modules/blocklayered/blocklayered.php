@@ -721,9 +721,9 @@ class BlockLayered extends Module
 
 		$title = $category_title.$title;
 
-		if (!empty($title))
-			$smarty->assign('meta_title', $title.' - '.Configuration::get('PS_SHOP_NAME'));
-		else
+		//if (!empty($title))
+		//	$smarty->assign('meta_title', $title.' - '.Configuration::get('PS_SHOP_NAME'));
+		//else
 			$smarty->assign('meta_title', $category_metas['meta_title']);
 
 		$smarty->assign('meta_description', $category_metas['meta_description']);
@@ -878,7 +878,7 @@ class BlockLayered extends Module
 				DELETE FROM '._DB_PREFIX_.'layered_product_attribute
 				WHERE id_product = '.(int)$id_product
 			);
-
+		Shop::setContext(Shop::CONTEXT_ALL);
 		Db::getInstance()->execute('
 			INSERT INTO `'._DB_PREFIX_.'layered_product_attribute` (`id_attribute`, `id_product`, `id_attribute_group`, `id_shop`)
 			SELECT pac.id_attribute, pa.id_product, ag.id_attribute_group, product_attribute_shop.`id_shop`
@@ -890,7 +890,7 @@ class BlockLayered extends Module
 			'.(is_null($id_product) ? '' : 'AND pa.id_product = '.(int)$id_product).'
 			GROUP BY a.id_attribute, pa.id_product , product_attribute_shop.`id_shop`'
 		);
-
+		
 		return 1;
 	}
 
@@ -1239,24 +1239,33 @@ class BlockLayered extends Module
 			SELECT id_shop, id_currency, id_country, id_group, from_quantity
 			FROM `'._DB_PREFIX_.'specific_price`
 			WHERE id_product = '.(int)$id_product);
+			
+			$attribute_list = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS('
+			SELECT id_product_attribute 
+			FROM `'._DB_PREFIX_.'product_attribute`
+			WHERE id_product = '.(int)$id_product);
 
 			// Get min price
 			foreach ($currency_list as $currency)
 			{
-				$price = Product::priceCalculation($id_shop, (int)$id_product, null, null, null, null,
-					$currency['id_currency'], null, null, false, 6, false, true, true,
-					$specific_price_output, true);
+				// foreeach by atribute
+				foreach($attribute_list as $attribute)
+				{
+					$price = Product::priceCalculation($id_shop, (int)$id_product, (int)$attribute['id_product_attribute'], null, null, null,
+						$currency['id_currency'], null, null, false, 6, false, true, true,
+						$specific_price_output, true);
 
-				if (!isset($max_price[$currency['id_currency']]))
-					$max_price[$currency['id_currency']] = 0;
-				if (!isset($min_price[$currency['id_currency']]))
-					$min_price[$currency['id_currency']] = null;
-				if ($price > $max_price[$currency['id_currency']])
-					$max_price[$currency['id_currency']] = $price;
-				if ($price == 0)
-					continue;
-				if (is_null($min_price[$currency['id_currency']]) || $price < $min_price[$currency['id_currency']])
-					$min_price[$currency['id_currency']] = $price;
+					if (!isset($max_price[$currency['id_currency']]))
+						$max_price[$currency['id_currency']] = 0;
+					if (!isset($min_price[$currency['id_currency']]))
+						$min_price[$currency['id_currency']] = null;
+					if ($price > $max_price[$currency['id_currency']])
+						$max_price[$currency['id_currency']] = $price;
+					if ($price == 0)
+						continue;
+					if (is_null($min_price[$currency['id_currency']]) || $price < $min_price[$currency['id_currency']])
+						$min_price[$currency['id_currency']] = $price;
+				}
 			}
 
 			foreach ($product_min_prices as $specific_price)
@@ -3138,6 +3147,24 @@ class BlockLayered extends Module
 		{
 			if ($product['id_product_attribute'] && isset($product['product_attribute_minimal_quantity']))
 				$product['minimal_quantity'] = $product['product_attribute_minimal_quantity'];
+			// show cart only if one atribute active
+			
+			if (isset($selected_filters['id_attribute_group']) && 
+				count($selected_filters['id_attribute_group'])==1)	
+			{
+				//находим ид атрибута по его типу
+				$key_value = array_values($selected_filters['id_attribute_group']);
+				$value = explode('_', $key_value[0]);
+				$q_eg = 'SELECT ps_product_attribute.id_product_attribute id_product_attribute
+				FROM `'._DB_PREFIX_.'product_attribute_combination` 
+				inner join `'._DB_PREFIX_.'product_attribute` on
+					ps_product_attribute.id_product_attribute = `ps_product_attribute_combination`.id_product_attribute
+				WHERE `id_attribute` = '.(int) $value[1].' and ps_product_attribute.id_product = '.(int) $product['id_product'];
+				
+				$id_product_attribute = Db::getInstance()->getValue($q_eg);
+				$product['price'] = (float)Product::getPriceStatic($product['id_product'], true, $id_product_attribute);
+			}	
+						
 		}
 	}
 

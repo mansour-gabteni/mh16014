@@ -770,7 +770,7 @@ class CustomerCore extends ObjectModel
 				_PS_MAIL_DIR_,
 				false,
 				(int)$this->id_shop
-			);
+			);	
 			return true;
 		}
 		return false;

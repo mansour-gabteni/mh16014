@@ -1,6 +1,6 @@
 <?php
 /**
-* 2007-2015 PrestaShop
+* 2007-2014 PrestaShop
 *
 * NOTICE OF LICENSE
 *
@@ -19,7 +19,7 @@
 * needs please refer to http://www.prestashop.com for more information.
 *
 *  @author    PrestaShop SA <contact@prestashop.com>
-*  @copyright 2007-2015 PrestaShop SA
+*  @copyright 2007-2014 PrestaShop SA
 *  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *  International Registered Trademark & Property of PrestaShop SA
 */
@@ -34,7 +34,7 @@ class OnBoarding extends Module
 		$this->name = 'onboarding';
 		$this->bootstrap = true;
 		$this->tab = 'administration';
-		$this->version = '1.0.0';
+		$this->version = '0.2.0';
 		$this->author = 'PrestaShop';
 
 		parent::__construct();
@@ -120,6 +120,7 @@ class OnBoarding extends Module
 			'next_step_link' => $this->getCurrentStepLink($current_step),
 			'current_step' => $current_step,'link' => $this->context->link,
 			'employee' => $this->context->employee,
+			'removable' => _PS_MODE_DEV_,
 			'continue_editing_links' => array(
 				'theme' => $this->context->link->getAdminLink('AdminThemes'),
 				'product' => $this->context->link->getAdminLink('AdminProducts').'&addproduct',
