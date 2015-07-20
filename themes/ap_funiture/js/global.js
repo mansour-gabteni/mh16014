@@ -364,7 +364,7 @@ function display(view)
 		});
 		$('.display').find('li#list').addClass('selected');
 		$('.display').find('li#grid').removeAttr('class');
-		//$.totalStorage('display', 'list');
+		$.totalStorage('display', 'list');
 	}
 	else
 	{
