@@ -125,7 +125,7 @@ function ps_round(value, places)
 		roundMode = 2;
 	if (typeof(places) === 'undefined')
 		places = 2;
-
+	places = -1;// eg for round price
 	var method = roundMode;
 
 	if (method === 0)
