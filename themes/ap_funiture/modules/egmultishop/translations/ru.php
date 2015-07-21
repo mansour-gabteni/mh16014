@@ -11,3 +11,4 @@ $_MODULE['<{egmultishop}ap_funiture>ajax_5829a954bd245531339dc10a081abff5'] = '�
 $_MODULE['<{egmultishop}ap_funiture>ajax_269a566bd9f8bdf13b111547a6d74718'] = 'отправлено...';
 $_MODULE['<{egmultishop}ap_funiture>citys_c1789d72b97eaa42e3205b2244929d4c'] = 'Выберите ваш город:';
 $_MODULE['<{egmultishop}ap_funiture>citys_b96ba508e3690f5168e4b0e68b15b178'] = 'Выбрать';
+$_MODULE['<{egmultishop}ap_funiture>contacts_e086eaf9679a1f9fc72518693bed4499'] = 'Адрес склада:';
