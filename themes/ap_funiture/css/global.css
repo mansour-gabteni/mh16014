@@ -264,7 +264,7 @@ html {
 body {
   font-family: "Lato-Regular", sans-serif;
   font-size: 12px;
-  line-height: 1.81818;
+/*  line-height: 1.81818;*/
   color: #252525;
   background-color: #f6f6f6;
 }
