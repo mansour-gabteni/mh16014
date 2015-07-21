@@ -358,11 +358,15 @@ class egmultishop extends Module
 	{
 		$order = $params['order'];
 		
+		
+		$total = $order->total_paid;
+		$host = Tools::getHttpHost();
+		
 		$param = array(
-				'{total_paid}'	=> $order->total_paid, 
-				'{shop_url}'	=> Tools::getHttpHost()
+				'{total_paid}'	=> $total, 
+				'{shop_url}'	=> $host
 			);
-			
+		/*	
 		Mail::Send(
 				(int)$order->id_lang,
 				'event_order',
@@ -378,7 +382,7 @@ class egmultishop extends Module
 				false,
 				(int)$order->id_shop
 			);
-			
+			*/
 		Mail::Send(
 				(int)$order->id_lang,
 				'event_order',
@@ -411,7 +415,8 @@ class egmultishop extends Module
 				(int)$order->id_shop
 			);		
 		// notify to me
-		//file_get_contents("http://lk.open-sms.ru/multi.php?login=matras_house1&password=sms23Atdhfkz&message=Это тестовое сообщение&phones=79601652555&originator=DomMatrasov");	
+		if (Configuration::get('BLOCK_EGMULTSOP_SNON'))
+			$result = file_get_contents("http://lk.open-sms.ru/multi.php?login=matras_house1&password=sms23Atdhfkz&message=new order ".$total." RUR in ".$host."&phones=79601652555&originator=DomMatrasov");	
 		// client notify	
 	}
 	
@@ -440,7 +445,9 @@ class egmultishop extends Module
 		!$this->registerHook('displayFooter') ||
 		!$this->registerHook('displayBottom') ||
 		!$this->registerHook('displayFooterBottom') ||
-		!Configuration::updateValue('BLOCK_EGMULTSOP_CITY', 0))
+		!Configuration::updateValue('BLOCK_EGMULTSOP_CITY', 0)||
+		!Configuration::updateValue('BLOCK_EGMULTSOP_SMNON', 0)
+		)
 	    return false;
 	  return true;
 	}  
@@ -465,6 +472,7 @@ class egmultishop extends Module
 	{
 	  if (!parent::uninstall() || ($keep && !$this->deleteTables()) ||
 			!Configuration::deleteByName('BLOCK_EGMULTSOP_CITY') ||
+			!Configuration::deleteByName('BLOCK_EGMULTSOP_SMNON') ||
 			!$this->unregisterHook('displayTop') ||
 			!$this->unregisterHook('header') ||
 			!$this->unregisterHook('displayHome') ||
