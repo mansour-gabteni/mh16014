@@ -14860,7 +14860,7 @@ div.verticalmenu .widget-heading {
   text-align: left;
 }
 .product-block .content_price {
-  width: 40%;
+  width: 50%;
   position: relative;
   float: left;
   text-align: left;
@@ -14882,7 +14882,7 @@ div.verticalmenu .widget-heading {
   color: #3dc4ba;
   font-family: "Lato-Light";
   font-size: 19px;
-  position: absolute;
+  /*position: absolute;*/
   top: -1px;
 }
 .product-block .price-percent-reduction {
