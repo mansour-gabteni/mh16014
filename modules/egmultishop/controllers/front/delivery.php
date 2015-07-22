@@ -26,7 +26,7 @@ class egmultishopdeliveryModuleFrontController extends ModuleFrontController
 		));	
 		
 		$this->setTemplate('delivery.tpl');
-				
+				 
 	}
 
 
