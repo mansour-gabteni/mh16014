@@ -96,7 +96,7 @@ class egcallmeajaxModuleFrontController extends ModuleFrontController
 					));
 
 
-			file_get_contents($sms);
+			$result = file_get_contents($sms);
 		}
 		
 	}

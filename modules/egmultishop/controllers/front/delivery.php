@@ -13,24 +13,20 @@ class egmultishopdeliveryModuleFrontController extends ModuleFrontController
 		
 		$id_url = egmultishop::getUrlId($context->shop->id);
  
+		$page = $egmultishop->getMultishopPage('deliverycondition',$id_url);
+		if ($page =="")
+		{
+			$page = $egmultishop->getMultishopPage('deliverycondition_df');
+		}	
+
+		$page = $egmultishop->replaceCeoContact($page);
+		
 		$this->context->smarty->assign(array(
-			'page' => $egmultishop->getMultishopPage('deliverycondition',$id_url)
+			'page' => $page
 		));	
 		
 		$this->setTemplate('delivery.tpl');
 				
-		/*
-		$egmultishop = new egmultishop();
-		
-		$egmultishop->getMultishopDateById();
- 
-		$this->context->smarty->assign(array(
-			'delivery' => (string)$egmultishop->getRow(0,'delivery'),
-			'city_name' => (string)$egmultishop->getRow(0,'city_name')
-		));	
-		
-		$this->setTemplate('delivery.tpl');
-		*/
 	}
 
 

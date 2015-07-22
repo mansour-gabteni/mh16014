@@ -12,25 +12,25 @@ class egmultishopshipselfModuleFrontController extends ModuleFrontController
 		$context = Context::getContext();
 		
 		$id_url = egmultishop::getUrlId($context->shop->id);
+		
+		$page = $egmultishop->getMultishopPage('shipself',$id_url);
+		if ($page =="")
+		{
+			$page = $egmultishop->getMultishopPage('shipself_df');
+		}	
+
+		$page = $egmultishop->replaceCeoContact($page);
+		
+		$add2 = $egmultishop->replaceCeoContact('%chema');
  
 		$this->context->smarty->assign(array(
-			'page' => $egmultishop->getMultishopPage('shipself')
+			'page' => $page,
+			'addr2' => $add2
 		));	
 		
 		$this->setTemplate('shipself.tpl');
 		
-		/*
-		$egmultishop = new egmultishop();
-		
-		$egmultishop->getMultishopDateById();
- 
-		$this->context->smarty->assign(array(
-			'selfout' => (string)$egmultishop->getRow(0,'selfout'),
-			'city_name' => (string)$egmultishop->getRow(0,'city_name')
-		));	
-		
-		$this->setTemplate('shipself.tpl');
-		*/
+
 	}
 
 

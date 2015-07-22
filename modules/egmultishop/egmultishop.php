@@ -183,7 +183,7 @@ class egmultishop extends Module
 			$sql.=' and id_url='.$id_url;
 		
 		if (!$row = Db::getInstance()->executeS($sql))
-			return "404";
+			return "";
 		
 		return $row[0]['content'];
 	}
