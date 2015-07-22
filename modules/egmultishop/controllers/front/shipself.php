@@ -27,7 +27,7 @@ class egmultishopshipselfModuleFrontController extends ModuleFrontController
 			'page' => $page,
 			'addr2' => $add2
 		));	
-		
+		 
 		$this->setTemplate('shipself.tpl');
 		
 
