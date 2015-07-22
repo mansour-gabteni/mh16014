@@ -1,15 +1,14 @@
 <div id="opc_new_account" class="opc-main-block">
 	<div id="opc_new_account-overlay" class="opc-overlay" style="display: none;"></div>
 	<h1 class="page-heading step-num"><span>1</span> {l s='Account'}</h1>
-	<!-- 
 	<form action="{$link->getPageLink('authentication', true, NULL, "back=order-opc")|escape:'html':'UTF-8'}" method="post" id="login_form" class="box form-horizontal">
 		<fieldset>
 			<h3>{l s='Already registered?'}</h3>
 			<p><a href="{$link->getPageLink('authentication', true)|escape:'html':'UTF-8'}" id="openLoginFormBlock">&raquo; {l s='Click here'}</a></p>
 			<div id="login_form_content" style="display:none;">
-
+				<!-- Error return block -->
 				<div id="opc_login_errors" class="alert alert-danger" style="display:none;"></div>
-
+				<!-- END Error return block -->
 				<div class="form-group">
 					<label class="control-label col-sm-4 col-md-4" for="login_email">{l s='Email address'}</label>
 					<div class="col-sm-6 col-md-6">
@@ -34,12 +33,11 @@
 			</div>
 		</fieldset>
 	</form>
-	 //-->
 	<form action="{$link->getPageLink('authentication', true)|escape:'html':'UTF-8'}" method="post" id="new_account_form" class="std form-horizontal" autocomplete="on" autofill="on">
 		<fieldset>
         	<div class="box">
                 <h3 id="new_account_title">{l s='New Customer'}</h3>
-                <div id="opc_account_choice" class="row" style="display:none;">
+                <div id="opc_account_choice" class="row">
                     <div class="col-xs-12 col-md-6">
                         <p class="title_block">{l s='Instant Checkout'}</p>
                         <p class="opc-button">
@@ -47,7 +45,7 @@
                         </p>
                     </div>
     
-                    <div class="col-xs-12 col-md-6" style="display:none;">
+                    <div class="col-xs-12 col-md-6">
                         <p class="title_block">{l s='Create your account today and enjoy:'}</p>
                         <ul class="bullet">
                             <li>- {l s='Personalized and secure access'}</li>
@@ -59,7 +57,7 @@
                         </p>
                     </div>
                 </div>
-				<div id="opc_account_form">
+				<div id="opc_account_form" class="unvisible">
 				{$HOOK_CREATE_ACCOUNT_TOP}
 				<!-- Error return block -->
 				<div id="opc_account_errors" class="alert alert-danger" style="display:none;"></div>
@@ -69,13 +67,6 @@
 				<input type="hidden" id="opc_id_customer" name="opc_id_customer" value="{if isset($guestInformations) && isset($guestInformations.id_customer) && $guestInformations.id_customer}{$guestInformations.id_customer}{else}0{/if}" />
 				<input type="hidden" id="opc_id_address_delivery" name="opc_id_address_delivery" value="{if isset($guestInformations) && isset($guestInformations.id_address_delivery) && $guestInformations.id_address_delivery}{$guestInformations.id_address_delivery}{else}0{/if}" />
 				<input type="hidden" id="opc_id_address_invoice" name="opc_id_address_invoice" value="{if isset($guestInformations) && isset($guestInformations.id_address_delivery) && $guestInformations.id_address_delivery}{$guestInformations.id_address_delivery}{else}0{/if}" />
-				<div class="{if isset($one_phone_at_least) && $one_phone_at_least}required {/if}form-group">
-					<label class="control-label col-sm-4 col-md-4" for="phone_mobile">{l s='Home phone'}{if isset($one_phone_at_least) && $one_phone_at_least} <sup>*</sup>{/if}</label>
-					<div class="col-sm-6 col-md-6">
-						<input type="text" class="text form-control validate" name="phone_mobile" id="phone_mobile" data-validate="isPhoneNumber" value="{if isset($guestInformations) && isset($guestInformations.phone_mobile) && $guestInformations.phone_mobile}{$guestInformations.phone_mobile}{/if}" />
-					</div>
-				</div>
-				<input type="hidden" class="text form-control validate" name="phone" id="phone"  value="" />				
 				<div class="required text form-group">
 					<label class="control-label col-sm-4 col-md-4" for="email">{l s='Email'} <sup>*</sup></label>
 					<div class="col-sm-6 col-md-6">
@@ -89,7 +80,7 @@
 						<span class="form_info">{l s='(five characters min.)'}</span>
 					</div>
 				</div>
-				<div class="required clearfix gender-line" style="display:none">
+				<div class="required clearfix gender-line">
 					<label class="control-label col-sm-4 col-md-4">{l s='Social title'}</label>
 					<div class="col-sm-6 col-md-6">
 						{foreach from=$genders key=k item=gender}	
@@ -112,7 +103,7 @@
 						<input type="text" class="form-control validate" id="customer_lastname" name="customer_lastname" onblur="$('#lastname').val($(this).val());" data-validate="isName" value="{if isset($guestInformations) && isset($guestInformations.customer_lastname) && $guestInformations.customer_lastname}{$guestInformations.customer_lastname}{/if}" />
 					</div>
 				</div>
-				<div class="select form-group date-select" style="display:none">
+				<div class="select form-group date-select">
 					<label class="control-label col-sm-4 col-md-4">{l s='Date of Birth'}</label>
 					<div class="col-sm-6 col-md-6">
 						<div class="row">
@@ -185,13 +176,13 @@
 					</div>
 				</div>
 				{/if}
-				<!-- h3 class="top-indent">{l s='Delivery address'}</h3 -->
+				<h3 class="top-indent">{l s='Delivery address'}</h3>
 				{$stateExist = false}
 				{$postCodeExist = false}
 				{$dniExist = false}
 				{foreach from=$dlv_all_fields item=field_name}
 				{if $field_name eq "company"}
-					<div class="text form-group" style="display:none;">
+					<div class="text form-group">
 						<label class="control-label col-sm-4 col-md-4" for="company">{l s='Company'}{if in_array($field_name, $required_fields)} <sup>*</sup>{/if}</label>
 						<div class="col-sm-6 col-md-6">
 							<input type="text" class="text form-control validate" id="company" name="company" data-validate="isName" value="{if isset($guestInformations) && isset($guestInformations.company) && $guestInformations.company}{$guestInformations.company}{/if}" />
@@ -216,16 +207,14 @@
 					</div>
 				</div>
 				{elseif $field_name eq "firstname"}
-				<input type="hidden" class="text form-control validate" id="firstname" name="firstname" data-validate="isName" value="{if isset($guestInformations) && isset($guestInformations.firstname) && $guestInformations.firstname}{$guestInformations.firstname}{/if}" />				
-				<div class="required text form-group" style="display:none;">
+				<div class="required text form-group">
 					<label class="control-label col-sm-4 col-md-4" for="firstname">{l s='First name'} <sup>*</sup></label>
 					<div class="col-sm-6 col-md-6">
 						<input type="text" class="text form-control validate" id="firstname" name="firstname" data-validate="isName" value="{if isset($guestInformations) && isset($guestInformations.firstname) && $guestInformations.firstname}{$guestInformations.firstname}{/if}" />
 					</div>
 				</div>
 				{elseif $field_name eq "lastname"}
-				<input type="hidden" class="text form-control validate" id="lastname" name="lastname" data-validate="isName" value="{if isset($guestInformations) && isset($guestInformations.lastname) && $guestInformations.lastname}{$guestInformations.lastname}{/if}" />
-				<div class="required text form-group" style="display:none;">
+				<div class="required text form-group">
 					<label class="control-label col-sm-4 col-md-4" for="lastname">{l s='Last name'} <sup>*</sup></label>
 					<div class="col-sm-6 col-md-6">
 						<input type="text" class="text form-control validate" id="lastname" name="lastname" data-validate="isName" value="{if isset($guestInformations) && isset($guestInformations.lastname) && $guestInformations.lastname}{$guestInformations.lastname}{/if}" />
@@ -254,16 +243,14 @@
 					</div>
 				</div>
 				{elseif $field_name eq "city"}
-				<!-- input type="hidden" class="text form-control validate" name="city" id="city" value="{Meta::getCurrentCityName()}" /-->
 				<div class="required text form-group">
 					<label class="control-label col-sm-4 col-md-4" for="city">{l s='City'} <sup>*</sup></label>
 					<div class="col-sm-6 col-md-6">
-						<input type="text" disabled class="text form-control validate" name="city" id="city" data-validate="isCityName" value="{Meta::getCurrentCityName()}" />
+						<input type="text" class="text form-control validate" name="city" id="city" data-validate="isCityName" value="{if isset($guestInformations) && isset($guestInformations.city) && $guestInformations.city}{$guestInformations.city}{/if}" />
 					</div>
 				</div>
 				{elseif $field_name eq "country" || $field_name eq "Country:name"}
-				<input type="hidden" class="text form-control validate" name="id_country" id="id_country" value="177" />
-				<div class="required select form-group" style="display:none;">
+				<div class="required select form-group">
 					<label class="control-label col-sm-4 col-md-4" for="id_country">{l s='Country'} <sup>*</sup></label>
 					<div class="col-sm-6 col-md-6">
 						<select name="id_country" id="id_country" class="form-control">
@@ -327,9 +314,14 @@
 						<input type="text" class="text form-control validate" name="phone" id="phone"  data-validate="isPhoneNumber" value="{if isset($guestInformations) && isset($guestInformations.phone) && $guestInformations.phone}{$guestInformations.phone}{/if}" />
 					</div>
 				</div>
-
+				<div class="{if isset($one_phone_at_least) && $one_phone_at_least}required {/if}form-group">
+					<label class="control-label col-sm-4 col-md-4" for="phone_mobile">{l s='Mobile phone'}{if isset($one_phone_at_least) && $one_phone_at_least} <sup>*</sup>{/if}</label>
+					<div class="col-sm-6 col-md-6">
+						<input type="text" class="text form-control validate" name="phone_mobile" id="phone_mobile" data-validate="isPhoneNumber" value="{if isset($guestInformations) && isset($guestInformations.phone_mobile) && $guestInformations.phone_mobile}{$guestInformations.phone_mobile}{/if}" />
+					</div>
+				</div>
 				<input type="hidden" name="alias" id="alias" value="{l s='My address'}"/>
-				<div class="form-group" style="display:none">
+				<div class="form-group">
 					<div class="col-sm-offset-4 col-sm-8 col-md-offset-4 col-md-8">
 						<div class="checkbox">
 							<label for="invoice_address">
@@ -346,7 +338,7 @@
 					<h3 class="top-indent">{l s='Invoice address'}</h3>
 					{foreach from=$inv_all_fields item=field_name}
 					{if $field_name eq "company"}
-					<div class="form-group"  style="display:none;">
+					<div class="form-group">
 						<label class="control-label col-sm-4 col-md-4" for="company_invoice">{l s='Company'}{if in_array($field_name, $required_fields)} <sup>*</sup>{/if}</label>
 						<div class="col-sm-6 col-md-6">
 							<input type="text" class="text form-control validate" id="company_invoice" name="company_invoice"  data-validate="isName" value="{if isset($guestInformations) && isset($guestInformations.company_invoice) && $guestInformations.company_invoice}{$guestInformations.company_invoice}{/if}" />
