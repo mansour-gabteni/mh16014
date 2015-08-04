@@ -124,11 +124,11 @@ class LeoWidgetProducttabs extends LeoWidgetBase {
             $setting['featured'] = array();
             $setting['newproducts'] = array();
             $category = new Category(Context::getContext()->shop->getCategory(), (int) Context::getContext()->language->id);
-			$nb = ($setting['itemstab']) ? (int)($setting['itemstab']) : 6;
-			$orderby = ($setting['orderby']) ? ($setting['orderby']) : 'position';
-			$orderway = ($setting['orderway']) ? ($setting['orderway']) : 'ASC';
-			$items_page 	= ($setting['itemspage']) ? (int)($setting['itemspage']) : 3;
-            $columns_page 	= ($setting['columns']) ? (int)($setting['columns']) : 3;
+			$nb = 6;//($setting['itemstab']) ? (int)($setting['itemstab']) : 6;
+			$orderby = 'position';//($setting['orderby']) ? ($setting['orderby']) : 'position';
+			$orderway = 'ASC';//($setting['orderway']) ? ($setting['orderway']) : 'ASC';
+			$items_page 	= 4; // ($setting['itemspage']) ? (int)($setting['itemspage']) : 3;
+            $columns_page 	= 4; // ($setting['columns']) ? (int)($setting['columns']) : 3;
 			$interval 		= isset($setting['interval']) ? (int)($setting['interval']) : 8000;
             if ($setting['featured_display'] && $setting['featured_display'] == 1) {
 				$pro_featured = $category->getProducts((int)Context::getContext()->language->id, 1, $nb,$orderby,$orderway);
@@ -141,7 +141,7 @@ class LeoWidgetProducttabs extends LeoWidgetBase {
                 $setting['newproducts'] = $pro_newproducts;
             }
             if ($setting['special_display'] && $setting['special_display'] == 1) {
-				$pro_special = Product::getPricesDrop((int)(Context::getContext()->language->id), 0, $nb,false,$orderby,$orderway);
+				$pro_special = Product::getPricesDrop((int)(Context::getContext()->language->id), 1, $nb,false,$orderby,$orderway);
 				Context::getContext()->controller->addColorsToProductList($pro_special);
                 $setting['special'] = $pro_special;
             }

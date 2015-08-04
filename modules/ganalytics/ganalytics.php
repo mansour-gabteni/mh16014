@@ -221,20 +221,40 @@ class Ganalytics extends Module
 
 		return $this->display(__FILE__, 'views/templates/admin/configuration.tpl').$output;
 	}
+	
+	public function getMultishopDateById()
+	{
+
+			$sql = 'SELECT mu.*
+					FROM `'._DB_PREFIX_.'shop_url` su ';
+			if (!Configuration::get('BLOCK_EGMULTSOP_CITY'))
+				$sql.=' INNER JOIN `'._DB_PREFIX_.'egmultishop_url` mu ON
+							mu.`id_url` = su.`id_shop_url`
+							WHERE su.`active` = 1
+							and su.`id_shop`='.(int)$this->context->shop->id;
+			else {
+						$sql.=' INNER JOIN `'._DB_PREFIX_.'egmultishop_url` mu ON
+							mu.`id_url` = su.`id_shop_url`
+							WHERE su.`domain` = \''.Tools::getHttpHost().'\'';
+			}
+			if (!$result = Db::getInstance()->executeS($sql))
+				return false;
+				
+			return $result;
+
+	}		
 
 	protected function _getGoogleAnalyticsTag($back_office = false)
 	{
-			return '
-			<script type="text/javascript">
-				(window.gaDevIds=window.gaDevIds||[]).push(\'d6YPbH\');
-				(function(i,s,o,g,r,a,m){i[\'GoogleAnalyticsObject\']=r;i[r]=i[r]||function(){
-				(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-				})(window,document,\'script\',\'//www.google-analytics.com/analytics.js\',\'ga\');
-				ga(\'create\', \''.Tools::safeOutput(Configuration::get('GA_ACCOUNT_ID')).'\', \'auto\');
-				ga(\'require\', \'ec\');
-				'.($back_office ? 'ga(\'set\', \'nonInteraction\', true);' : '').'
-			</script>';
+		
+		
+		$r = $this->getMultishopDateById();
+ 		if ($r)
+ 		{
+			return $r[0]['google_anal'];
+ 		}
+ 		return '';
+			
 	}
 
 	public function hookHeader()

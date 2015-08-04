@@ -2,7 +2,7 @@
 <module>
 	<name>blockbestsellers</name>
 	<displayName><![CDATA[Лидеры продаж]]></displayName>
-	<version><![CDATA[1.6.2]]></version>
+	<version><![CDATA[1.7.0]]></version>
 	<description><![CDATA[Добавляет блок, отображющий лидеров продаж.]]></description>
 	<author><![CDATA[PrestaShop]]></author>
 	<tab><![CDATA[front_office_features]]></tab>

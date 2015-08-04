@@ -163,7 +163,7 @@ class LeoWidgetSpecialcarousel extends LeoWidgetBase {
 			$setting['columnspage'] 	= $columns_page; 
 			$setting['scolumn']    		= 12 / $columns_page;
 			$setting['interval'] 		= $interval;
-			$setting['tab'] 			= 'leospecialproduct'.rand(20,rand());
+			//$setting['tab'] 			= 'leospecialproduct'.rand(20,rand());
 			$output = array('type'=>'specialproduct','data' => $setting );
 
 			return $output;

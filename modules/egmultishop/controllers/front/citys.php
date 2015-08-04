@@ -21,6 +21,8 @@ class egmultishopcitysModuleFrontController extends ModuleFrontController
 				WHERE su.id_shop IN ('.implode(', ', Shop::getContextListShopID()).') 
 				and su.`main`= 0
 				and su.`active` = 1
+				and not mu.`city_name` = \'\'
+				and	mu.`active` > 0
 				order by 3';
 
 		if (!$citys = Db::getInstance()->executeS($sql))
