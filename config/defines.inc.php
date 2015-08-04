@@ -26,12 +26,12 @@
 
 /* Debug only */
 if (!defined('_PS_MODE_DEV_'))
-define('_PS_MODE_DEV_', true);
+define('_PS_MODE_DEV_', false);
 /* Compatibility warning */
 define('_PS_DISPLAY_COMPATIBILITY_WARNING_', false);
-if (_PS_MODE_DEV_ === true)
+if (_PS_MODE_DEV_ === false)
 {
-	@ini_set('display_errors', 'on');
+	@ini_set('display_errors', 'off');
 	@error_reporting(E_ALL | E_STRICT);
 	define('_PS_DEBUG_SQL_', true);
 }

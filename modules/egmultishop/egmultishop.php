@@ -287,7 +287,8 @@ class egmultishop extends Module
  		{
 			$this->smarty->assign(array(
 				'yandex_verify' => (string)$this->row[0]['yandex_verify'],
-				'google_verify' => (string)$this->row[0]['google_verify']
+				'google_verify' => (string)$this->row[0]['google_verify'],
+				'google_anal' => (string)$this->row[0]['google_anal']
 			));
 	
 			return $this->display(__FILE__, 'egmultishop_header.tpl');

@@ -4,6 +4,7 @@
 $(document).ready(function() { 
 	$("#callmeform").submit(function() { return false; });
 	$(document).on('click', '#callmebtn', function(e){
+		metrikaReach('callback');
 		e.preventDefault();
 		var url = this.rel+"?ajax";
 
@@ -32,6 +33,14 @@ $(document).ready(function() {
 	});	
 });
 
+
+function metrikaReach(goal_name) {
+	for (var i in window) {
+		if (/^yaCounter\d+/.test(i)) {
+			window[i].reachGoal(goal_name);
+		}
+	}
+}
 /*
 if(data == "true") {
 	               $("#callmeform").fadeOut("fast", function(){

