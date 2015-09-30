@@ -31,41 +31,47 @@ if (!defined('_PS_VERSION_'))
   	
   	public function getContent()
 	{
+		
+		//$this->createAjaxController();
 		$output = null;
 		
-		
-		if (Tools::isSubmit('id_product'))
-		{
-			$id_page = Tools::getValue('id_product');
-			
-			$this->updateProductInfo("price,comment,name", $id_page,"load,update");
-			/*
-			$list = $this->getProductList();
-			foreach ($list as $item)
-			{
-				if (!isset($item['product_url']))
-				{
-				$sql = 'insert into '._DB_PREFIX_.self::INSTALL_SQL_BD1NAME.' (`id_product`,`id_shop`,`product_url`,`product_sname`, `product_attrgroup`)
-					values('.$item['id_product'].', null, \'\',\'\',\'matrassize\')';
-				
-					if (!$links = Db::getInstance()->execute($sql))
-					return false;
-				}
-			}
-			*/
-		}
-		
-		//$this->updateAllProductComments();
-		//$this->updateProductInfo("price,comment,name", 0,"load,update");
-		//$this->updateProductComment(5, 'http://ormatek.com/products/42');
-		//$this->updateProductInfo("price,comment,name", 197,"load,update");
-		//$this->updateProductInfo("comment", 55,"update");
-		//$this->updateProductInfo("price,comment,name", 58,"load,update");
-		//$this->updateProductInfo("price,comment,name", 7,"load,update");
-		
-		//$this->updateProductInfo("price,comment,name", 0,"update");
-		
-		$output.=$this->renderList();
+		$output = '<div class="row">
+<div class="panel panel-default">
+  <div class="panel-heading">'.$this->l('panel price update').'</div>
+  <div class="panel-body">
+    <button type="button" id="update" class="btn btn-primary">'.$this->l('proccess').'</button>
+	<div class="checkbox">
+	  <label><input type="checkbox" id="uc">'.$this->l('load new content').'</label>
+	</div>
+	<div class="checkbox">
+	  <label><input type="checkbox" id="up">'.$this->l('update price').'</label>
+	</div>	
+	<div class="checkbox">
+	  <label><input type="checkbox" id="comment">'.$this->l('update comment').'</label>
+	</div>	
+	<div class="checkbox">
+	  <label><input type="checkbox" id="upname">'.$this->l('update product name').'</label>
+	</div>			
+  </div>
+</div>
+</div>
+  <div class="row">
+<table class="table table-striped table-hover table-bordered" id="main_table">
+<thead>
+ <tr>
+ <th>-</th>
+ <th>ID</th>
+ <th>URL</th>
+ <th>product name db</th>
+ <th>product_attrgroup</th>
+ <th>price_discount</th>
+ <th>discount db</th>
+ <th>actions</th>
+ </tr>
+ </thead>
+ <tbody></tbody>
+</table>
+  </div>';
 		
 		return $output;
 		
@@ -129,7 +135,32 @@ if (!defined('_PS_VERSION_'))
 			return $helper->generateList($links,  $fields_list);
 		else
 			return false;
-	}		
+	}
+
+  	public function hookDisplayBackOfficeHeader()
+	{
+		if (Tools::getValue('configure') != $this->name)
+			return;
+			
+		$this->context->controller->addJS($this->_path.'/views/js/admin.js');
+		return '<script>
+				var admin_ormprod_ajax_url = \''.$this->context->link->getAdminLink("AdminAjax").'\';
+			</script>';
+	}
+	
+  	public function createAjaxController()
+	{
+		$tab = new Tab();
+		$tab->active = 1;
+		$languages = Language::getLanguages(false);
+		if (is_array($languages))
+			foreach ($languages as $language)
+				$tab->name[$language['id_lang']] = 'ajax controller';
+		$tab->class_name = 'AdminAjax';
+		$tab->module = $this->name;
+		$tab->id_parent = - 1;
+		return (bool)$tab->add();
+	}
 	
 	public function getProductList($id_product = 0, $effected = false, $new_prod = false)
 	{
@@ -349,36 +380,40 @@ if (!defined('_PS_VERSION_'))
 	 *  2)load - load from site
 	 */
 	
-  	public function updateProductInfo($type="name", $id_product=0, $action="")
+  	public function updateProductInfo($ac_types, $id_product=0, $action="")
 	{
 		$products = $this->getProductList($id_product, true);
 		
-		$ac_types = explode(',',$type);
+		//$ac_types = explode(',',$type);
+
 			
 		foreach ($products as $product)
 		{
-			foreach ($ac_types as $ac_type)
-			{
-				if (strripos($action,"load")===false)
+			if (is_array($ac_types)){
+				foreach ($ac_types as $ac_type)
 				{
-					$content = $this->getBlobField($product['id_product'], "content", false);
-					
-					if (trim($content)=="")
+					if (strripos($action,"load")===false)
+					{
+						$content = $this->getBlobField($product['id_product'], "content", false);
+						
+						if (trim($content)=="")
+						{
+							$content = $this->getProductContent($product['product_url']);
+							
+							$this->updateBlobField($product['id_product'], "content", $content,false);
+						}
+					}
+					else
 					{
 						$content = $this->getProductContent($product['product_url']);
 						
 						$this->updateBlobField($product['id_product'], "content", $content,false);
 					}
-				}
-				else
-				{
-					$content = $this->getProductContent($product['product_url']);
 					
-					$this->updateBlobField($product['id_product'], "content", $content,false);
+					$this->updateProduct($ac_type, $product['id_product'], $content, $action);
 				}
-				
-				$this->updateProduct($ac_type, $product['id_product'], $content, $action);
 			}
+
 		}
 	}
 	private function updateProduct($type, $id_product, $content, $action="")
@@ -544,6 +579,8 @@ if (!defined('_PS_VERSION_'))
 			return false;			
 	}
 	
+
+	
   	private function updateDb1TableFields($id_product,$field_name, $value)
 	{
 		
@@ -607,6 +644,26 @@ if (!defined('_PS_VERSION_'))
 		if (!$links = Db::getInstance()->executeS($sql, true, false))
 				return false;
 		return $links;
+	}
+	
+  	public function insertProductInfo($id_page, $attrgroup, $url_page)
+	{
+		$sql = "select id_product from "._DB_PREFIX_.self::INSTALL_SQL_BD1NAME." 
+				WHERE `id_product` = ".(int)$id_page;
+			
+		if (!$links = Db::getInstance()->executeS($sql))
+		{
+		
+			$sql = "insert into "._DB_PREFIX_.self::INSTALL_SQL_BD1NAME."
+			(`id_product`, `id_shop`, `product_url`, `product_sname`, 
+			`product_attrgroup`, `message`) 
+				 values(".$id_page.",NULL,'".$url_page."','','".$attrgroup."','')";
+			
+			if (!$links = Db::getInstance()->execute($sql))
+				return false;
+		}
+			
+		return true;
 	}
 	
 	private function updateDiscount($id_product,$content) 
@@ -883,7 +940,8 @@ if (!defined('_PS_VERSION_'))
 			}
 			
 	  if (!parent::install()|| 
-		!Configuration::updateValue('EGORMATEKPROD_MANUF', 0)
+		!Configuration::updateValue('EGORMATEKPROD_MANUF', 0)||
+		!$this->registerHook('displayBackOfficeHeader')
 		)
 	    return false;
 	  return true;

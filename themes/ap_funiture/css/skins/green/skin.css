@@ -133,7 +133,9 @@ a:hover, a:focus {
   color: #13b884;
 }
 .product-block .price {
-  color: #13b884;
+    color: #f05f19;
+    font-size: 20px;
+    font-weight: bold;
 }
 .product-block .functional-buttons .btn:hover {
   background: #13b884;
@@ -155,7 +157,7 @@ a:hover, a:focus {
 }
 
 #cart_summary tfoot td#total_price_container {
-  color: #13b884;
+  color: #f05f19;
 }
 
 .WhiteRounded {

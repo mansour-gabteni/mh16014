@@ -332,10 +332,17 @@ class egmultishop extends Module
 	{		
 		
 		$this->getMultishopDateById();
+		
+		
+		$metr = Configuration::get('BLOCK_EGMULTSOP_METRDEF');
+		
+		if(trim($metr) == "") 
+			(string)$this->row[0]['yandex_metr'];
+		
 		if ($this->row)
 		{
 			$this->smarty->assign(array(
-				'yandex_metr' => (string)$this->row[0]['yandex_metr'],
+				'yandex_metr' => $metr,
 				'google_anal' => (string)$this->row[0]['google_anal']
 			));		
 			return $this->display(__FILE__, 'egmultishop_fbottom.tpl');

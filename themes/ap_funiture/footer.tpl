@@ -60,7 +60,8 @@
 {if isset($LEO_PANELTOOL) && $LEO_PANELTOOL}
     {include file="$tpl_dir./info/paneltool.tpl"}
 {/if}
-
+{*
+*
 <!-- {literal} -->
 <script type='text/javascript'>
     window['li'+'ve'+'T'+'e'+'x'] = true,
@@ -77,5 +78,13 @@
     })();
 </script>
 <!-- {/literal} -->
+**}
+{**
+<!-- BEGIN JIVOSITE CODE {literal} -->
+<script type='text/javascript'>
+(function(){ var widget_id = 'bioDdJ2Nh6';
+var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = '//code.jivosite.com/script/widget/'+widget_id; var ss = document.getElementsByTagName('script')[0]; ss.parentNode.insertBefore(s, ss);})();</script>
+<!-- {/literal} END JIVOSITE CODE -->
+*}
 	</body>
 </html>

@@ -14904,6 +14904,8 @@ div.verticalmenu .widget-heading {
   margin: 5px 0;
   width: 60%;
   float: left;
+  font-weight: bold;
+  
 }
 .rtl .product-block .name {
   float: right;
