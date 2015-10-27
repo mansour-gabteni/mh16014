@@ -43,7 +43,7 @@
                     <div class="col-xs-12 col-md-6">
                         <p class="title_block">{l s='Instant Checkout'}</p>
                         <p class="opc-button">
-                            <button type="submit" class="btn btn-outline button button-medium exclusive" id="opc_guestCheckout"><span>{l s='Guest checkout'}</span></button>
+                            <button type="submit" class="btn button button-medium exclusive button-success" id="opc_guestCheckout"><span>{l s='Guest checkout'}</span></button>
                         </p>
                     </div>
     
@@ -55,7 +55,7 @@
                             <li>- {l s='Separate billing and shipping addresses'}</li>
                         </ul>
                         <p class="opc-button">
-                            <button type="submit" class="btn btn-outline button button-medium exclusive" id="opc_createAccount"><span><i class="fa fa-user left"></i>&nbsp;{l s='Create an account'}</span></button>
+                            <button type="submit" class="btn button button-medium exclusive button-success" id="opc_createAccount"><span><i class="fa fa-user left"></i>&nbsp;{l s='Create an account'}</span></button>
                         </p>
                     </div>
                 </div>
@@ -492,7 +492,7 @@
                 		<p class="required opc-required pull-right">
                             <sup>*</sup>{l s='Required field'}
                         </p>
-                    <button type="submit" name="submitAccount" id="submitAccount" class="btn btn-outline button button-medium"><span>{l s='Save'}</span></button>
+                    <button type="submit" name="submitAccount" id="submitAccount" class="btn button button-medium button-success"><span>{l s='Save'}</span></button>
                     
 				</div>
 				<div style="display: none;" id="opc_account_saved" class="alert alert-success">

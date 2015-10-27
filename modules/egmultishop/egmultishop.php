@@ -31,7 +31,7 @@ class egmultishop extends Module
   
 	public function getContent()
 	{
-		$this->registerHook('displayFooterBottom');
+		//$this->registerHook('displayProductDeliveryTime');
 		//TODO: !!!
 	    $output = null;
 	 
@@ -204,6 +204,7 @@ class egmultishop extends Module
 		return Meta::sprintf2($page,$ceo_word);
 	}	
 	
+
 	public function displayForm()
 	{
 		//TODO: !!!
@@ -253,6 +254,35 @@ class egmultishop extends Module
     	
     	
     	return $helper->generateForm($fields_form1);
+	}
+
+	public function hookDisplayProductDeliveryTime()
+	{
+		$id_shop = $this->context->shop->id;
+		
+		$sql = 'select mu.actual
+				from `'._DB_PREFIX_.'shop_url` su
+				INNER JOIN `'._DB_PREFIX_.'egmultishop_url` mu ON
+					mu.`id_url`=su.`id_shop_url`
+				where su.domain =\''.Tools::getHttpHost().'\'
+				and su.id_shop='.(int)$id_shop;
+		
+		if (!$row = Db::getInstance()->executeS($sql))
+			return "";
+		 
+		if($row[0]['actual'] > 0)
+		{
+			
+			$page = $this->getMultishopPage("freedeliv");
+			
+			$page = $this->replaceCeoWords($page);
+			
+			$this->smarty->assign(array(
+				'page' => 	$page	
+			));	
+			
+			return $this->display(__FILE__, 'egmultishop_page.tpl');
+		}
 	}
 	
 	public function hookDisplayTop($params)

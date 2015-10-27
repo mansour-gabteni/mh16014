@@ -211,10 +211,10 @@
 				{*<span id="availability_label">{l s='Availability:'}</span>*}
 				<span id="availability_value" class="label{if $product->quantity <= 0 && !$allow_oosp} warning_inline{elseif $product->quantity <= 0} label-warning{else} label-success{/if}">{if $product->quantity <= 0}{if $PS_STOCK_MANAGEMENT && $allow_oosp}{$product->available_later}{else}{l s='This product is no longer in stock'}{/if}{elseif $PS_STOCK_MANAGEMENT}{$product->available_now}{/if}</span>
 			</p>
-			{if $PS_STOCK_MANAGEMENT}
+			
 				{hook h="displayProductDeliveryTime" product=$product}
-				<p class="warning_inline" id="last_quantities"{if ($product->quantity > $last_qties || $product->quantity <= 0) || $allow_oosp || !$product->available_for_order || $PS_CATALOG_MODE} style="display: none"{/if} >{l s='Warning: Last items in stock!'}</p>
-			{/if}
+				<!-- p class="warning_inline" >{l s='delivery: delivery free in '}</p-->
+			
 			<p id="availability_date"{if ($product->quantity > 0) || !$product->available_for_order || $PS_CATALOG_MODE || !isset($product->available_date) || $product->available_date < $smarty.now|date_format:'%Y-%m-%d'} style="display: none;"{/if}>
 				<span id="availability_date_label">{l s='Availability date:'}</span>
 				<span id="availability_date_value">{dateFormat date=$product->available_date full=false}</span>
@@ -255,17 +255,6 @@
 						{if $product->show_price && !isset($restricted_country_mode) && !$PS_CATALOG_MODE}
 							<!-- prices -->
 							<div class="price">
-								<p class="our_price_display" itemprop="offers" itemscope itemtype="http://schema.org/Offer">{strip}
-									{if $product->quantity > 0}<link itemprop="availability" href="http://schema.org/InStock"/>{/if}
-									{if $priceDisplay >= 0 && $priceDisplay <= 2}
-										<span id="our_price_display" itemprop="price">{convertPrice price=$productPrice}</span>
-										{if $tax_enabled  && ((isset($display_tax_label) && $display_tax_label == 1) || !isset($display_tax_label))}
-											{if $priceDisplay == 1}{l s='tax excl.'}{else}{l s='tax incl.'}{/if}
-										{/if}
-										<meta itemprop="priceCurrency" content="{$currency->iso_code}" />
-										{hook h="displayProductPriceBlock" product=$product type="price"}
-									{/if}
-								{/strip}</p>
 								<p id="reduction_percent" {if !$product->specificPrice || $product->specificPrice.reduction_type != 'percentage'} style="display:none;"{/if}>{strip}
 									<span id="reduction_percent_display">
 										{if $product->specificPrice && $product->specificPrice.reduction_type == 'percentage'}-{$product->specificPrice.reduction*100}%{/if}
@@ -285,6 +274,17 @@
 										<span id="pretaxe_price_display">{convertPrice price=$product->getPrice(false, $smarty.const.NULL)}</span> {l s='tax excl.'}
 									{/strip}</span>
 								{/if}
+								<p class="our_price_display" itemprop="offers" itemscope itemtype="http://schema.org/Offer">{strip}
+									{if $product->quantity > 0}<link itemprop="availability" href="http://schema.org/InStock"/>{/if}
+									{if $priceDisplay >= 0 && $priceDisplay <= 2}
+										<span id="our_price_display" itemprop="price">{convertPrice price=$productPrice}</span>
+										{if $tax_enabled  && ((isset($display_tax_label) && $display_tax_label == 1) || !isset($display_tax_label))}
+											{if $priceDisplay == 1}{l s='tax excl.'}{else}{l s='tax incl.'}{/if}
+										{/if}
+										<meta itemprop="priceCurrency" content="{$currency->iso_code}" />
+										{hook h="displayProductPriceBlock" product=$product type="price"}
+									{/if}
+								{/strip}</p>								
 							</div> <!-- end prices -->
 							<p id="reduction_amount" {if !$product->specificPrice || $product->specificPrice.reduction_type != 'amount' || $product->specificPrice.reduction|floatval ==0} style="display:none"{/if}>{strip}
 								<span id="reduction_amount_display">

@@ -22,7 +22,7 @@
 			{/if}
 				
 		</div>
-		{hook h="displayProductDeliveryTime" product=$product}
+	
 		{hook h="displayProductPriceBlock" product=$product type="weight"}
 		
 		<div class="content-buttons clearfix">

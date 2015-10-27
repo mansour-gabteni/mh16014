@@ -507,7 +507,9 @@ if (!defined('_PS_VERSION_'))
 		 		$this->updateProductAttributePriceDb(
 		 									$id_product, 
 		 									$id_product_attribute, 
-		 									$attributes[0]['price']);
+		 									$attributes[0]['price'],
+		 									true
+		 									);
 		 	}
 		 	else
 		 	{
@@ -516,8 +518,9 @@ if (!defined('_PS_VERSION_'))
 		 }
 		 else	
 		 {
+		 //	$first = true;
 		 	$pattributes = array();
-			 foreach($attributes as $attribute)
+			 foreach($attributes as $index => $attribute)
 			 {
 			 	$keys = false;
 			 	foreach($dbAttributes as $key => $dbAttribute)
@@ -533,8 +536,19 @@ if (!defined('_PS_VERSION_'))
 			 	if($keys!==false)
 			 	{
 			 		$id_product_attribute = $dbAttributes[$keys]['id_product_attribute'];
-			 	
-			 		$this->updateProductAttributePriceDb($id_product, $id_product_attribute, $attribute['price']);
+			 		
+			 		//if ($index>0)
+			 			if ($attribute['price']==$attributes[0]['price'])
+			 			{
+			 				//$first = false;
+			 				$this->updateProductAttributePriceDb($id_product, 
+			 					$id_product_attribute, $attribute['price'], true);
+			 			}else {
+			 				$this->updateProductAttributePriceDb($id_product, 
+			 					$id_product_attribute, 
+			 					$attribute['price']-$attributes[0]['price'], false);
+			 			}
+			 		
 			 		
 			 		$attribute['ff'] = "l";
 			 		$pattributes[] = $attribute;
@@ -558,9 +572,28 @@ if (!defined('_PS_VERSION_'))
 		 $this->updateDb1TableFields($id_product,"message",$err_text);
 	}
 	
-	private function updateProductAttributePriceDb($id_product, $id_product_attribute, $price)
+	private function updateProductAttributePriceDb($id_product, $id_product_attribute, $price, $first=false)
 	{
 		$id_shop = $this->context->shop->id;
+		
+		if ($first == true){
+			$sql = "update "._DB_PREFIX_."product_shop  
+					 		set 
+					 		price = ".$price." 
+					 		where id_product=".(int) $id_product."
+					 		and id_shop IN (".implode(', ', Shop::getContextListShopID()).")";
+			if (!$links = Db::getInstance()->execute($sql))
+				return false;
+				
+			$sql = "update "._DB_PREFIX_."product  
+					 		set 
+					 		price = ".$price." 
+					 		where id_product=".(int) $id_product;
+			if (!$links = Db::getInstance()->execute($sql))
+				return false;
+
+			$price = 0;
+		}
 		
 		$sql = "update "._DB_PREFIX_."product_attribute  
 				 		set 
@@ -574,9 +607,10 @@ if (!defined('_PS_VERSION_'))
 				 		set 
 				 		price = ".$price." 
 				 		where id_product_attribute = ".(int)$id_product_attribute."
-				 		  and id_shop = ".(int)$id_shop;
+				 		  and id_shop IN (".implode(', ', Shop::getContextListShopID()).")";
 		if (!$links = Db::getInstance()->execute($sql))
-			return false;			
+			return false;	
+			
 	}
 	
 
