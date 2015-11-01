@@ -255,10 +255,11 @@ class egmultishop extends Module
     	
     	return $helper->generateForm($fields_form1);
 	}
-
-	public function hookDisplayProductDeliveryTime()
+	
+	public static function isMarketingSite()
 	{
-		$id_shop = $this->context->shop->id;
+		$context = Context::getContext();
+		$id_shop = $context->shop->id;
 		
 		$sql = 'select mu.actual
 				from `'._DB_PREFIX_.'shop_url` su
@@ -270,7 +271,15 @@ class egmultishop extends Module
 		if (!$row = Db::getInstance()->executeS($sql))
 			return "";
 		 
-		if($row[0]['actual'] > 0)
+		return $row[0]['actual'];
+		
+	}
+
+	public function hookDisplayProductDeliveryTime()
+	{
+		
+		 
+		if(egmultishop::isMarketingSite()>0)
 		{
 			
 			$page = $this->getMultishopPage("freedeliv");

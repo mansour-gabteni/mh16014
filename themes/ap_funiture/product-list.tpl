@@ -52,7 +52,7 @@
 		{if $totModulo == 0}{assign var='totModulo' value=$nbItemsPerLine}{/if}
 		{if $totModuloTablet == 0}{assign var='totModuloTablet' value=$nbItemsPerLineTablet}{/if}
 		{if $totModuloMobile == 0}{assign var='totModuloMobile' value=$nbItemsPerLineMobile}{/if}	
-		<div class="no-padding ajax_block_product col-sp-12 {$colValue}{if $smarty.foreach.products.iteration%$nbItemsPerLine == 0} last-in-line
+		<div style="border-top: 1px solid #ebebeb;" class="no-padding ajax_block_product col-sp-12 {$colValue}{if $smarty.foreach.products.iteration%$nbItemsPerLine == 0} last-in-line
 		{elseif $smarty.foreach.products.iteration%$nbItemsPerLine == 1} first-in-line{/if}
 		{if $smarty.foreach.products.iteration > ($smarty.foreach.products.total - $totModulo)} last-line{/if}
 		{if $smarty.foreach.products.iteration%$nbItemsPerLineTablet == 0} last-item-of-tablet-line

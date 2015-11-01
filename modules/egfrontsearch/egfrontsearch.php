@@ -29,7 +29,10 @@ class egfrontsearch extends Module
 
 	public function hookDisplayTopColumn($params)
 	{
-		return $this->display(__FILE__, 'egfrontsearch_home.tpl');
+		if(egmultishop::isMarketingSite())
+			return $this->display(__FILE__, 'egmarketing_site.tpl');
+		else
+			return $this->display(__FILE__, 'egfrontsearch_home.tpl');
 	}
 	
 
