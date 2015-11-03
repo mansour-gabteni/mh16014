@@ -28,6 +28,8 @@ if (!defined('_PS_VERSION_'))
   	
   	public function getContent()
 	{
+		
+		//$this->unregisterHook('displayNav');
 		$output = null;
 		/*
 		 * Доделать
@@ -50,7 +52,35 @@ if (!defined('_PS_VERSION_'))
 		$this->context->controller->addJS($this->_path.'views/js/callme.js', 'all');
 		$this->context->controller->addCSS($this->_path.'views/css/callme.css', 'all');
 	}
+	
+	public function hookDisplayNav($params)
+	{
+		if (!Configuration::get('BLOCK_EGMULTSOP_CITY'))
+		{
+			$phone = Configuration::get('EGCALLME_HEAD_PHONE');
+			
+		}
+		else 
+		{
+			$sql = 'SELECT mu.`phone`
+				FROM `'._DB_PREFIX_.'shop_url` su
+				INNER JOIN `'._DB_PREFIX_.'egmultishop_url` mu ON
+					mu.`id_url`=su.`id_shop_url`
+				WHERE su.`domain` = \''.Tools::getHttpHost().'\'';
 
+			if (!$row = Db::getInstance()->executeS($sql))
+				$phone = Configuration::get('EGCALLME_HEAD_PHONE');
+			else 
+				$phone = $row[0]['phone'];
+		}		
+		
+ 		$this->smarty->assign(array(
+			'phone' => $phone,
+			'ajaxcontroller' => $this->context->link->getModuleLink('egcallme', 'ajax')
+		));
+	
+		return $this->display(__FILE__, 'callme_nav.tpl');	
+	}
 	public function hookDisplayTop($params)
 	{
 		if (!Configuration::get('BLOCK_EGMULTSOP_CITY'))
@@ -111,6 +141,7 @@ if (!defined('_PS_VERSION_'))
 			
 	  if (!parent::install() ||
 	  	!$this->registerHook('displayTop') ||
+	  	!$this->registerHook('displayNav') ||
 		!$this->registerHook('header') ||
 		!Configuration::updateValue('EGCALLME_SMS_NOYIFY', 0)||
 		!Configuration::updateValue('EGCALLME_HEAD_PHONE', '')||
@@ -149,6 +180,7 @@ if (!defined('_PS_VERSION_'))
 			!Configuration::deleteByName('EGCALLME_FIELD_FNAME')||			
 			!Configuration::deleteByName('EGCALLME_FIELD_LNAME') ||
 			!$this->unregisterHook('displayTop') ||
+			!$this->unregisterHook('displayNav') ||
 			!$this->unregisterHook('header'))
 	    return false;
 	  return true;

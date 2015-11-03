@@ -11,3 +11,4 @@ $_MODULE['<{egcallme}prestashop>ajax_78e731027d8fd50ed642340b7c9a63b3'] = 'Со�
 $_MODULE['<{egcallme}prestashop>ajax_5829a954bd245531339dc10a081abff5'] = 'Перезвонить мне';
 $_MODULE['<{egcallme}prestashop>ajax_269a566bd9f8bdf13b111547a6d74718'] = 'Запрос на обратный звонок отправлен!';
 $_MODULE['<{egcallme}prestashop>callme_8069a762fc04f1fc29bca4c47c4cee21'] = 'Заказать обратный звонок';
+$_MODULE['<{egcallme}prestashop>callme_nav_8069a762fc04f1fc29bca4c47c4cee21'] = 'Заказать обратный звонок';

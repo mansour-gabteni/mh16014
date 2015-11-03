@@ -8,6 +8,7 @@ $_MODULE['<{pagesnotfound}ap_office>pagesnotfound_dc3a3db6b98723bf91f924537a6306
 $_MODULE['<{pagesnotfound}ap_office>pagesnotfound_b323790d8ee3c43d317d19aea5012626'] = 'Кеш \"Страницы не найдены\"  очищен.';
 $_MODULE['<{pagesnotfound}ap_office>pagesnotfound_6602bbeb2956c035fb4cb5e844a4861b'] = 'Руководство';
 $_MODULE['<{pagesnotfound}ap_office>pagesnotfound_3604249130acf7fda296e16edc996e5b'] = 'Ошибки 404';
+$_MODULE['<{pagesnotfound}ap_office>pagesnotfound_675f1f46497aeeee35832a5d9d095976'] = 'Код HTTP 404 означает, что запрошенный пользоватетем файл не найден. В вашем случае это может значить, что посетитель указал неправильный URL или что на другом сайте есть мёртвая ссылка. Если реферер показан, то вы можете найти страницу/сайт, содержащие мёртвую ссылку. Если реферера нет, то это обычно попытка прямого доступа, т.е., кто-то добавил мёртвую ссылку в закладки.';
 $_MODULE['<{pagesnotfound}ap_office>pagesnotfound_a90083861c168ef985bf70763980aa60'] = 'Как поймать эти ошибки?';
 $_MODULE['<{pagesnotfound}ap_office>pagesnotfound_4f803d59ee120b11662027e049cba1f3'] = 'Если ваш веб-хостинг поддерживает файлы .htaccess, Вы можете создать его в корневой директории PrestaShop и вставить в него следующие строки: \"%s\".';
 $_MODULE['<{pagesnotfound}ap_office>pagesnotfound_07e7f83ae625fe216a644d09feab4573'] = 'Пользователь запросил страницу, которая больше не существует и будет перенаправлен на страницу: %s. Этот модуль записывает доступ к данной странице.';

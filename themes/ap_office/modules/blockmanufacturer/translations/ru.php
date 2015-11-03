@@ -4,7 +4,6 @@ global $_MODULE;
 $_MODULE = array();
 $_MODULE['<{blockmanufacturer}ap_office>blockmanufacturer_bc3e73cfa718a3237fb1d7e1da491395'] = 'Блок производителей';
 $_MODULE['<{blockmanufacturer}ap_office>blockmanufacturer_71087c7035e626bd33c72ae9a7f042af'] = 'Отображает блок производителей/брендов';
-$_MODULE['<{blockmanufacturer}ap_office>blockmanufacturer_b15e7271053fe9dd22d80db100179085'] = 'Этот модуль должны быть подключены в колонну и ваша тема не реализует один';
 $_MODULE['<{blockmanufacturer}ap_office>blockmanufacturer_f8c922e47935b3b76a749334045d61cf'] = 'Существует неверное число элементов.';
 $_MODULE['<{blockmanufacturer}ap_office>blockmanufacturer_5b2e13ff6fa0da895d14bd56f2cb2d2d'] = 'Пожалуйста, включите хотя бы один способ отображения.';
 $_MODULE['<{blockmanufacturer}ap_office>blockmanufacturer_f38f5974cdc23279ffe6d203641a8bdf'] = 'Настройки обновлены.';

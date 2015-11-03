@@ -31,7 +31,7 @@ class egmultishop extends Module
   
 	public function getContent()
 	{
-		//$this->registerHook('displayProductDeliveryTime');
+		$this->registerHook('displayNav');
 		//TODO: !!!
 	    $output = null;
 	 
@@ -294,6 +294,28 @@ class egmultishop extends Module
 		}
 	}
 	
+	public function hookDisplayNav($params)
+	{
+		$this->context->controller->addCSS($this->_path.'views/css/egmultishop.css', 'all');
+		$this->context->controller->addJS($this->_path.'views/js/modal.js', 'all');
+		
+		$this->getMultishopDateById();
+		
+		
+ 		$city_list = Configuration::get('BLOCK_EGMULTSOP_CITY');
+ 		if ($this->row)
+ 		{
+			$this->smarty->assign(array(
+				'phone' => (string)$this->row[0]['phone'],
+				'city_name' => (string)$this->row[0]['city_name'],
+				'city_lists' => (bool)$city_list,
+				'city_link' => $this->context->link->getModuleLink('egmultishop', 'citys')//,
+			));
+	
+			return $this->display(__FILE__, 'egmultishop_top.tpl');
+ 		}
+	}	
+	
 	public function hookDisplayTop($params)
 	{
 		$this->context->controller->addCSS($this->_path.'views/css/egmultishop.css', 'all');
@@ -489,6 +511,7 @@ class egmultishop extends Module
 	  	!$this->registerHook('displayTop') ||
 		!$this->registerHook('header') ||
 		!$this->registerHook('displayHome') ||
+		!$this->registerHook('displayNav') ||
 		!$this->registerHook('displayFooter') ||
 		!$this->registerHook('displayBottom') ||
 		!$this->registerHook('displayFooterBottom') ||
@@ -523,6 +546,7 @@ class egmultishop extends Module
 			!$this->unregisterHook('displayTop') ||
 			!$this->unregisterHook('header') ||
 			!$this->unregisterHook('displayHome') ||
+			!$this->unregisterHook('displayNav') ||
 			!$this->unregisterHook('displayFooter') ||
 			!$this->unregisterHook('displayBottom') ||
 			!$this->unregisterHook('displayFooterBottom'))

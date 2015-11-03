@@ -172,21 +172,6 @@
 				<label>{l s='Reference:'} </label>
 				<span class="editable" itemprop="sku">{if !isset($groups)}{$product->reference|escape:'html':'UTF-8'}{/if}</span>
 			</p>
-			{if !$product->is_virtual && $product->condition}
-			<p id="product_condition">
-				<label>{l s='Condition'} </label>
-				{if $product->condition == 'new'}
-					<link itemprop="itemCondition" href="http://schema.org/NewCondition"/>
-					<span class="editable">{l s='New'}</span>
-				{elseif $product->condition == 'used'}
-					<link itemprop="itemCondition" href="http://schema.org/UsedCondition"/>
-					<span class="editable">{l s='Used'}</span>
-				{elseif $product->condition == 'refurbished'}
-					<link itemprop="itemCondition" href="http://schema.org/RefurbishedCondition"/>
-					<span class="editable">{l s='Refurbished'}</span>
-				{/if}
-			</p>
-			{/if}
 			{if $product->description_short || $packItems|@count > 0}
 				<div id="short_description_block">
 					{if $product->description_short}

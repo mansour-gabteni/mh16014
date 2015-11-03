@@ -4,7 +4,6 @@ global $_MODULE;
 $_MODULE = array();
 $_MODULE['<{blockviewed}ap_office>blockviewed_859e85774d372c6084d62d02324a1cc3'] = 'Блок просмотренных товаров';
 $_MODULE['<{blockviewed}ap_office>blockviewed_eaa362292272519b786c2046ab4b68d2'] = 'Добавляет блок последних просмотренных товаров.';
-$_MODULE['<{blockviewed}ap_office>blockviewed_b15e7271053fe9dd22d80db100179085'] = 'Этот модуль должны быть подключены в колонну и ваша тема не реализует один';
 $_MODULE['<{blockviewed}ap_office>blockviewed_2e57399079951d84b435700493b8a8c1'] = 'Вы должны заполнить поле \'Отображаемые товары\'';
 $_MODULE['<{blockviewed}ap_office>blockviewed_73293a024e644165e9bf48f270af63a0'] = 'Неверный номер.';
 $_MODULE['<{blockviewed}ap_office>blockviewed_f38f5974cdc23279ffe6d203641a8bdf'] = 'Настройки обновляется.';

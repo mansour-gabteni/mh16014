@@ -8,6 +8,7 @@ $_MODULE['<{socialsharing}ap_office>socialsharing_c888438d14855d7d96a2724ee9c306
 $_MODULE['<{socialsharing}ap_office>socialsharing_00d23a76e43b46dae9ec7aa9dcbebb32'] = 'Включено';
 $_MODULE['<{socialsharing}ap_office>socialsharing_b9f5c797ebbf55adccdd8539a65a0241'] = 'Инвалид';
 $_MODULE['<{socialsharing}ap_office>socialsharing_c9cc8cce247e49bae79f15173ce97354'] = 'Экономить';
+$_MODULE['<{socialsharing}ap_office>socialsharing_368140d2caf6b43106964fd615756d1b'] = 'Сравнение товаров';
 $_MODULE['<{socialsharing}ap_office>socialsharing_3746d4aa96f19672260a424d76729dd1'] = 'Чирикать';
 $_MODULE['<{socialsharing}ap_office>socialsharing_5a95a425f74314a96f13a2f136992178'] = 'Доля';
 $_MODULE['<{socialsharing}ap_office>socialsharing_5b2c8bfd1bc974966209b7be1cb51a72'] = 'Google+';

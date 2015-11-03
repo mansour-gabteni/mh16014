@@ -3,12 +3,10 @@
 global $_MODULE;
 $_MODULE = array();
 $_MODULE['<{leomanagewidgets}ap_office>leomanagewidgets_07bb9c22123eb7b90fcb426f1cb9720a'] = 'Лев Управление Widget';
-$_MODULE['<{leomanagewidgets}ap_office>leomanagewidgets_adb5849189804de6730bc9a56d729ef8'] = 'Лев Управление поддержки Виджет Лео рамках Verion 3.0.';
 $_MODULE['<{leomanagewidgets}ap_office>leomanagewidgets_de833efb1f836e9a5eec866d7391ed01'] = 'Сделано Исправить данные.';
 $_MODULE['<{leomanagewidgets}ap_office>leomanagewidgets_20015706a8cbd457cbb6ea3e7d5dc9b3'] = 'Конфигурация обновляется';
 $_MODULE['<{leomanagewidgets}ap_office>leomanagewidgets_7f82c65d548588c8d5412463c182e450'] = 'Конфигурации не может быть обновлена.';
 $_MODULE['<{leomanagewidgets}ap_office>leomanagewidgets_692b3edc66434e719875aa2ecf8fbeaa'] = 'Управление управляющее виджет Page';
-$_MODULE['<{leomanagewidgets}ap_office>leomanagewidgets_204c3f1c7fbd80b0725587c336ad0aa0'] = 'Вы можете создать новый столбец с Свободна Widget. Пожалуйста, обратите внимание при создании столбца в негрупповые или группы';
 $_MODULE['<{leomanagewidgets}ap_office>leomanagewidgets_c9cc8cce247e49bae79f15173ce97354'] = 'Экономить';
 $_MODULE['<{leomanagewidgets}ap_office>leomanagewidgets_1f135dfa271a05c8d80eef87e73693b6'] = 'Закройте все формы';
 $_MODULE['<{leomanagewidgets}ap_office>leomanagewidgets_abde7ca0c2cf096ae5c68f912d7873de'] = 'Развернуть все формы';
@@ -26,7 +24,6 @@ $_MODULE['<{leomanagewidgets}ap_office>tab_f15c1cae7882448b3fb0404682e17e61'] = 
 $_MODULE['<{leomanagewidgets}ap_office>tab_e6a8f76165a3effbf2efe9f9d68063fa'] = 'Вкладка Содержимое';
 $_MODULE['<{leomanagewidgets}ap_office>widget_manucarousel_3426bf3cca12b1f6550fd8bd36171e2f'] = 'Список продуктов,';
 $_MODULE['<{leomanagewidgets}ap_office>widget_manufacture_3426bf3cca12b1f6550fd8bd36171e2f'] = 'Список продуктов,';
-$_MODULE['<{leomanagewidgets}ap_office>widget_newsletter_ffb7e666a70151215b4c55c6268d7d72'] = 'Информационный бюллетень';
 $_MODULE['<{leomanagewidgets}ap_office>widget_newsletter_d8335f4a5d918134bd0bdc47cc487d74'] = 'Введите свой адрес электронной почты';
 $_MODULE['<{leomanagewidgets}ap_office>widget_newsletter_a60852f204ed8028c1c58808b746d115'] = 'Хорошо';
 $_MODULE['<{leomanagewidgets}ap_office>widget_product_03c2e7e41ffc181a4e84080b4710e81e'] = 'Новый';

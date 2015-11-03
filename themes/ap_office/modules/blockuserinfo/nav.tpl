@@ -26,9 +26,6 @@ $(document).ready( function(){
 <div class="header_user_info pull-left">
 	<div data-toggle="dropdown" class="dropdown-toggle"><i class="fa fa-cog"></i><span>{l s='Top links' mod='blockuserinfo'} </span></div>	
 		<ul class="links">
-		<li class="first">
-			<a id="wishlist-total" href="{$link->getModuleLink('blockwishlist', 'mywishlist', array(), true)|addslashes}" title="{l s='My wishlists' mod='blockuserinfo'}">{l s='Wish List' mod='blockuserinfo'}</a>
-		</li>
 		{if $is_logged}
 			<li>
 				<a href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}" title="{l s='View my customer account' mod='blockuserinfo'}" class="account" rel="nofollow">
@@ -48,12 +45,28 @@ $(document).ready( function(){
 
 		
 		<li class="last"><a href="{$link->getPageLink($order_process, true)|escape:'html':'UTF-8'}" title="{l s='Checkout' mod='blockuserinfo'}" class="last">{l s='Checkout' mod='blockuserinfo'}</a></li>
+		 
 		<li>
 			<a href="{$link->getPageLink('products-comparison')|escape:'html':'UTF-8'}" title="{l s='Compare' mod='blockuserinfo'}" rel="nofollow">
 				{l s='Compare' mod='blockuserinfo'}
 			</a>
 		</li>
-		
+		 
+		<li>
+			<a href="{$link->getPageLink('products-comparison')|escape:'html':'UTF-8'}" title="{l s='Compare' mod='blockuserinfo'}" rel="nofollow">
+				{l s='delivery' mod='blockuserinfo'}
+			</a>
+		</li>
+		<li>
+			<a href="{$link->getPageLink('products-comparison')|escape:'html':'UTF-8'}" title="{l s='Compare' mod='blockuserinfo'}" rel="nofollow">
+				{l s='shipself' mod='blockuserinfo'}
+			</a>
+		</li>		
+		<li>
+			<a href="{$link->getPageLink('products-comparison')|escape:'html':'UTF-8'}" title="{l s='Compare' mod='blockuserinfo'}" rel="nofollow">
+				{l s='garanty' mod='blockuserinfo'}
+			</a>
+		</li>		
 		</ul>
 	
 </div>	

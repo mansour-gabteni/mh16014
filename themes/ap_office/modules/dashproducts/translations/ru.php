@@ -2,6 +2,8 @@
 
 global $_MODULE;
 $_MODULE = array();
+$_MODULE['<{dashproducts}ap_office>dashproducts_6655df4af87b2038afd507a33545a56d'] = 'Панель товаров';
+$_MODULE['<{dashproducts}ap_office>dashproducts_4a528e24be5aca96e8a15b256efe1f31'] = 'Добавляет блок с таблицей последних заказов и рейтингом товаров';
 $_MODULE['<{dashproducts}ap_office>dashproducts_2ea989f83006e233627987293f4bde0a'] = 'Имя клиента';
 $_MODULE['<{dashproducts}ap_office>dashproducts_068f80c7519d0528fb08e82137a72131'] = 'Продукты';
 $_MODULE['<{dashproducts}ap_office>dashproducts_96b0141273eabab320119c467cdcaf17'] = 'Итого';
@@ -29,6 +31,8 @@ $_MODULE['<{dashproducts}ap_office>dashproducts_735b8c7f6d50b4c6f818deeab3cdea4a
 $_MODULE['<{dashproducts}ap_office>dashproducts_14d24dddc4c67abf8364b980b2ccd5a2'] = 'Количество \"Самые популярные\" для отображения';
 $_MODULE['<{dashproducts}ap_office>dashproducts_f1ee1eaab342241138d45f35f4d8466a'] = 'Количество \"Самые популярные запросы\", чтобы отобразить';
 $_MODULE['<{dashproducts}ap_office>dashboard_zone_two_3e361ce73ecabd6524af286d55809ed7'] = 'Продукты и продаж';
+$_MODULE['<{dashproducts}ap_office>dashboard_zone_two_f1206f9fadc5ce41694f69129aecac26'] = 'Настроить';
+$_MODULE['<{dashproducts}ap_office>dashboard_zone_two_63a6a88c066880c5ac42394a22803ca6'] = 'Обновить';
 $_MODULE['<{dashproducts}ap_office>dashboard_zone_two_254f642527b45bc260048e30704edb39'] = 'Конфигурация';
 $_MODULE['<{dashproducts}ap_office>dashboard_zone_two_fd3458547ef9c3a8bd0e1e1b4ef2b4dd'] = 'Последние заказы';
 $_MODULE['<{dashproducts}ap_office>dashboard_zone_two_d7b2933ba512ada478c97fa43dd7ebe6'] = 'Лидеры продаж';

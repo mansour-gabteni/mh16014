@@ -2,6 +2,8 @@
 
 global $_MODULE;
 $_MODULE = array();
+$_MODULE['<{dashgoals}ap_office>dashgoals_50698c5b8ffaf2b7dd089898a244a668'] = 'Панель целей/задач';
+$_MODULE['<{dashgoals}ap_office>dashgoals_14089da5dd6132b674d9829b136efff9'] = 'Добавляет блок с прогнозами по вашему магазину.';
 $_MODULE['<{dashgoals}ap_office>dashgoals_86f5978d9b80124f509bdb71786e929e'] = 'Январь';
 $_MODULE['<{dashgoals}ap_office>dashgoals_659e59f062c75f81259d22786d6c44aa'] = 'Февраль';
 $_MODULE['<{dashgoals}ap_office>dashgoals_fa3e5edac607a88d8fd7ecb9d6d67424'] = 'Март';
@@ -28,7 +30,7 @@ $_MODULE['<{dashgoals}ap_office>config_e4c3da18c66c0147144767efeb59198f'] = 'Con
 $_MODULE['<{dashgoals}ap_office>config_8c804960da61b637c548c951652b0cac'] = 'Средняя корзина';
 $_MODULE['<{dashgoals}ap_office>config_11ff9f68afb6b8b5b8eda218d7c83a65'] = 'Продажи';
 $_MODULE['<{dashgoals}ap_office>config_c9cc8cce247e49bae79f15173ce97354'] = 'Save';
-$_MODULE['<{dashgoals}ap_office>dashboard_zone_two_791d8672c108dc2fdf9989373bbf4484'] = 'Your forecast';
+$_MODULE['<{dashgoals}ap_office>dashboard_zone_two_89c1265be62d3ba835a3d963db5956b0'] = 'Прогноз';
 $_MODULE['<{dashgoals}ap_office>dashboard_zone_two_e7935ae6c516d89405ec532359d2d75a'] = 'Трафик';
 $_MODULE['<{dashgoals}ap_office>dashboard_zone_two_3bb1503332637805beddb73a2dd1fe1b'] = 'Конверсия';
 $_MODULE['<{dashgoals}ap_office>dashboard_zone_two_8c804960da61b637c548c951652b0cac'] = 'Average Cart Value';

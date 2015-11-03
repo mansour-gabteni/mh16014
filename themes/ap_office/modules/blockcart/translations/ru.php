@@ -12,6 +12,8 @@ $_MODULE['<{blockcart}ap_office>blockcart_614a8820aa4ac08ce2ee398a41b10778'] = '
 $_MODULE['<{blockcart}ap_office>blockcart_eefd19ecf1f6d94a308dcfc95981bbf9'] = 'Включите режим Ajax для корзине (совместимый с темой по умолчанию).';
 $_MODULE['<{blockcart}ap_office>blockcart_00d23a76e43b46dae9ec7aa9dcbebb32'] = 'Включено';
 $_MODULE['<{blockcart}ap_office>blockcart_b9f5c797ebbf55adccdd8539a65a0241'] = 'Инвалид';
+$_MODULE['<{blockcart}ap_office>blockcart_a87a2d4a45b5a7e682089167c1d5232a'] = 'Показывать перекрестные продажи';
+$_MODULE['<{blockcart}ap_office>blockcart_89e535251f4749df29ad3a288deaa017'] = 'Активация показа кросс-продаж для корзины.';
 $_MODULE['<{blockcart}ap_office>blockcart_ce8bd2479bb85218eb304a9a2903a157'] = 'Продукты для отображения в кросс-продажи';
 $_MODULE['<{blockcart}ap_office>blockcart_5f2effb52d25d197793288dfa94c27ce'] = 'Определите количество продуктов, которые будут отображаться в кросс-продаж блока.';
 $_MODULE['<{blockcart}ap_office>blockcart_c9cc8cce247e49bae79f15173ce97354'] = 'Экономить';
@@ -40,7 +42,6 @@ $_MODULE['<{blockcart}ap_office>crossselling_ef2b66b0b65479e08ff0cce29e19d006'] 
 $_MODULE['<{blockcart}ap_office>crossselling_dd1f775e443ff3b9a89270713580a51b'] = 'Назад';
 $_MODULE['<{blockcart}ap_office>crossselling_4351cfebe4b61d8aa5efa1d020710005'] = 'Вид';
 $_MODULE['<{blockcart}ap_office>crossselling_10ac3d04253ef7e1ddc73e6091c0cd55'] = 'Следующий';
-$_MODULE['<{blockcart}ap_office>blockcart_b75443a19207ed3a3552edda86536857'] = 'Корзина';
 $_MODULE['<{blockcart}ap_office>blockcart_447b7147e84be512208dcc0995d67ebc'] = 'пункт';
 $_MODULE['<{blockcart}ap_office>blockcart_3812464e9c462762cb7f1b1f3a8f0e30'] = 'товар (ов)';
 $_MODULE['<{blockcart}ap_office>blockcart_98b3009e61879600839e1ee486bb3282'] = 'Закрыть окно';

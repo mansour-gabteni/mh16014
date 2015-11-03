@@ -4,7 +4,6 @@ global $_MODULE;
 $_MODULE = array();
 $_MODULE['<{blocknewproducts}ap_office>blocknewproducts_f7c34fc4a48bc683445c1e7bbc245508'] = 'Новые товары';
 $_MODULE['<{blocknewproducts}ap_office>blocknewproducts_d3ee346c7f6560faa13622b6fef26f96'] = 'Показывает блок, показывающий недавно добавленные продукты.';
-$_MODULE['<{blocknewproducts}ap_office>blocknewproducts_b15e7271053fe9dd22d80db100179085'] = 'Этот модуль должны быть подключены в колонну и ваша тема не реализует один';
 $_MODULE['<{blocknewproducts}ap_office>blocknewproducts_1cd777247f2a6ed79534d4ace72d78ce'] = 'Пожалуйста, заполните поле \"товары, представленные\".';
 $_MODULE['<{blocknewproducts}ap_office>blocknewproducts_73293a024e644165e9bf48f270af63a0'] = 'Неверный номер.';
 $_MODULE['<{blocknewproducts}ap_office>blocknewproducts_c888438d14855d7d96a2724ee9c306bd'] = 'Настройки обновлены';
@@ -21,5 +20,5 @@ $_MODULE['<{blocknewproducts}ap_office>blocknewproducts_9ff0635f5737513b1a6f559a
 $_MODULE['<{blocknewproducts}ap_office>blocknewproducts_43340e6cc4e88197d57f8d6d5ea50a46'] = 'Подробнее';
 $_MODULE['<{blocknewproducts}ap_office>blocknewproducts_60efcc704ef1456678f77eb9ee20847b'] = 'Все новые товары';
 $_MODULE['<{blocknewproducts}ap_office>blocknewproducts_18cc24fb12f89c839ab890f8188febe8'] = 'В данный момент нет новинок';
-$_MODULE['<{blocknewproducts}ap_office>tab_a0d0ebc37673b9ea77dd7c1a02160e2d'] = 'Новые поступления';
 $_MODULE['<{blocknewproducts}ap_office>blocknewproducts_home_0af0aac2e9f6bd1d5283eed39fe265cc'] = 'Нет новых товаров на данный момент.';
+$_MODULE['<{blocknewproducts}ap_office>tab_a0d0ebc37673b9ea77dd7c1a02160e2d'] = 'Новые поступления';

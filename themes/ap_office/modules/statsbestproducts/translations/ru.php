@@ -12,6 +12,7 @@ $_MODULE['<{statsbestproducts}ap_office>statsbestproducts_11ff9f68afb6b8b5b8eda2
 $_MODULE['<{statsbestproducts}ap_office>statsbestproducts_25f4b31e8f3baec8b2f266e05af88943'] = 'Количество продается в день';
 $_MODULE['<{statsbestproducts}ap_office>statsbestproducts_7664a37e0cc56aaf39aebf2edbd3f98e'] = 'Просмотрено страниц';
 $_MODULE['<{statsbestproducts}ap_office>statsbestproducts_7bd5825a187064017975513b95d7f7de'] = 'Доступное количество для продажи';
+$_MODULE['<{statsbestproducts}ap_office>statsbestproducts_4d3d769b812b6faa6b76e1a8abaece2d'] = 'Активен';
 $_MODULE['<{statsbestproducts}ap_office>statsbestproducts_950cf49f8ca529be64c924f16fcb5404'] = 'Лучшие товары';
 $_MODULE['<{statsbestproducts}ap_office>statsbestproducts_15429f69e40860368f6e113e4cba5601'] = 'Добавляет список самых продаваемых продуктов в Статистика приборной панели.';
 $_MODULE['<{statsbestproducts}ap_office>statsbestproducts_998e4c5c80f27dec552e99dfed34889a'] = 'CSV Экспорт';

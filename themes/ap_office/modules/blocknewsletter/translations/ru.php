@@ -38,11 +38,12 @@ $_MODULE['<{blocknewsletter}ap_office>blocknewsletter_b37f32d509cf5aabe806b16791
 $_MODULE['<{blocknewsletter}ap_office>blocknewsletter_506e58042922bff5bd753dc612e84f5b'] = 'Код ваучера при регистрации';
 $_MODULE['<{blocknewsletter}ap_office>blocknewsletter_1d612b943b8f4792bff603384a46e5f1'] = 'Оставьте пустым для отключения';
 $_MODULE['<{blocknewsletter}ap_office>blocknewsletter_c9cc8cce247e49bae79f15173ce97354'] = 'Экономить';
+$_MODULE['<{blocknewsletter}ap_office>blocknewsletter_b192ab83a19105bbf1e2d1fab548249a'] = 'Экспорт подписчиков на рассылку';
+$_MODULE['<{blocknewsletter}ap_office>blocknewsletter_c97b56b16c6fda0ef4e93f2135479647'] = 'Создаётся файл .CSV на основе данных подписчиков. Экспортируются только подписчики, не имеющие клиентской учётной записи.';
+$_MODULE['<{blocknewsletter}ap_office>blocknewsletter_dbb392a2dc9b38722e69f6032faea73e'] = 'Экспорт в .CSV';
 $_MODULE['<{blocknewsletter}ap_office>blocknewsletter_f6df4ad6dc4798f26d1f2460eef4f2e9'] = 'Поиск адресов';
 $_MODULE['<{blocknewsletter}ap_office>blocknewsletter_375afa60efcc1d48300bd339cb8154b0'] = 'Email-адрес для поиска';
 $_MODULE['<{blocknewsletter}ap_office>blocknewsletter_e347582d22a4ba3c822de504b23d4704'] = 'Пример: contact@prestashop.com или @prestashop.com';
 $_MODULE['<{blocknewsletter}ap_office>blocknewsletter_13348442cc6a27032d2b4aa28b75a5d3'] = 'Поиск';
 $_MODULE['<{blocknewsletter}ap_office>blocknewsletter_ffb7e666a70151215b4c55c6268d7d72'] = 'Рассылка';
 $_MODULE['<{blocknewsletter}ap_office>blocknewsletter_416f61a2ce16586f8289d41117a2554e'] = 'ваш email';
-$_MODULE['<{blocknewsletter}ap_office>blocknewsletter_a097c5383eef4f41b08b92b69f1c245d'] = 'Подписка на новости';
-$_MODULE['<{blocknewsletter}ap_office>blocknewsletter_4f893ee24950069dd823e083338a456d'] = 'подписываться';
