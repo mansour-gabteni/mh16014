@@ -24,7 +24,7 @@ $(document).ready(function() {
 		e.preventDefault();
 		var phone;
 		phone = $("#phone").val();
-		//phone = phone.replace(" ","")
+
 		if (phone==""||phone.length<18)
 			{
 				alert("Укажите номер телефона!");
