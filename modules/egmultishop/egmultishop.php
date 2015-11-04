@@ -296,8 +296,8 @@ class egmultishop extends Module
 	
 	public function hookDisplayNav($params)
 	{
-		$this->context->controller->addCSS($this->_path.'views/css/egmultishop.css', 'all');
-		$this->context->controller->addJS($this->_path.'views/js/modal.js', 'all');
+		//$this->context->controller->addCSS($this->_path.'views/css/egmultishop.css', 'all');
+		//$this->context->controller->addJS($this->_path.'views/js/modal.js', 'all');
 		
 		$this->getMultishopDateById();
 		
@@ -312,14 +312,14 @@ class egmultishop extends Module
 				'city_link' => $this->context->link->getModuleLink('egmultishop', 'citys')//,
 			));
 	
-			return $this->display(__FILE__, 'egmultishop_top.tpl');
+			return $this->display(__FILE__, 'egmultishop_nav.tpl');
  		}
 	}	
 	
 	public function hookDisplayTop($params)
 	{
-		$this->context->controller->addCSS($this->_path.'views/css/egmultishop.css', 'all');
-		$this->context->controller->addJS($this->_path.'views/js/modal.js', 'all');
+		//$this->context->controller->addCSS($this->_path.'views/css/egmultishop.css', 'all');
+		//$this->context->controller->addJS($this->_path.'views/js/modal.js', 'all');
 		
 		$this->getMultishopDateById();
 		
@@ -342,6 +342,9 @@ class egmultishop extends Module
 	public function hookHeader($params)
 	{
 		//$this->context->controller->addJS($this->_path.'views/js/callme.js', 'all');
+		$this->context->controller->addCSS($this->_path.'views/css/egmultishop.css', 'all');
+		$this->context->controller->addJS($this->_path.'views/js/modal.js', 'all');
+		
 		
 		$this->getMultishopDateById();
  		if ($this->row)

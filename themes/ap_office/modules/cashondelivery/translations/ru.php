@@ -22,3 +22,7 @@ $_MODULE['<{cashondelivery}ap_office>confirmation_0db71da7150c27142eef9d22b843b4
 $_MODULE['<{cashondelivery}ap_office>confirmation_64430ad2835be8ad60c59e7d44e4b0b1'] = 'службе поддержки клиентов';
 $_MODULE['<{cashondelivery}ap_office>payment_b7ada96a0da7ee7fb5371cca0b036d5c'] = 'Оплата наличными при получении';
 $_MODULE['<{cashondelivery}ap_office>payment_536dc7424180872c8c2488ae0286fb53'] = 'Вы оплачиваете покупку при получении (курьеру, или на пункте выдачи)';
+$_MODULE['<{cashondelivery}ap_office>validation_ea9cf7e47ff33b2be14e6dd07cbcefc6'] = 'Доставка';
+$_MODULE['<{cashondelivery}ap_office>validation_0c25b529b4d690c39b0831840d0ed01c'] = 'Общая информация заказа';
+$_MODULE['<{cashondelivery}ap_office>validation_8861c5d3fa54b330d1f60ba50fcc4aab'] = 'Выбранные методы доставки и оплаты';
+$_MODULE['<{cashondelivery}ap_office>validation_0881a11f7af33bc1b43e437391129d66'] = 'Пожалуйста подтвердите заказ нажатием \"Я подтверждаю заказ\"';

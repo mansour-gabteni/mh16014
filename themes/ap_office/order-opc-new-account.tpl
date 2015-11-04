@@ -1,14 +1,15 @@
 <div id="opc_new_account" class="opc-main-block">
 	<div id="opc_new_account-overlay" class="opc-overlay" style="display: none;"></div>
 	<h1 class="page-heading step-num"><span>1</span> {l s='Account'}</h1>
+	<!-- 
 	<form action="{$link->getPageLink('authentication', true, NULL, "back=order-opc")|escape:'html':'UTF-8'}" method="post" id="login_form" class="box form-horizontal">
 		<fieldset>
 			<h3 class="page-subheading"><span>{l s='Already registered?'}</span></h3>
 			<p><a href="{$link->getPageLink('authentication', true)|escape:'html':'UTF-8'}" id="openLoginFormBlock">&raquo; {l s='Click here'}</a></p>
 			<div id="login_form_content" style="display:none;">
-				<!-- Error return block -->
+
 				<div id="opc_login_errors" class="alert alert-danger" style="display:none;"></div>
-				<!-- END Error return block -->
+
 				<div class="form-group">
 					<label class="control-label col-sm-4" for="login_email">{l s='Email address'}</label>
 					<div class="col-sm-6">
@@ -33,6 +34,7 @@
 			</div>
 		</fieldset>
 	</form>
+	-->
 	<form action="{$link->getPageLink('authentication', true)|escape:'html':'UTF-8'}" method="post" id="new_account_form" class="std form-horizontal" autocomplete="on" autofill="on">
 		<fieldset>
         	<div class="box">
@@ -45,7 +47,7 @@
                         </p>
                     </div>
     
-                    <div class="col-xs-12 col-md-6">
+                    <div class="col-xs-12 col-md-6" style="display:none">
                         <p class="title_block">{l s='Create your account today and enjoy:'}</p>
                         <ul class="bullet">
                             <li>- {l s='Personalized and secure access'}</li>
@@ -57,7 +59,7 @@
                         </p>
                     </div>
                 </div>
-				<div id="opc_account_form" class="unvisible">
+				<div id="opc_account_form" class="">
 				{$HOOK_CREATE_ACCOUNT_TOP}
 				<!-- Error return block -->
 				<div id="opc_account_errors" class="alert alert-danger" style="display:none;"></div>
@@ -80,7 +82,7 @@
 						<span class="form_info">{l s='(five characters min.)'}</span>
 					</div>
 				</div>
-				<div class="required clearfix gender-line">
+				<div class="required clearfix gender-line" style="display:none">
 					<label class="control-label col-sm-4">{l s='Title'}</label>
 					<div class="col-sm-6">
 						{foreach from=$genders key=k item=gender}	
@@ -103,7 +105,7 @@
 						<input type="text" class="form-control validate" id="customer_lastname" name="customer_lastname" onblur="$('#lastname').val($(this).val());" data-validate="isName" value="{if isset($guestInformations) && isset($guestInformations.customer_lastname) && $guestInformations.customer_lastname}{$guestInformations.customer_lastname}{/if}" />
 					</div>
 				</div>
-				<div class="select form-group date-select">
+				<div class="select form-group date-select" style="display:none">
 					<label class="control-label col-sm-4">{l s='Date of Birth'}</label>
 					<div class="col-sm-6">
 						<div class="row">
@@ -149,7 +151,7 @@
 					</div>
 				</div>
 				{if isset($newsletter) && $newsletter}
-				<div class="form-group">
+				<div class="form-group" style="display:none">
 					<div class="col-sm-offset-4 col-sm-8">
 						<div class="checkbox">
 							<label for="newsletter">
@@ -250,12 +252,13 @@
 					</div>
 				</div>
 				{elseif $field_name eq "country" || $field_name eq "Country:name"}
-				<div class="required select form-group">
+				<input type="hidden" class="text form-control validate" name="id_country" id="id_country" value="177" />
+				<div class="required select form-group" style="display:none;">
 					<label class="control-label col-sm-4" for="id_country">{l s='Country'} <sup>*</sup></label>
 					<div class="col-sm-6">
 						<select class="form-control" name="id_country" id="id_country" >
 							{foreach from=$countries item=v}
-							<option value="{$v.id_country}"{if (isset($guestInformations) && isset($guestInformations.id_country) && $guestInformations.id_country == $v.id_country) || (!isset($guestInformations) && $sl_country == $v.id_country)} selected="selected"{/if}>{$v.name|escape:'html':'UTF-8'}</option>
+							<option value="{$v.id_country}" selected="selected">{$v.name|escape:'html':'UTF-8'}</option>
 							{/foreach}
 						</select>
 					</div>
@@ -321,7 +324,7 @@
 					</div>
 				</div>
 				<input type="hidden" name="alias" id="alias" value="{l s='My address'}"/>
-				<div class="form-group">
+				<div class="form-group" style="display:none">
 					<div class="col-sm-offset-4 col-sm-8">
 						<div class="checkbox">
 							<label for="invoice_address">

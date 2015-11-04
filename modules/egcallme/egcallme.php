@@ -49,6 +49,7 @@ if (!defined('_PS_VERSION_'))
 	
   	public function hookHeader($params)
 	{
+		$this->context->controller->addJS($this->_path.'views/js/jquery.maskedinput.js', 'all');
 		$this->context->controller->addJS($this->_path.'views/js/callme.js', 'all');
 		$this->context->controller->addCSS($this->_path.'views/css/callme.css', 'all');
 	}

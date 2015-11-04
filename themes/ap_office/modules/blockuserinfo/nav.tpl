@@ -44,27 +44,21 @@ $(document).ready( function(){
 		{/if}
 
 		
-		<li class="last"><a href="{$link->getPageLink($order_process, true)|escape:'html':'UTF-8'}" title="{l s='Checkout' mod='blockuserinfo'}" class="last">{l s='Checkout' mod='blockuserinfo'}</a></li>
+		 
 		 
 		<li>
-			<a href="{$link->getPageLink('products-comparison')|escape:'html':'UTF-8'}" title="{l s='Compare' mod='blockuserinfo'}" rel="nofollow">
-				{l s='Compare' mod='blockuserinfo'}
-			</a>
-		</li>
-		 
-		<li>
-			<a href="{$link->getPageLink('products-comparison')|escape:'html':'UTF-8'}" title="{l s='Compare' mod='blockuserinfo'}" rel="nofollow">
+			<a href="{$link->getPageLink('module-egmultishop-delivery')|escape:'html':'UTF-8'}" title="{l s='delivery' mod='blockuserinfo'}" rel="nofollow">
 				{l s='delivery' mod='blockuserinfo'}
 			</a>
 		</li>
 		<li>
-			<a href="{$link->getPageLink('products-comparison')|escape:'html':'UTF-8'}" title="{l s='Compare' mod='blockuserinfo'}" rel="nofollow">
+			<a href="{$link->getPageLink('module-egmultishop-shipself')|escape:'html':'UTF-8'}" title="{l s='shipself' mod='blockuserinfo'}" rel="nofollow">
 				{l s='shipself' mod='blockuserinfo'}
 			</a>
 		</li>		
 		<li>
-			<a href="{$link->getPageLink('products-comparison')|escape:'html':'UTF-8'}" title="{l s='Compare' mod='blockuserinfo'}" rel="nofollow">
-				{l s='garanty' mod='blockuserinfo'}
+			<a href="{$link->getPageLink('module-egmultishop-contacts')|escape:'html':'UTF-8'}" title="{l s='contacts' mod='blockuserinfo'}" rel="nofollow">
+				{l s='contacts' mod='blockuserinfo'}
 			</a>
 		</li>		
 		</ul>

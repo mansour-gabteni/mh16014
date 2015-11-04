@@ -5,8 +5,7 @@
 	<h3>{l s='order call back' mod='egcallme'}</h3>
 	<div class="clearfix">
 		<label for="phone">{l s='phone' mod='egcallme'}</label>
-			<input class="form-control grey validate" type="text" placeholder="+_(___)___-__-__" id="phone" value="7" maxlength="32">
-			<!-- <input class="form-control grey validate" type="text" id="phone" name="phone" data-validate="isEmail" value=""> -->
+			<input class="form-control grey validate" type="phone" placeholder="+7 (___) xxx-xx-xx" id="phone" name="phone" maxlength="32"  required="">
 	</div>
 	<input type="hidden" id="ajax" name="ajax" value="">
 	<input type="hidden" id="action" name="action" value="new">
@@ -19,6 +18,11 @@
 	</div>
 </fieldset>
 </form>
+<script type="text/javascript">
+
+$("#phone").mask("+7 (999) 999-99-99");
+
+</script>
 {else}
 <span>{l s='submited' mod='egcallme'}</span>
 {/if}

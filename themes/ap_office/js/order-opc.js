@@ -28,9 +28,19 @@ $(document).ready(function(){
 	{
 		if (guestCheckoutEnabled && !isLogged)
 		{
+
 			$('#opc_account_choice').show();
 			$('#opc_account_form, #opc_invoice_address').hide();
 
+			$('.is_customer_param').hide();
+			$('#opc_account_form').slideDown('slow');
+			$('#is_new_customer').val('0');
+			$('#opc_account_choice, #opc_invoice_address').hide();
+			$('#new_account_title').html(txtInstantCheckout);
+			$('#submitAccount').attr({id : 'submitGuestAccount', name : 'submitGuestAccount'});
+			if (typeof bindUniform !=='undefined')
+				bindUniform();			
+			
 			$(document).on('click', '#opc_createAccount',function(e){
 				e.preventDefault();
 				$('.is_customer_param').show();
