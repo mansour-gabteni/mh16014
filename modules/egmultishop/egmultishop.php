@@ -170,15 +170,16 @@ class egmultishop extends Module
 		else 
 			return $row[0]['id_shop_url'];
 	}
-	
-	public function getMultishopPage($ptype, $id_url=null)
+	//@depricated
+	public function getMultishopPage($ptype, $id_url=null, $shop=true)
 	{
 		$page = "";
 		
 		$sql = 'select content, title, meta, keywords
 			from ps_egmultishop_pages
-			where id_shop='.(int)$this->context->shop->id.' 
-			and ptype = \''.$ptype.'\'';
+			where  ptype = \''.$ptype.'\'';
+		if ($shop==true)
+			$sql .= ' and id_shop='.(int)$this->context->shop->id.'';
 		if ($id_url!=null)
 			$sql.=' and id_url='.$id_url;
 		
@@ -187,6 +188,24 @@ class egmultishop extends Module
 		
 		return $row[0]['content'];
 	}
+	
+	public function getMultishopPageDomain($ptype, $domain=null, $shop=true)
+	{
+		$page = "";
+		
+		$sql = 'select content, title, meta, keywords
+			from ps_egmultishop_pages
+			where  ptype = \''.$ptype.'\'';
+		if ($shop==true)
+			$sql .= ' and id_shop='.(int)$this->context->shop->id.'';
+		if ($domain!=null)
+			$sql.=' and trim(sub_domain)=\''.$domain.'\'';
+		
+		if (!$row = Db::getInstance()->executeS($sql))
+			return "";
+		
+		return $row[0]['content'];
+	}	
 	
 	public function replaceCeoWords($page)
 	{
@@ -200,9 +219,18 @@ class egmultishop extends Module
 	{
 		$ceo_word = Meta::getCitysAddr();
 		$host = array('host' => $this->host);
-		$ceo_word = array_merge($ceo_word, $host);
+		list($x1,$x2)=array_reverse(explode('.',$this->host));	
+		$xdomain=$x2.'.'.$x1;	
+		$ceo_word = array_merge($ceo_word, $host,array('ehost' => $xdomain));
 		return Meta::sprintf2($page,$ceo_word);
 	}	
+	
+	public static function getSubdomain()
+	{
+		$d = Tools::getHttpHost();
+		list($x1,$x2,$x3)=array_reverse(explode('.',$d));	
+		return $x3;
+	}
 	
 
 	public function displayForm()
@@ -352,7 +380,8 @@ class egmultishop extends Module
 			$this->smarty->assign(array(
 				'yandex_verify' => (string)$this->row[0]['yandex_verify'],
 				'google_verify' => (string)$this->row[0]['google_verify'],
-				'google_anal' => (string)$this->row[0]['google_anal']
+				'google_anal' => (string)$this->row[0]['google_anal'],
+				'yandex_metr' => (string)$this->row[0]['yandex_metr']
 			));
 	
 			return $this->display(__FILE__, 'egmultishop_header.tpl');
@@ -389,12 +418,12 @@ class egmultishop extends Module
 	
 	public function hookDisplayFooterBottom($params)
 	{
-		
+		$this->hookDisplayFooter($params);	
 	}
 	
 	public function hookDisplayLeftColumn($params)
 	{		
-		
+		/*
 		$this->getMultishopDateById();
 		
 		
@@ -411,6 +440,7 @@ class egmultishop extends Module
 			));		
 			return $this->display(__FILE__, 'egmultishop_fbottom.tpl');
 		}
+		*/
 	}
 
 	public function hookDisplayRightColumn($params)

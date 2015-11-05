@@ -562,17 +562,17 @@ table.table-product-discounts tr th {
   margin-bottom: 7px;
 }
 
-/* availability_statut */
-#availability_statut span#availability_label,
-#availability_date_label {
+/* availability_statut1 */
+#availability_statut1 span#availability_label,
+.availability_date_label {
   display: inline-block;
   width: 125px;
   font-weight: 700;
   font-size: 12px;
   text-align: right;
 }
-.rtl #availability_statut span#availability_label, .rtl
-#availability_date_label {
+.rtl #availability_statut1 span#availability_label, .rtl
+.availability_date_label {
   text-align: left;
 }
 
@@ -582,13 +582,14 @@ table.table-product-discounts tr th {
 }
 
 #availability_value,
+.availability_value2,
 #last_quantities {
-  color: #f2b134;
+  color: green;
   line-height: 18px;
   display: inline-block;
   margin-left: 5px;
 }
-.rtl #availability_value, .rtl
+.rtl #availability_value, .availability_value2, .rtl
 #last_quantities {
   margin-right: 5px;
   margin-left: inherit;
@@ -601,7 +602,7 @@ table.table-product-discounts tr th {
   top: 1px;
 }
 
-#availability_statut,
+#availability_statut1,
 #pQuantityAvailable {
   display: inline-block;
 }
@@ -610,7 +611,7 @@ table.table-product-discounts tr th {
   font-weight: 500;
 }
 
-#availability_statut #availability_value.warning_inline {
+#availability_statut1 #availability_value.warning_inline {
   margin: 0;
 }
 

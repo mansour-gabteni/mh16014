@@ -13,7 +13,7 @@ class egmultishopcontactsModuleFrontController extends ModuleFrontController
 		
 		$id_url = egmultishop::getUrlId($context->shop->id);
 		
-		$page = $egmultishop->getMultishopPage('contacts');
+		$page = $egmultishop->getMultishopPage('contacts', null, false);
 		
 		$page = $egmultishop->replaceCeoContact($page);
 		

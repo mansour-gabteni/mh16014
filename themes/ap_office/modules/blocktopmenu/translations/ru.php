@@ -20,7 +20,7 @@ $_MODULE['<{blocktopmenu}ap_office>blocktopmenu_aef3662e6419ddaaa0a31df70e3b6557
 $_MODULE['<{blocktopmenu}ap_office>blocktopmenu_dd25f68471362f6f5f183d6158d67854'] = 'Изменения применятся ко всем магазинам';
 $_MODULE['<{blocktopmenu}ap_office>blocktopmenu_bf24faeb13210b5a703f3ccef792b000'] = 'Все производители';
 $_MODULE['<{blocktopmenu}ap_office>blocktopmenu_ecf253735ac0cba84a9d2eeff1f1b87c'] = 'Все поставщики';
-$_MODULE['<{blocktopmenu}ap_office>blocktopmenu_944d19a34e5fa333a6a0de27e8c971da'] = 'Меню Топ Ссылка';
+$_MODULE['<{blocktopmenu}ap_office>blocktopmenu_944d19a34e5fa333a6a0de27e8c971da'] = 'Меню';
 $_MODULE['<{blocktopmenu}ap_office>blocktopmenu_eacd852cc1f621763dccbda3f3c15081'] = 'Строка поиска';
 $_MODULE['<{blocktopmenu}ap_office>blocktopmenu_00d23a76e43b46dae9ec7aa9dcbebb32'] = 'Включено';
 $_MODULE['<{blocktopmenu}ap_office>blocktopmenu_b9f5c797ebbf55adccdd8539a65a0241'] = 'Инвалид';

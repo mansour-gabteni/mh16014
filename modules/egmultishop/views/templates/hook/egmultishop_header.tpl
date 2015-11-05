@@ -1,3 +1,6 @@
+{if !empty($yandex_metr)}
+{$yandex_metr}
+{/if}
 {if !empty($yandex_verify)} 
 <meta name="yandex-verification" content="{$yandex_verify|escape:'html':'UTF-8'}" />
 {/if}

@@ -13,10 +13,12 @@ class egmultishopshipselfModuleFrontController extends ModuleFrontController
 		
 		$id_url = egmultishop::getUrlId($context->shop->id);
 		
-		$page = $egmultishop->getMultishopPage('shipself',$id_url);
+		//$page = $egmultishop->getMultishopPage('shipself',$id_url);
+		$sub_domain = egmultishop::getSubdomain();
+		$page = $egmultishop->getMultishopPageDomain('shipself',$sub_domain, false);
 		if ($page =="")
 		{
-			$page = $egmultishop->getMultishopPage('shipself_df');
+			$page = $egmultishop->getMultishopPage('shipself_df', null, false);
 		}	
 
 		$page = $egmultishop->replaceCeoContact($page);
