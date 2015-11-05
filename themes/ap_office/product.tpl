@@ -208,8 +208,8 @@
 				</p>
 
 			{/if}
-			<p id="availability_statut1">
-					<span class="availability_label">{l s='Availability:'}</span>
+			<p>
+					<span class="availability_date_label">{l s='Availability:'}</span>
 					<span class="availability_value2">{l s='in stock:'}</span>
 			</p>
 			<p>
@@ -219,6 +219,7 @@
 
 
 				{hook h="displayProductDeliveryTime" product=$product}
+
 			{if $PS_STOCK_MANAGEMENT}
 				<p class="warning_inline" id="last_quantities"{if ($product->quantity > $last_qties || $product->quantity <= 0) || $allow_oosp || !$product->available_for_order || $PS_CATALOG_MODE} style="display: none"{/if} >{l s='Warning: Last items in stock!'}</p>
 			{/if}
