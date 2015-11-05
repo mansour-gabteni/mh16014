@@ -86,7 +86,8 @@ class egcallmeajaxModuleFrontController extends ModuleFrontController
 		// notify by sms
 		
 		$sms = Configuration::get('EGCALLME_SMS_REQUEST');
-
+		
+		
 		if(trim($sms)!="" && (bool)Configuration::get('EGCALLME_SMS_NOYIFY') )
 		{		
 			$sms = Meta::sprintf2($sms, array(
@@ -95,8 +96,8 @@ class egcallmeajaxModuleFrontController extends ModuleFrontController
 					'message' => substr($message, 0, 20)
 					));
 
-
-			$result = file_get_contents($sms);
+			if ($_SERVER['DOCUMENT_ROOT']!='T:/home/matras-house.ru/www')
+				$result = file_get_contents($sms);
 		}
 		
 	}

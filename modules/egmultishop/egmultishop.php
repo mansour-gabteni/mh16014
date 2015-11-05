@@ -517,8 +517,9 @@ class egmultishop extends Module
 				(int)$order->id_shop
 			);		
 		// notify to me
-		if (Configuration::get('BLOCK_EGMULTSOP_SNON'))
-			$result = file_get_contents("http://lk.open-sms.ru/multi.php?login=matras_house1&password=sms23Atdhfkz&message=new order ".$total." RUR in ".$host."&phones=79601652555&originator=DomMatrasov");	
+		if ($_SERVER['DOCUMENT_ROOT']!='T:/home/matras-house.ru/www')
+			if (Configuration::get('BLOCK_EGMULTSOP_SNON'))
+				$result = file_get_contents("http://lk.open-sms.ru/multi.php?login=matras_house1&password=sms23Atdhfkz&message=new order ".$total." RUR in ".$host."&phones=79601652555&originator=DomMatrasov");	
 		// client notify	
 	}
 	

@@ -27,10 +27,13 @@ class egmultishopcitysModuleFrontController extends ModuleFrontController
 
 		if (!$citys = Db::getInstance()->executeS($sql))
 			return false;
-		
+		$host = "http://".Tools::getHttpHost();
+		$current_page = str_replace($host,"", $_SERVER["HTTP_REFERER"]);
+			
 		$this->context->smarty->assign(array(
 					'citys' => $citys,
-					'host'	=> Tools::getHttpHost()
+					'host'	=> $host,
+					'current_page' => $current_page
 				));
 		
 		$this->smartyOutputContent($this->getTemplatePath('citys.tpl'));
