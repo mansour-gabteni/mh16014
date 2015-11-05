@@ -283,6 +283,13 @@ class egmultishop extends Module
     	
     	return $helper->generateForm($fields_form1);
 	}
+	public static function isLiveSite()
+	{
+		if ($_SERVER['DOCUMENT_ROOT']!='T:/home/matras-house.ru/www')
+			return TRUE;
+		else
+			return false;
+	}
 	
 	public static function isMarketingSite()
 	{
@@ -373,19 +380,20 @@ class egmultishop extends Module
 		$this->context->controller->addCSS($this->_path.'views/css/egmultishop.css', 'all');
 		$this->context->controller->addJS($this->_path.'views/js/modal.js', 'all');
 		
+		if (egmultishop::isLiveSite()){
+			$this->getMultishopDateById();
+	 		if ($this->row)
+	 		{
+				$this->smarty->assign(array(
+					'yandex_verify' => (string)$this->row[0]['yandex_verify'],
+					'google_verify' => (string)$this->row[0]['google_verify'],
+					'google_anal' => (string)$this->row[0]['google_anal'],
+					'yandex_metr' => (string)$this->row[0]['yandex_metr']
+				));
 		
-		$this->getMultishopDateById();
- 		if ($this->row)
- 		{
-			$this->smarty->assign(array(
-				'yandex_verify' => (string)$this->row[0]['yandex_verify'],
-				'google_verify' => (string)$this->row[0]['google_verify'],
-				'google_anal' => (string)$this->row[0]['google_anal'],
-				'yandex_metr' => (string)$this->row[0]['yandex_metr']
-			));
-	
-			return $this->display(__FILE__, 'egmultishop_header.tpl');
- 		}
+				return $this->display(__FILE__, 'egmultishop_header.tpl');
+	 		}
+		}
 	}
 	
 
@@ -517,7 +525,7 @@ class egmultishop extends Module
 				(int)$order->id_shop
 			);		
 		// notify to me
-		if ($_SERVER['DOCUMENT_ROOT']!='T:/home/matras-house.ru/www')
+		if (egmultishop::isLiveSite())
 			if (Configuration::get('BLOCK_EGMULTSOP_SNON'))
 				$result = file_get_contents("http://lk.open-sms.ru/multi.php?login=matras_house1&password=sms23Atdhfkz&message=new order ".$total." RUR in ".$host."&phones=79601652555&originator=DomMatrasov");	
 		// client notify	
