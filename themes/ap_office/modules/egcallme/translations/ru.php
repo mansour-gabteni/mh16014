@@ -10,5 +10,7 @@ $_MODULE['<{egcallme}ap_office>ajax_f7a42fe7211f98ac7a60a285ac3a9e87'] = 'Тел
 $_MODULE['<{egcallme}ap_office>ajax_78e731027d8fd50ed642340b7c9a63b3'] = 'Сообщение';
 $_MODULE['<{egcallme}ap_office>ajax_5829a954bd245531339dc10a081abff5'] = 'Перезвонить мне';
 $_MODULE['<{egcallme}ap_office>ajax_269a566bd9f8bdf13b111547a6d74718'] = 'Запрос на обратный звонок отправлен!';
+$_MODULE['<{egcallme}ap_office>ajax_71d3e8b42792b5e476804f4f7fbddc58'] = 'Спасибо за заказ!';
+$_MODULE['<{egcallme}ap_office>ajax_469c670fe3844b1f67d8390aadc33b31'] = 'Менеджер свяжется с вами в ближайшее время! ';
 $_MODULE['<{egcallme}ap_office>callme_8069a762fc04f1fc29bca4c47c4cee21'] = 'Заказать обратный звонок';
 $_MODULE['<{egcallme}ap_office>callme_nav_8069a762fc04f1fc29bca4c47c4cee21'] = 'Заказать обратный звонок';

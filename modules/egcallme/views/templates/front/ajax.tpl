@@ -23,6 +23,11 @@
 $("#phone").mask("+7 (999) 999-99-99");
 
 </script>
-{else}
+{/if}
+{if $view=="mess"}
 <span>{l s='submited' mod='egcallme'}</span>
+{/if}
+{if $view=="thanks"}
+<div>{l s='thanks' mod='egcallme'}</div>
+<div>{l s='whill meet you' mod='egcallme'}</div>
 {/if}

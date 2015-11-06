@@ -15,11 +15,16 @@ class egcallmeajaxModuleFrontController extends ModuleFrontController
 			$view = 'form';
 		else 
 		{	
-			$this->newMessage(
-							Tools::getValue('phone'),
-							Tools::getValue('message')
-			);
-			$view = 'mess';
+			if ($action == "oneworder")
+			{
+				$this->oorder();
+				$view = 'thanks';
+			}
+			if ($action == "new")
+			{
+				$this->newMessage();
+				$view = 'mess';
+			}
 		}
 		
 		
@@ -30,6 +35,11 @@ class egcallmeajaxModuleFrontController extends ModuleFrontController
 				)); 
 
 		$this->smartyOutputContent($this->getTemplatePath('ajax.tpl'));
+		
+	}
+	
+	public function oorder()
+	{
 		
 	}
 

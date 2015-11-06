@@ -46,6 +46,37 @@ $(document).ready(function() {
 		    });	
 		}
 	});	
+	
+	$(document).on('click', '#oorder', function(e){
+		e.preventDefault();
+		var phone;
+		phone = $("#ophone").val();
+		pname = $("#oname").val();
+		
+		if (pname==""||phone.length<3)
+		{
+			alert("Укажите Ваше имя!");
+			return false;
+		}
+		
+		if (phone==""||phone.length<18)
+		{
+			alert("Укажите номер телефона!");
+			return false;
+		}
+
+			//$("#oorder").prop( "disabled", true );
+	    
+		    $.ajax({
+		         type: 'POST',
+		         url: $("#ourlaction").val(),
+		         data: $("#buy_block").serialize(),
+		         success: function(data) {
+		        	 $("#wdata").html(data);
+		         }
+		    });	
+		
+	});		
 });
 
 

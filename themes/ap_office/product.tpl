@@ -257,18 +257,22 @@
 					<div class="content_prices border-box clearfix">
 						{if $product->show_price && !isset($restricted_country_mode) && !$PS_CATALOG_MODE}
 							<!-- prices -->
-<div style="float:right; padding:0px 40px 20px 40px; marging: 0px 0px 0px 5px; background:#F9F8F8;">							
+<div class="col-xs-12 col-sm-6 col-md-6" style="float:right; padding:0px 40px 20px 40px; marging: 0px 0px 0px 5px; background:#F9F8F8;height:100%;" >							
 <section class="">
 
-	<form action="/contact-us" method="post" class="contact-form-box" enctype="multipart/form-data">
+
 		<fieldset>
         <h3 class=""><span>{l s='fast order'}</span></h3>
+        <div id="wdata">
         <div class="clearfix row">
             <div class="">
                 <p class="form-group">
                     <label for="oname">{l s='fast name'}</label>
                     <input class="form-control grey validate" type="text" id="oname" name="oname" data-validate="isName" value="">
                 </p>
+                <input type="hidden" id="ajax" name="ajax" value="">
+                <input type="hidden" id="action" name="action" value="oneworder">
+                <input type="hidden" id="ourlaction" name="ourlaction" value="{$link->getModuleLink('egcallme', 'ajax')|escape:'html':'UTF-8'}">
 				<div class="form-group selector1">
 						<label>{l s='fast phone'}</label>
 						<input class="form-control grey" type="phone" placeholder="+7 (___) xxx-xx-xx" name="ophone" id="ophone" value="">
@@ -278,13 +282,14 @@
 
         </div>
         <div class="submit">
-            <button type="submit" name="submitMessage" id="submitMessage" class="button btn btn-outline button-medium"><span>{l s='fast by'}</span></button>
+            <button type="submit" name="oorder" id="oorder" class="button btn btn-outline button-medium"><span>{l s='fast by'}</span></button>
+		</div>
 		</div>
 	</fieldset>
 <script type="text/javascript">
 $("#ophone").mask("+7 (999) 999-99-99");
 </script>	
-</form>
+
 </section>		
 </div>					
 						{if isset($groups)}
