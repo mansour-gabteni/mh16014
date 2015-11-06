@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 
 class egcallmeajaxModuleFrontController extends ModuleFrontController
@@ -22,7 +22,7 @@ class egcallmeajaxModuleFrontController extends ModuleFrontController
 			}
 			if ($action == "new")
 			{
-				$this->newMessage();
+				$this->callBack();
 				$view = 'mess';
 			}
 		}
@@ -40,25 +40,69 @@ class egcallmeajaxModuleFrontController extends ModuleFrontController
 	
 	public function oorder()
 	{
+		$phone = Tools::getValue('ophone', '-');
+		$name = Tools::getValue('oname', '-');
+		$message = Tools::getValue('oprod', 'NaN');
 		
-	}
+		$this->newMessage("FastOrder", $phone, $name, $message, "smscallme_order");
+		// если города основные
+		if(egmultishop::isMarketingSite())
+		{
+		// посылаем смс мпаибо за заказ
 
-	public function newMessage()
+	    $sms_message = "Заказ %message принят! ожидайте звонка. %host";
+		$sms_message = Meta::sprintf2($sms_message, array(
+				'host' => $host,
+				'type' => $type,
+				'phone' => $phone,
+				'cname' => $cname,
+				'message' => $message
+				));		
+		
+		$this->sendSMS($sms_message,$phone);
+		
+		}
+	}
+	
+	public function callBack()
 	{
 		$phone = Tools::getValue('phone', '-');
 		$message = Tools::getValue('message', '-');
-		$fname = Tools::getValue('fname', '-');
-		$lname = Tools::getValue('lname', '-');
+				
+		$this->newMessage("CallBack", $phone, "", $message, "smscallme_notify");
+		
+		// если города основные
+		if(egmultishop::isMarketingSite())
+		{
+		// посылаем смс мпаибо за заказ
 		$host = Tools::getHttpHost();
+	    $sms_message = "Обращение принято! Ожидайте звонка.";//Узнайте о предложениях %host/alcii";
+		$sms_message = Meta::sprintf2($sms_message, array(
+				'host' => $host,
+				'type' => $type,
+				'phone' => $phone,
+				'cname' => $cname,
+				'message' => $message
+				));		
+		
+		$this->sendSMS($sms_message,$phone);
+		
+		}
+	}
+
+	private function newMessage($type, $phone, $cname, $message,$email_theme)
+	{
+
+		$host = Tools::getHttpHost();
+		$phone = "+".preg_replace('#\D+#', '', $phone);
 		// insert to DB
 		$query = "insert into "._DB_PREFIX_.egcallme::INSTALL_SQL_BD1NAME." 
-		(`host`, `phone`, `fname`, `lname`, `message`, `processed`) 
-		values ('".$host."', '".$phone."',
-			'".$fname."', '".$lname."', '".$message."', 'false')";
+		(`type`,`host`, `phone`, `cname`, `message`, `processed`) 
+		values ('".$type."','".$host."', '".$phone."',
+			'".$cname."', '".$message."', 'false')";
 		Db::getInstance()->execute(trim($query));
 		
 		// notify by email
-		
 		$email_param = Configuration::get('EGCALLME_EMAIL_NOTIFY');
 		if (trim($email_param)!="")
 		{
@@ -67,8 +111,7 @@ class egcallmeajaxModuleFrontController extends ModuleFrontController
 			$param = array(
 				'{phone}'	=> $phone,
 			 	'{message}'	=> $message,
-				'{fname}'	=> $fname,
-				'{lname}'	=> $lname,
+				'{fname}'	=> $cname,
 				'{shop_url}'	=> $host
 			);
 			
@@ -78,11 +121,11 @@ class egcallmeajaxModuleFrontController extends ModuleFrontController
 			{
 				Mail::Send(
 					(int)$context->language->id,
-					'smscallme_notify',
-					Mail::l('call back', " ".$phone." ".$host),
+					$email_theme,
+					Mail::l($type, " ".$phone." ".$host),
 					$param,
 					$email,
-					$fname.' '.$lname,
+					$cname,
 					null,
 					null,
 					null,
@@ -93,25 +136,40 @@ class egcallmeajaxModuleFrontController extends ModuleFrontController
 				);
 			}
 		}
-		// notify by sms
+
+		// sms notification
 		
+		
+		$sms_message = "%type %host %phone %cname %message";
+		$sms_message = Meta::sprintf2($sms_message, array(
+				'host' => $host,
+				'type' => $type,
+				'phone' => $phone,
+				'cname' => $cname,
+				'message' => $message
+				));		
+		
+		$this->sendSMS($sms_message,"79601652555");
+
+	}
+	
+	private function sendSMS($message, $phone)
+	{
 		$sms = Configuration::get('EGCALLME_SMS_REQUEST');
-		
-		
+		$phone = preg_replace('#\D+#', '', $phone);
+		$sms = Meta::sprintf2($sms, array(
+					'sendto' => $phone,
+					'message' => substr($message, 0, 70)
+				));
+					
 		if(trim($sms)!="" && (bool)Configuration::get('EGCALLME_SMS_NOYIFY') )
 		{		
-			$sms = Meta::sprintf2($sms, array(
-					'host' => $host,
-					'phone' => $phone,
-					'message' => substr($message, 0, 20)
-					));
-
-			if ($_SERVER['DOCUMENT_ROOT']!='T:/home/matras-house.ru/www')
+			if (substr_count('home/matras-house.ru/www', $_SERVER['DOCUMENT_ROOT']))
+			{				
 				$result = file_get_contents($sms);
+			}
 		}
-		
 	}
-
 }
 
 

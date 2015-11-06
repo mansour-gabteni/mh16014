@@ -50,8 +50,10 @@ $(document).ready(function() {
 	$(document).on('click', '#oorder', function(e){
 		e.preventDefault();
 		var phone;
+		var product;
 		phone = $("#ophone").val();
 		pname = $("#oname").val();
+		product = $('h1[itemprop="name"]').text()+" "+$("#group_1 option:selected").text()+" "+$("#our_price_display").text();
 		
 		if (pname==""||phone.length<3)
 		{
@@ -66,7 +68,9 @@ $(document).ready(function() {
 		}
 
 			//$("#oorder").prop( "disabled", true );
-	    
+
+		$("#oprod").val(product);
+		
 		    $.ajax({
 		         type: 'POST',
 		         url: $("#ourlaction").val(),

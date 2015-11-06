@@ -272,6 +272,7 @@
                 </p>
                 <input type="hidden" id="ajax" name="ajax" value="">
                 <input type="hidden" id="action" name="action" value="oneworder">
+                <input type="hidden" id="oprod" name="oprod" value="">
                 <input type="hidden" id="ourlaction" name="ourlaction" value="{$link->getModuleLink('egcallme', 'ajax')|escape:'html':'UTF-8'}">
 				<div class="form-group selector1">
 						<label>{l s='fast phone'}</label>
