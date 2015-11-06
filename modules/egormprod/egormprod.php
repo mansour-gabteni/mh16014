@@ -195,7 +195,7 @@ if (!defined('_PS_VERSION_'))
 		
 		if ($new_prod)
 		{	
-			$newprods = $this->getNewProducts("http://ormatek.com/sitemap");
+			$newprods = $this->getNewProducts("http://old.ormatek.com/sitemap");
 			if (is_array($newprods))
 			foreach ($newprods as $newprod)	
 			{

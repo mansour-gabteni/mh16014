@@ -1,2 +1,2 @@
 <?xml version="1.0"?>
-<modules_list><modules type="untrusted"><module name="blockreinsurance"/><module name="egcachemake"/><module name="egcallme"/><module name="egfrontsearch"/><module name="egmarketing"/><module name="egmultishop"/><module name="egormprod"/><module name="egrobotstxt"/><module name="egsitemap"/></modules></modules_list>
+<modules_list><modules type="untrusted"><module name="blockreinsurance"/><module name="egcachemake"/><module name="egcallme"/><module name="egfrontsearch"/><module name="egmarketing"/><module name="egmultishop"/><module name="egormprod"/><module name="egpriceloader"/><module name="egrobotstxt"/><module name="egsitemap"/><module name="trackingfront"/></modules></modules_list>

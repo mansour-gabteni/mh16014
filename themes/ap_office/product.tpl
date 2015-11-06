@@ -231,7 +231,7 @@
 			
 			
 			<!-- pb-right-column-->
-		<div class="pb-right-column border-box">
+		<div class="pb-right-column">
 			{if ($product->show_price && !isset($restricted_country_mode)) || isset($groups) || $product->reference || (isset($HOOK_PRODUCT_ACTIONS) && $HOOK_PRODUCT_ACTIONS)}
 			<!-- add to cart form-->
 			<form id="buy_block"{if $PS_CATALOG_MODE && !isset($groups) && $product->quantity > 0} class="hidden"{/if} action="{$link->getPageLink('cart')|escape:'html':'UTF-8'}" method="post">
@@ -245,31 +245,52 @@
 				<div class="box-info-product">
 					
 					<div class="product_attributes clearfix">
-						<!-- quantity wanted -->
-						{if !$PS_CATALOG_MODE}
-						<div class="box-quantity">
-							<p id="quantity_wanted_p"{if (!$allow_oosp && $product->quantity <= 0) || !$product->available_for_order || $PS_CATALOG_MODE} style="display: none;"{/if}>
-								<input type="text" name="qty" id="quantity_wanted" class="text form-control" value="{if isset($quantityBackup)}{$quantityBackup|intval}{else}{if $product->minimal_quantity > 1}{$product->minimal_quantity}{else}1{/if}{/if}" />
-								<a href="#" data-field-qty="qty" class="btn button-minus product_quantity_down">
-									<span><i class="fa fa-minus"></i></span>
-								</a>
-								<a href="#" data-field-qty="qty" class="btn button-plus product_quantity_up ">
-									<span><i class="fa fa-plus"></i></span>
-								</a>
-								<span class="clearfix"></span>
-							</p>
-						</div>
-						{/if}
 						
 						<!-- minimal quantity wanted -->
 						<p id="minimal_quantity_wanted_p"{if $product->minimal_quantity <= 1 || !$product->available_for_order || $PS_CATALOG_MODE} style="display: none;"{/if}>
 							{l s='This product is not sold individually. You must select at least'} <b id="minimal_quantity_label">{$product->minimal_quantity}</b> {l s='quantity for this product.'}
 						</p>
 						
+
+					</div> <!-- end product_attributes -->
+					<!-- end content_prices -->
+					<div class="content_prices border-box clearfix">
+						{if $product->show_price && !isset($restricted_country_mode) && !$PS_CATALOG_MODE}
+							<!-- prices -->
+<div style="float:right; padding:0px 40px 20px 40px; marging: 0px 0px 0px 5px; background:#F9F8F8;">							
+<section class="">
+
+	<form action="/contact-us" method="post" class="contact-form-box" enctype="multipart/form-data">
+		<fieldset>
+        <h3 class=""><span>{l s='fast order'}</span></h3>
+        <div class="clearfix row">
+            <div class="">
+                <p class="form-group">
+                    <label for="oname">{l s='fast name'}</label>
+                    <input class="form-control grey validate" type="text" id="oname" name="oname" data-validate="isName" value="">
+                </p>
+				<div class="form-group selector1">
+						<label>{l s='fast phone'}</label>
+						<input class="form-control grey" type="phone" placeholder="+7 (___) xxx-xx-xx" name="ophone" id="ophone" value="">
+				</div>
+
+            </div>
+
+        </div>
+        <div class="submit">
+            <button type="submit" name="submitMessage" id="submitMessage" class="button btn btn-outline button-medium"><span>{l s='fast by'}</span></button>
+		</div>
+	</fieldset>
+<script type="text/javascript">
+$("#ophone").mask("+7 (999) 999-99-99");
+</script>	
+</form>
+</section>		
+</div>					
 						{if isset($groups)}
 							<!-- attributes -->
 							<div id="attributes">
-								<div class="clearfix"></div>
+								<!--  <div class="clearfix"></div> -->
 								{foreach from=$groups key=id_attribute_group item=group}
 									{if $group.attributes|@count}
 										<fieldset class="attribute_fieldset">
@@ -316,11 +337,6 @@
 								{/foreach}
 							</div> <!-- end attributes -->
 						{/if}
-					</div> <!-- end product_attributes -->
-					<!-- end content_prices -->
-					<div class="content_prices border-box clearfix">
-						{if $product->show_price && !isset($restricted_country_mode) && !$PS_CATALOG_MODE}
-							<!-- prices -->
 							<div class="price">
 								<p id="old_price"{if (!$product->specificPrice || !$product->specificPrice.reduction) && $group_reduction == 0} class="hidden"{/if}>
 									{if $priceDisplay >= 0 && $priceDisplay <= 2}
@@ -360,7 +376,8 @@
 										{l s='tax excl.'}
 									</span>
 								{/if}
-							</div> <!-- end prices -->
+							</div>
+							 <!-- end prices -->
 							{if $packItems|@count && $productPrice < $product->getNoPackPrice()}
 								<p class="pack_price">{l s='Instead of'} <span style="text-decoration: line-through;">{convertPrice price=$product->getNoPackPrice()}</span></p>
 							{/if}

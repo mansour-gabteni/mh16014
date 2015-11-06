@@ -28,7 +28,7 @@
 <h1 class="page-heading">
     {l s='Sitemap'}
 </h1>
-<div id="sitemap_content" class="row">
+<div id="sitemap_content" class="row" style="display:none;">
 	<div class="col-xs-12 col-sm-6">
 		<div class="sitemap_block box">
     		<h3 class="page-subheading">{l s='Our offers'}</h3>
