@@ -1,4 +1,4 @@
-{if $view=="form"}
+﻿{if $view=="form"}
 <div id="callmemess"></div>
 <form id="callmeform" name="callmeform" action="#" method="post">
 <fieldset>

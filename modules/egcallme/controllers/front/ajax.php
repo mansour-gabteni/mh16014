@@ -46,11 +46,12 @@ class egcallmeajaxModuleFrontController extends ModuleFrontController
 		
 		$this->newMessage("FastOrder", $phone, $name, $message, "smscallme_order");
 		// если города основные
+		
 		if(egmultishop::isMarketingSite())
 		{
 		// посылаем смс мпаибо за заказ
 
-	    $sms_message = "Заказ %message принят! ожидайте звонка. %host";
+	    $sms_message = Configuration::get('EGCALLME_MESS_02');
 		$sms_message = Meta::sprintf2($sms_message, array(
 				'host' => $host,
 				'type' => $type,
@@ -62,6 +63,7 @@ class egcallmeajaxModuleFrontController extends ModuleFrontController
 		$this->sendSMS($sms_message,$phone);
 		
 		}
+		
 	}
 	
 	public function callBack()
@@ -72,11 +74,13 @@ class egcallmeajaxModuleFrontController extends ModuleFrontController
 		$this->newMessage("CallBack", $phone, "", $message, "smscallme_notify");
 		
 		// если города основные
+		
 		if(egmultishop::isMarketingSite())
 		{
 		// посылаем смс мпаибо за заказ
 		$host = Tools::getHttpHost();
-	    $sms_message = "Обращение принято! Ожидайте звонка.";//Узнайте о предложениях %host/alcii";
+		
+	    $sms_message = Configuration::get('EGCALLME_MESS_01');//"Обращение принято! Ожидайте звонка. Узнайте о предложениях %host/alcii";
 		$sms_message = Meta::sprintf2($sms_message, array(
 				'host' => $host,
 				'type' => $type,
@@ -88,6 +92,7 @@ class egcallmeajaxModuleFrontController extends ModuleFrontController
 		$this->sendSMS($sms_message,$phone);
 		
 		}
+		
 	}
 
 	private function newMessage($type, $phone, $cname, $message,$email_theme)
