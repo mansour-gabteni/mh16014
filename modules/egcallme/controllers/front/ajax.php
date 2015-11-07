@@ -60,7 +60,7 @@ class egcallmeajaxModuleFrontController extends ModuleFrontController
 				'message' => $message
 				));		
 		
-		$this->sendSMS($sms_message,$phone);
+		$this->sendSMS($sms_message,$phone, 2);
 		
 		}
 		
@@ -89,7 +89,7 @@ class egcallmeajaxModuleFrontController extends ModuleFrontController
 				'message' => $message
 				));		
 		
-		$this->sendSMS($sms_message,$phone);
+		$this->sendSMS($sms_message,$phone,2);
 		
 		}
 		
@@ -154,17 +154,17 @@ class egcallmeajaxModuleFrontController extends ModuleFrontController
 				'message' => $message
 				));		
 		
-		$this->sendSMS($sms_message,"79601652555");
+		$this->sendSMS($sms_message,"79601652555",2);
 
 	}
 	
-	private function sendSMS($message, $phone)
+	private function sendSMS($message, $phone, $max_sms = 1)
 	{
 		$sms = Configuration::get('EGCALLME_SMS_REQUEST');
 		$phone = preg_replace('#\D+#', '', $phone);
 		$sms = Meta::sprintf2($sms, array(
 					'sendto' => $phone,
-					'message' => substr($message, 0, 70)
+					'message' => substr($message, 0, 70*$max_sms)
 				));
 					
 		if(trim($sms)!="" && (bool)Configuration::get('EGCALLME_SMS_NOYIFY') )
