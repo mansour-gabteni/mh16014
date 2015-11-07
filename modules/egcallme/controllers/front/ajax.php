@@ -164,8 +164,8 @@ class egcallmeajaxModuleFrontController extends ModuleFrontController
 					
 		if(trim($sms)!="" && (bool)Configuration::get('EGCALLME_SMS_NOYIFY') )
 		{		
-			if (substr_count('home/matras-house.ru/www', $_SERVER['DOCUMENT_ROOT']))
-			{				
+			if (!substr_count($_SERVER['DOCUMENT_ROOT'], "home/matras-house.ru/www"))
+			{			
 				$result = file_get_contents($sms);
 			}
 		}

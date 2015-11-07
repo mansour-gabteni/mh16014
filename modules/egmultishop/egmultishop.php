@@ -285,7 +285,7 @@ class egmultishop extends Module
 	}
 	public static function isLiveSite()
 	{
-		if (substr_count('home/matras-house.ru/www', $_SERVER['DOCUMENT_ROOT']))
+		if (!substr_count($_SERVER['DOCUMENT_ROOT'], "home/matras-house.ru/www"))
 			return TRUE;
 		else
 			return false;
