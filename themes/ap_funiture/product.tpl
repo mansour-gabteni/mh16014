@@ -277,7 +277,7 @@
         </div>
         <div class="submit">
             <button type="submit" name="oorder" id="oorder" class="button btn btn-outline button-medium"><span>{l s='fast by'}</span></button>
-		</div>
+		</div> 
 		</div>
 	</fieldset>
 <script type="text/javascript">
