@@ -250,6 +250,42 @@
 					<input type="hidden" name="add" value="1" />
 					<input type="hidden" name="id_product_attribute" id="idCombination" value="" />
 				</p>
+<div class="col-xs-12 col-sm-6 col-md-6" style="float:right; padding:0px 40px 20px 40px; marging: 0px 0px 0px 5px; background:#F9F8F8;height:100%;" >							
+<section class="">
+
+
+		<fieldset>
+        <h3 class=""><span>{l s='fast order'}</span></h3>
+        <div id="wdata">
+        <div class="clearfix row">
+            <div class="">
+                <p class="form-group">
+                    <label for="oname">{l s='fast name'}</label>
+                    <input class="form-control grey validate" type="text" id="oname" name="oname" data-validate="isName" value="">
+                </p>
+                <input type="hidden" id="ajax" name="ajax" value="">
+                <input type="hidden" id="action" name="action" value="oneworder">
+                <input type="hidden" id="oprod" name="oprod" value="">
+                <input type="hidden" id="ourlaction" name="ourlaction" value="{$link->getModuleLink('egcallme', 'ajax')|escape:'html':'UTF-8'}">
+				<div class="form-group selector1">
+						<label>{l s='fast phone'}</label>
+						<input class="form-control grey" type="phone" placeholder="+7 (___) xxx-xx-xx" name="ophone" id="ophone" value="">
+				</div>
+
+            </div>
+
+        </div>
+        <div class="submit">
+            <button type="submit" name="oorder" id="oorder" class="button btn btn-outline button-medium"><span>{l s='fast by'}</span></button>
+		</div>
+		</div>
+	</fieldset>
+<script type="text/javascript">
+$("#ophone").mask("+7 (999) 999-99-99");
+</script>	
+
+</section>		
+</div>				
 				<div class="box-info-product">
 					<div class="content_prices clearfix">
 						{if $product->show_price && !isset($restricted_country_mode) && !$PS_CATALOG_MODE}
@@ -284,40 +320,13 @@
 										<meta itemprop="priceCurrency" content="{$currency->iso_code}" />
 										{hook h="displayProductPriceBlock" product=$product type="price"}
 									{/if}
-								{/strip}</p>								
-							</div> <!-- end prices -->
-							<p id="reduction_amount" {if !$product->specificPrice || $product->specificPrice.reduction_type != 'amount' || $product->specificPrice.reduction|floatval ==0} style="display:none"{/if}>{strip}
-								<span id="reduction_amount_display">
-								{if $product->specificPrice && $product->specificPrice.reduction_type == 'amount' && $product->specificPrice.reduction|intval !=0}
-									-{convertPrice price=$productPriceWithoutReduction-$productPrice|floatval}
-								{/if}
-								</span>
-							{/strip}</p>
-							{if $packItems|@count && $productPrice < $product->getNoPackPrice()}
-								<p class="pack_price">{l s='Instead of'} <span style="text-decoration: line-through;">{convertPrice price=$product->getNoPackPrice()}</span></p>
-							{/if}
-							{if $product->ecotax != 0}
-								<p class="price-ecotax">{l s='Including'} <span id="ecotax_price_display">{if $priceDisplay == 2}{$ecotax_tax_exc|convertAndFormatPrice}{else}{$ecotax_tax_inc|convertAndFormatPrice}{/if}</span> {l s='for ecotax'}
-									{if $product->specificPrice && $product->specificPrice.reduction}
-									<br />{l s='(not impacted by the discount)'}
-									{/if}
-								</p>
-							{/if}
-							{if !empty($product->unity) && $product->unit_price_ratio > 0.000000}
-								{math equation="pprice / punit_price"  pprice=$productPrice  punit_price=$product->unit_price_ratio assign=unit_price}
-								<p class="unit-price"><span id="unit_price_display">{convertPrice price=$unit_price}</span> {l s='per'} {$product->unity|escape:'html':'UTF-8'}</p>
-								{hook h="displayProductPriceBlock" product=$product type="unit_price"}
-							{/if}
-						{/if} {*close if for show price*}
-						{hook h="displayProductPriceBlock" product=$product type="weight"}
-						<div class="clear"></div>
-					</div> <!-- end content_prices -->
+								{/strip}</p>
 					<div class="product_attributes clearfix">
 
 						{if isset($groups)}
 							<!-- attributes -->
-							<div id="attributes" class="row">
-								<div class="clearfix"></div>
+							<div id="attributes">
+								
 								{foreach from=$groups key=id_attribute_group item=group}
 									{if $group.attributes|@count}
 										<fieldset class="attribute_fieldset col-md-6">
@@ -383,7 +392,34 @@
 							{l s='This product is not sold individually. You must select at least'} <b id="minimal_quantity_label">{$product->minimal_quantity}</b> {l s='quantity for this product.'}
 						</p>
 
-					</div> <!-- end product_attributes -->
+					</div> <!-- end product_attributes -->																
+							</div> <!-- end prices -->
+							<p id="reduction_amount" {if !$product->specificPrice || $product->specificPrice.reduction_type != 'amount' || $product->specificPrice.reduction|floatval ==0} style="display:none"{/if}>{strip}
+								<span id="reduction_amount_display">
+								{if $product->specificPrice && $product->specificPrice.reduction_type == 'amount' && $product->specificPrice.reduction|intval !=0}
+									-{convertPrice price=$productPriceWithoutReduction-$productPrice|floatval}
+								{/if}
+								</span>
+							{/strip}</p>
+							{if $packItems|@count && $productPrice < $product->getNoPackPrice()}
+								<p class="pack_price">{l s='Instead of'} <span style="text-decoration: line-through;">{convertPrice price=$product->getNoPackPrice()}</span></p>
+							{/if}
+							{if $product->ecotax != 0}
+								<p class="price-ecotax">{l s='Including'} <span id="ecotax_price_display">{if $priceDisplay == 2}{$ecotax_tax_exc|convertAndFormatPrice}{else}{$ecotax_tax_inc|convertAndFormatPrice}{/if}</span> {l s='for ecotax'}
+									{if $product->specificPrice && $product->specificPrice.reduction}
+									<br />{l s='(not impacted by the discount)'}
+									{/if}
+								</p>
+							{/if}
+							{if !empty($product->unity) && $product->unit_price_ratio > 0.000000}
+								{math equation="pprice / punit_price"  pprice=$productPrice  punit_price=$product->unit_price_ratio assign=unit_price}
+								<p class="unit-price"><span id="unit_price_display">{convertPrice price=$unit_price}</span> {l s='per'} {$product->unity|escape:'html':'UTF-8'}</p>
+								{hook h="displayProductPriceBlock" product=$product type="unit_price"}
+							{/if}
+						{/if} {*close if for show price*}
+						{hook h="displayProductPriceBlock" product=$product type="weight"}
+						<div class="clear"></div>
+					</div> <!-- end content_prices -->
 
 					<div class="box-cart box-cart-bottom">
 
