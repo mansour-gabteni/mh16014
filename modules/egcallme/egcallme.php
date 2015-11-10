@@ -87,7 +87,8 @@ if (!defined('_PS_VERSION_'))
 	{
 		$utm = Tools::getValue('utm_source');
 		
-		if (!$this->context->cookie->__isset('special')
+		if (egmultishop::isMarketingSite()
+			&& !$this->context->cookie->__isset('special')
 			//&& !$this->context->__get('special')==""
 			)
 			
