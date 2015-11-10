@@ -29,7 +29,7 @@ if (!defined('_PS_VERSION_'))
   	public function getContent()
 	{
 		
-		//$this->unregisterHook('displayNav');
+		$this->registerHook('displayFooter');
 		$output = null;
 		/*
 		 * Доделать
@@ -82,6 +82,22 @@ if (!defined('_PS_VERSION_'))
 	
 		return $this->display(__FILE__, 'callme_nav.tpl');	
 	}
+	
+	public function hookDisplayFooter($params)
+	{
+		$utm = Tools::getValue('utm_source');
+		if(egmultishop::isMarketingSite()
+		 && $utm!=""
+		 )
+		{
+	 		$this->smarty->assign(array(
+				'ajaxcontroller' => $this->context->link->getModuleLink('egcallme', 'ajax')
+			));
+		
+			return $this->display(__FILE__, 'special.tpl');
+		}		
+	}
+	
 	public function hookDisplayTop($params)
 	{
 		if (!Configuration::get('BLOCK_EGMULTSOP_CITY'))
@@ -143,6 +159,7 @@ if (!defined('_PS_VERSION_'))
 	  if (!parent::install() ||
 	  	!$this->registerHook('displayTop') ||
 	  	!$this->registerHook('displayNav') ||
+	  	!$this->registerHook('displayFooter') ||
 		!$this->registerHook('header') ||
 		!Configuration::updateValue('EGCALLME_SMS_NOYIFY', 0)||
 		!Configuration::updateValue('EGCALLME_HEAD_PHONE', '')||
@@ -182,6 +199,7 @@ if (!defined('_PS_VERSION_'))
 			!Configuration::deleteByName('EGCALLME_FIELD_LNAME') ||
 			!$this->unregisterHook('displayTop') ||
 			!$this->unregisterHook('displayNav') ||
+			!$this->unregisterHook('displayFooter')||
 			!$this->unregisterHook('header'))
 	    return false;
 	  return true;

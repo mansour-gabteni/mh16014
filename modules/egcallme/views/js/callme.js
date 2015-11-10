@@ -4,6 +4,7 @@
 $(document).ready(function() { 
 	
 	loadCallme();
+	window.setTimeout('special()',10000);
 	
 	$("#callmeform").submit(function() { return false; });
 	$(document).on('click', '#callmebtn, #uptocall-mini', function(e){
@@ -18,6 +19,33 @@ $(document).ready(function() {
 					'href':     url
 				});	
 
+	});	
+	
+	$(document).on('click', '#submitspecial', function(e){
+		e.preventDefault();
+		var ocontact;
+		ocontact = $("#ocontact").val();
+
+		if (ocontact==""||ocontact.length<5)
+			{
+				alert("Заполните поле!");
+			}
+		else{
+
+			$("#submitspecial").prop( "disabled", true );
+	    
+		    $.ajax({
+		         type: 'POST',
+		         url: $("#urlaction").val(),
+		         data: $("#specialform").serialize(),
+		         success: function(data) {
+		        	 $("#specialform").fadeOut("fast", function(){
+		        		 $("#specialmess").html(data);
+		        		 setTimeout("$.fancybox.close()", 1500);
+		        	 });
+		         }
+		    });	
+		}
 	});	
 	
 	$(document).on('click', '#submitcallme', function(e){

@@ -31,3 +31,31 @@ $("#phone").mask("+7 (999) 999-99-99");
 <div>{l s='thanks' mod='egcallme'}</div>
 <div>{l s='whill meet you' mod='egcallme'}</div>
 {/if}
+
+{if $view=="specialsand"}
+<div>{l s='special sand' mod='egcallme'}</div>
+{/if}
+
+{if $view=="specialmodal"}
+<div id="specialmess"></div>
+<form id="specialform" name="specialform" action="#" method="post">
+<img src="s.jpg" width="300" height="200">
+<fieldset>
+	<div class="clearfix">
+		<label for="ocontact">{l s='get by email' mod='egcallme'}</label> <!-- {l s='get by phone' mod='egcallme'} -->
+			<input class="form-control grey validate" type="" placeholder="" id="ocontact" name="ocontact" maxlength="32"  required="">
+	</div>
+	<input type="hidden" id="ajax" name="ajax" value="">
+	<input type="hidden" id="action" name="action" value="apecialadd">
+	<input type="hidden" id="urlaction" name="urlaction" value="{$ajaxcontroller}">
+	<div class="submit">
+		<button type="submit" name="submitspecial" id="submitspecial" class="button btn btn-outline button-medium"><span>{l s='get coupon' mod='egcallme'}</span></button>
+	</div>
+</fieldset>
+</form>
+<script type="text/javascript">
+
+//$("#ocontact").mask("+7 (999) 999-99-99");
+
+</script>
+{/if}

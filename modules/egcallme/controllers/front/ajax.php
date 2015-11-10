@@ -25,6 +25,16 @@ class egcallmeajaxModuleFrontController extends ModuleFrontController
 				$this->callBack();
 				$view = 'mess';
 			}
+			if ($action == "specialmodal")
+			{
+				$view = 'specialmodal';
+
+			}	
+			if ($action == "apecialadd")
+			{
+				$this->apecialAdd();
+				$view = 'specialsand';
+			}		
 		}
 		
 		
@@ -35,6 +45,21 @@ class egcallmeajaxModuleFrontController extends ModuleFrontController
 				)); 
 
 		$this->smartyOutputContent($this->getTemplatePath('ajax.tpl'));
+		
+	}
+	
+	public function apecialAdd()
+	{
+		$ocontact = Tools::getValue('ocontact', '-');
+				
+		if(egmultishop::isMarketingSite())
+		
+		// посылаем смс мпаибо за заказ
+
+			$this->newMessage("Special", "", "", $ocontact, "smscallme_special",$ocontact.";e.v.grishin@yandex.ru;info@matras-house.ru");
+			
+		
+				
 		
 	}
 	
@@ -95,7 +120,7 @@ class egcallmeajaxModuleFrontController extends ModuleFrontController
 		
 	}
 
-	private function newMessage($type, $phone, $cname, $message,$email_theme)
+	private function newMessage($type, $phone, $cname, $message,$email_theme, $email_param = "")
 	{
 
 		$host = Tools::getHttpHost();
@@ -108,7 +133,10 @@ class egcallmeajaxModuleFrontController extends ModuleFrontController
 		Db::getInstance()->execute(trim($query));
 		
 		// notify by email
-		$email_param = Configuration::get('EGCALLME_EMAIL_NOTIFY');
+		if ($email_param == "")
+		{
+			$email_param = Configuration::get('EGCALLME_EMAIL_NOTIFY');
+		}
 		if (trim($email_param)!="")
 		{
 			$context = Context::getContext();
