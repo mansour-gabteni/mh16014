@@ -86,10 +86,17 @@ if (!defined('_PS_VERSION_'))
 	public function hookDisplayFooter($params)
 	{
 		$utm = Tools::getValue('utm_source');
-		if(egmultishop::isMarketingSite()
-		 && $utm!=""
-		 )
+		
+		if (!$this->context->cookie->__isset('special')
+			//&& !$this->context->__get('special')==""
+			)
+			
+		
+		//if(egmultishop::isMarketingSite()
+		// && $utm!=""
+		// )
 		{
+			$this->context->cookie->__set('special', 'shown');
 	 		$this->smarty->assign(array(
 				'ajaxcontroller' => $this->context->link->getModuleLink('egcallme', 'ajax')
 			));
