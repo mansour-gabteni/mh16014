@@ -39,7 +39,7 @@ $("#phone").mask("+7 (999) 999-99-99");
 {if $view=="specialmodal"}
 <div id="specialmess"></div>
 <form id="specialform" name="specialform" action="#" method="post">
-<img src="s.jpg" width="300" height="200">
+<img src="s.jpg">
 <fieldset>
 	<div class="clearfix">
 		<label for="ocontact">{l s='get by email' mod='egcallme'}</label> <!-- {l s='get by phone' mod='egcallme'} -->
