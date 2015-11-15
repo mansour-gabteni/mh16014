@@ -118,6 +118,7 @@ $_LANG['best-sales_3cb29f0ccc5fd220a97df89dafe46290'] = 'Лучшие прода
 $_LANG['best-sales_73d3cc7826075c127caaadb0e20162ab'] = 'Нет бестселлеры на данный момент.';
 $_LANG['breadcrumb_56cf8b33ab527ab81b4f6b3ceac090dd'] = 'Вернуться на главную';
 $_LANG['category-count_79ac892bd1769d83ef1c16dae9f4eddd'] = 'Существует 1 товар.';
+$_LANG['category-count_a9d48596a6537347711527bab8fcd152'] = 'Доступно товаров %d';
 $_LANG['category-count_ff32f7dba36bcd6d0a4214cd80253c3a'] = 'Там нет товаров в этой категории.';
 $_LANG['category_2f4e54ec9bebe1122b5c23217e764828'] = 'Эта категория в данный момент недоступна.';
 $_LANG['category_d3da97e2d9aee5c8fbe03156ad051c99'] = 'Больше';

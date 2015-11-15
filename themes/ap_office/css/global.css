@@ -8023,7 +8023,7 @@ input[type="file"] {
 
 .scene_cat .cat-desc {
   margin-bottom: 10px;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 .scene_cat .cat-name {
   margin-bottom: 10px;

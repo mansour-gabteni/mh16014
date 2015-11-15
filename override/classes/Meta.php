@@ -367,12 +367,20 @@ class MetaCore extends ObjectModel
 	public static function replaceCity($ret )
 	{
 					$ceo_word = Meta::getCitys();
-				if (isset($ceo_word) && is_array($ceo_word))
+				if (is_array($ret))
 				{
-					$ret['meta_title'] = Meta::sprintf2($ret['meta_title'],$ceo_word);
-					$ret['meta_description'] = Meta::sprintf2($ret['meta_description'],$ceo_word);
-					$ret['meta_keywords'] = Meta::sprintf2($ret['meta_keywords'],$ceo_word);
+					if (isset($ceo_word) && is_array($ceo_word))
+					{
+						$ret['meta_title'] = Meta::sprintf2($ret['meta_title'],$ceo_word);
+						$ret['meta_description'] = Meta::sprintf2($ret['meta_description'],$ceo_word);
+						$ret['meta_keywords'] = Meta::sprintf2($ret['meta_keywords'],$ceo_word);
+						$ret['description'] = Meta::sprintf2($ret['description'],$ceo_word);
+					}
 				}	
+				else 
+				{
+					$ret = Meta::sprintf2($ret,$ceo_word);
+				}
 		return $ret;
 	}
 
