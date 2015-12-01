@@ -53,8 +53,11 @@ class Egcallme extends Module
             Configuration::updateValue('EGCALLME_FIELD_FNAME', Tools::getValue('fname'));
             Configuration::updateValue('EGCALLME_FIELD_LNAME', Tools::getValue('lname'));
             Configuration::updateValue('EGCALLME_HTTPNOT_1', Tools::getValue('http_note_1'));
+            Configuration::updateValue('EGCALLME_HTTPNOT_1_TXT', Tools::getValue('http_note_1_txt'));
             Configuration::updateValue('EGCALLME_HTTPNOT_2', Tools::getValue('http_note_2'));
+            Configuration::updateValue('EGCALLME_HTTPNOT_2_TXT', Tools::getValue('http_note_2_txt'));
             Configuration::updateValue('EGCALLME_HTTPNOT_3', Tools::getValue('http_note_3'));
+            Configuration::updateValue('EGCALLME_HTTPNOT_3_TXT', Tools::getValue('http_note_3_txt'));
             Configuration::updateValue('EGCALLME_FIELD_MESS', Tools::getValue('message'));
             $this->html .= $this->displayConfirmation($this->l('Settings updated.'));
         }
@@ -103,22 +106,43 @@ class Egcallme extends Module
                         'label' => $this->l('Http Notification 1:'),
                         'name' => 'http_note_1',
                         'hint' => $this->l('Specify some http request 1.'),
-                        'desc' => $this->l('Example for sms: http://sms.ru/send?api_id=999&to=+412345678&text={message}. {message} is defined keywords will be replased.'),
-                    ),     
+                        'desc' => $this->l('Example for sms: http://sms.ru/send?api_id=999&to=+412345678&text={text}. {text} is defined keywords will be replased of text bellow.'),
+                    ),  
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Http Notification text 1:'),
+                        'name' => 'http_note_1_txt',
+                        'hint' => $this->l('Specify some text for request 1.'),
+                        'desc' => $this->l('put text with defined keywords {message} {phone} {fname} {lname} {host}'),
+                    ),                        
                     array(
                         'type' => 'text',
                         'label' => $this->l('Http Notification 2:'),
                         'name' => 'http_note_2',
                         'hint' => $this->l('Specify some http request 2.'),
-                        'desc' => $this->l('Example for sms response: http://sms.ru/send?api_id=999&to={phone}&text=Thenks! We will call you asap. {phone} is defined keywords will be replased to phone of client.'),
+                        'desc' => $this->l('Example for sms response: http://sms.ru/send?api_id=999&to={phone}&text={text}. {phone} is defined keywords will be replased to phone of client.'),
                     ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Http Notification text 2:'),
+                        'name' => 'http_note_2_txt',
+                        'hint' => $this->l('Specify some text for request 2.'),
+                        'desc' => $this->l('put text with defined keywords {message} {phone} {fname} {lname} {host}'),
+                    ),                    
                     array(
                         'type' => 'text',
                         'label' => $this->l('Http Notification 3:'),
                         'name' => 'http_note_3',
                         'hint' => $this->l('Specify some http request 3.'),
                         'desc' => $this->l('Example for telegram: http://api.telegram.org/yourBotId/sendMessage?chat_id=999&text={message}. {message} is defined keywords will be replased.'),
-                    ),                                                                                                 
+                    ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Http Notification text 3:'),
+                        'name' => 'http_note_3_txt',
+                        'hint' => $this->l('Specify some text for request 3.'),
+                        'desc' => $this->l('put text with defined keywords {message} {phone} {fname} {lname} {host}'),
+                    ),                                                                                                                       
                 ),
                 'submit' => array(
                     'title' => $this->l('Save'),
@@ -260,8 +284,11 @@ class Egcallme extends Module
             'lname' => Tools::getValue('lname', Configuration::get('EGCALLME_FIELD_LNAME')),
             'message' => Tools::getValue('message', Configuration::get('EGCALLME_FIELD_MESS')),
         	'http_note_1' => Tools::getValue('http_note_1', Configuration::get('EGCALLME_HTTPNOT_1')),
+            'http_note_1_txt' => Tools::getValue('http_note_1_txt', Configuration::get('EGCALLME_HTTPNOT_1_TXT')),
         	'http_note_2' => Tools::getValue('http_note_2', Configuration::get('EGCALLME_HTTPNOT_2')),
+            'http_note_2_txt' => Tools::getValue('http_note_2_txt', Configuration::get('EGCALLME_HTTPNOT_2_TXT')),
             'http_note_3' => Tools::getValue('http_note_3', Configuration::get('EGCALLME_HTTPNOT_3')),
+            'http_note_3_txt' => Tools::getValue('http_note_3_txt', Configuration::get('EGCALLME_HTTPNOT_3_TXT')),
         );
     }
     
@@ -408,6 +435,9 @@ class Egcallme extends Module
         !Configuration::updateValue('EGCALLME_HTTPNOT_1', '')||
         !Configuration::updateValue('EGCALLME_HTTPNOT_2', '')||
         !Configuration::updateValue('EGCALLME_HTTPNOT_3', '')||
+        !Configuration::updateValue('EGCALLME_HTTPNOT_1_TXT', '')||
+        !Configuration::updateValue('EGCALLME_HTTPNOT_2_TXT', '')||
+        !Configuration::updateValue('EGCALLME_HTTPNOT_3_TXT', '')||        
         !Configuration::updateValue('EGCALLME_FIELD_FNAME', 'Required')||//Hide|Show|Required
         !Configuration::updateValue('EGCALLME_FIELD_LNAME', 'Required')||//Hide|Show|Required
         !Configuration::updateValue('EGCALLME_FIELD_MESS', 'Required')//Hide|Show|Required
@@ -428,6 +458,9 @@ class Egcallme extends Module
             !Configuration::deleteByName('EGCALLME_HTTPNOT_1') ||
             !Configuration::deleteByName('EGCALLME_HTTPNOT_2') ||
             !Configuration::deleteByName('EGCALLME_HTTPNOT_3') ||
+            !Configuration::deleteByName('EGCALLME_HTTPNOT_1_TXT') ||
+            !Configuration::deleteByName('EGCALLME_HTTPNOT_2_TXT') ||
+            !Configuration::deleteByName('EGCALLME_HTTPNOT_3_TXT') ||            
             !Configuration::deleteByName('EGCALLME_EMAIL_NOTIFY')||
             !Configuration::deleteByName('EGCALLME_FIELD_FNAME')||
             !Configuration::deleteByName('EGCALLME_FIELD_LNAME') ||
