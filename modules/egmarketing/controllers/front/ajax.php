@@ -1,7 +1,7 @@
 ﻿<?php
 
 
-class egcallmeajaxModuleFrontController extends ModuleFrontController
+class egmarketingajaxModuleFrontController extends ModuleFrontController
 {
 
 	public function initContent()
@@ -11,19 +11,11 @@ class egcallmeajaxModuleFrontController extends ModuleFrontController
 
 		$action = Tools::getValue('action');
 		
-		if (!$action)
-			$view = 'form';
-		else 
-		{	
+
 			if ($action == "oneworder")
 			{
 				$this->oorder();
 				$view = 'thanks';
-			}
-			if ($action == "new")
-			{
-				$this->callBack();
-				$view = 'mess';
 			}
 			if ($action == "specialmodal")
 			{
@@ -35,12 +27,12 @@ class egcallmeajaxModuleFrontController extends ModuleFrontController
 				$this->apecialAdd();
 				$view = 'specialsand';
 			}		
-		}
+
 		
 		
 		$this->context->smarty->assign(array(
 					'host'	=> Tools::getHttpHost(),
-					'ajaxcontroller' => $this->context->link->getModuleLink('egcallme', 'ajax'),
+					'ajaxcontroller' => $this->context->link->getModuleLink('egmarketing', 'ajax'),
 					'view' =>	$view
 				)); 
 
@@ -57,10 +49,7 @@ class egcallmeajaxModuleFrontController extends ModuleFrontController
 		// посылаем смс мпаибо за заказ
 
 			$this->newMessage("Special", "", "", $ocontact, "smscallme_special",$ocontact.";e.v.grishin@yandex.ru;info@matras-house.ru");
-			
-		
-				
-		
+
 	}
 	
 	public function oorder()
@@ -126,10 +115,10 @@ class egcallmeajaxModuleFrontController extends ModuleFrontController
 		$host = Tools::getHttpHost();
 		$phone = "+".preg_replace('#\D+#', '', $phone);
 		// insert to DB
-		$query = "insert into "._DB_PREFIX_.egcallme::INSTALL_SQL_BD1NAME." 
-		(`type`,`host`, `phone`, `cname`, `message`, `processed`) 
-		values ('".$type."','".$host."', '".$phone."',
-			'".$cname."', '".$message."', 'false')";
+		$query = "insert into "._DB_PREFIX_.egmarketing::INSTALL_SQL_BD1NAME." 
+		(`id_shop`, `host`, `type`, `phone`, `fname`, `lname`, `message`) 
+		values ('".(int)$context->shop->id."', '".Tools::getHttpHost()."', '".$type."', '".$phone."',
+			'".$cname."', '".$cname."', '".$message."')";
 		Db::getInstance()->execute(trim($query));
 		
 		// notify by email

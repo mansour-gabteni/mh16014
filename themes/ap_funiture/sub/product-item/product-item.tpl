@@ -86,16 +86,18 @@
 								{/if}
 							{/if}<br />
 							<span itemprop="price" class="price product-price">
-								{if !$priceDisplay}{convertPrice price=$product.price}{else}{convertPrice price=$product.price_tax_exc}{/if}
+								{l s='price from'} {if !$priceDisplay}{convertPrice price=$product.price}{else}{convertPrice price=$product.price_tax_exc}{/if}
 							</span>
 							{hook h="displayProductPriceBlock" product=$product type="price"}
 							{hook h="displayProductPriceBlock" product=$product type="unit_price"}
 						{/if}
 					</div>
 				{/if}
+				
 				{if $page_name !='product'}	
 					<div class="cart">
 						{if ($product.id_product_attribute == 0 || (isset($add_prod_display) && ($add_prod_display == 1))) && $product.available_for_order && !isset($restricted_country_mode) && $product.minimal_quantity <= 1 && $product.customizable != 2 && !$PS_CATALOG_MODE}
+						
 							{if (!isset($product.customization_required) || !$product.customization_required) && ($product.allow_oosp || $product.quantity > 0)}
 								{if isset($static_token)}
 									<a class="button ajax_add_to_cart_button btn" href="{$link->getPageLink('cart',false, NULL, "add=1&amp;id_product={$product.id_product|intval}&amp;token={$static_token}", false)|escape:'html':'UTF-8'}" rel="nofollow" title="{l s='Add to cart'}" data-id-product="{$product.id_product|intval}">
@@ -112,6 +114,17 @@
 								</div>
 							{/if}
 						{/if}
+					</div>
+					<div class="view">
+					{if isset($param_product_url)}	
+					<a itemprop="url" class="button btn btn-outline" href="{$product.link|escape:'html':'UTF-8'}#{$param_product_url}" title="{l s='View'}">
+							<span>{l s='More'}</span>
+						</a>
+					{else}
+					<a itemprop="url" class="button btn btn-outline" href="{$product.link|escape:'html':'UTF-8'}" title="{l s='View'}">
+							<span>{l s='More'}</span>
+						</a>					
+					{/if}
 					</div>  
 				{/if}
 			</div>

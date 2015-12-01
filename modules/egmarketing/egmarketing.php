@@ -4,7 +4,7 @@ if (!defined('_PS_VERSION_'))
   
   class egmarketing extends Module
   {
-  		
+  	const INSTALL_SQL_BD1NAME = 'egcallme';	
     public function __construct()
     {
 	    $this->name = 'egmarketing';
@@ -29,7 +29,9 @@ if (!defined('_PS_VERSION_'))
 		//$this->registerHook('displayTop');
 	    //$this->registerHook('displayTopColumn');
 	  	//$this->registerHook('displayProductButtons');
-		
+	  	
+		//$this->registerHook('displayNav');
+		//$this->registerHook('displayFooter');
 	}
 
 	public function hookDisplayProductButtons($params) 
@@ -62,6 +64,15 @@ if (!defined('_PS_VERSION_'))
 		</script>';
 	}
 	
+    public function hookDisplayNav($params)
+    {
+  		$this->smarty->assign(array(
+			'ajaxcontroller' => $this->context->link->getModuleLink($this->name, 'ajax')
+		));	
+		
+		return $this->display(__FILE__, 'top.tpl');  	
+    }	
+    
 	public function hookDisplayTop($params)
 	{
 		//$this->context->controller->addCSS($this->_path.'views/css/egmultishop.css', 'all');
@@ -71,7 +82,9 @@ if (!defined('_PS_VERSION_'))
 	public function install($keep = true)
 	{
 	  if (!parent::install() ||
+	    !$this->registerHook('displayNav') ||
 	    !$this->registerHook('displayTop') ||
+	    !$this->registerHook('displayFooter') ||
 	    !$this->registerHook('displayTopColumn') ||
 	  	!$this->registerHook('displayProductButtons') // ||
 		//!Configuration::updateValue('EGCALLME_FIELD_LNAME', '')
@@ -96,11 +109,36 @@ if (!defined('_PS_VERSION_'))
 		$page = $mshop->replaceCeoWords($page);
 			
 		$this->smarty->assign(array(
-			'page' => 	$page	
+			'page' => 	$page
 		));	
 		
 		return $this->display(__FILE__, 'page.tpl');
 	}
+	
+  	public function hookDisplayFooter($params)
+	{
+		/*
+		$utm = Tools::getValue('utm_source');
+		
+		if (egmultishop::isMarketingSite()
+			&& !$this->context->cookie->__isset('special')
+			//&& !$this->context->__get('special')==""
+			)
+			
+		
+		//if(egmultishop::isMarketingSite()
+		// && $utm!=""
+		// )
+		{
+			$this->context->cookie->__set('special', 'shown');
+	 		$this->smarty->assign(array(
+				'ajaxcontroller' => $this->context->link->getModuleLink($this->name, 'ajax')
+			));
+		
+			return $this->display(__FILE__, 'special.tpl');
+		}
+		*/		
+	}	
 	
   	public static function isMarketingSite()
 	{
@@ -138,7 +176,9 @@ if (!defined('_PS_VERSION_'))
 	public function uninstall($keep = true)
 	{
 	  if (!parent::uninstall() || ($keep && !$this->deleteTables()) ||
+	  		!$this->unregisterHook('displayNav') ||
 	  		!$this->unregisterHook('displayTop') ||
+	  		!$this->unregisterHook('displayFooter') ||
 	  		!$this->unregisterHook('displayTopColumn') ||
 			//!Configuration::deleteByName('EGCALLME_SMS_NOYIFY') ||
 			!$this->unregisterHook('displayProductButtons'))
