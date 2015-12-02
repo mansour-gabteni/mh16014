@@ -99,13 +99,13 @@ class EgcallmeajaxModuleFrontController extends ModuleFrontController
 
  			$requests = Configuration::getMultiple(array(
 									'EGCALLME_HTTPNOT_1',
-									'EGCALLME_HTTPNOT_2'//,
-//									'EGCALLME_HTTPNOT_3'
+									'EGCALLME_HTTPNOT_2',
+									'EGCALLME_HTTPNOT_3'
 						));
             $texts = Configuration::getMultiple(array(
 									'EGCALLME_HTTPNOT_1_TXT',
-									'EGCALLME_HTTPNOT_2_TXT'//,
-//									'EGCALLME_HTTPNOT_3_TXT'
+									'EGCALLME_HTTPNOT_2_TXT',
+									'EGCALLME_HTTPNOT_3_TXT'
 						));	
 			foreach ($requests as $key => $request) {
             	$request = $this->replaceKeywords($param, $request, $texts[$key.'_TXT']);
