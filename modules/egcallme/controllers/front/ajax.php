@@ -46,8 +46,7 @@ class EgcallmeajaxModuleFrontController extends ModuleFrontController
     	foreach ($params as $key => $value) {
     		$request = str_replace($key,$value,$request);
     	}
-    	$text = urldecode($text);
-    	$request = str_replace('{text}',$text,$request);
+    	$request = str_replace('{text}',urlencode($text),$request);
     	return $request;
     }
     	
