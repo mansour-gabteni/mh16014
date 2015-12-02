@@ -327,7 +327,9 @@
 						<input type="text" class="text form-control validate" name="phone" id="phone"  data-validate="isPhoneNumber" value="{if isset($guestInformations) && isset($guestInformations.phone) && $guestInformations.phone}{$guestInformations.phone}{/if}" />
 					</div>
 				</div>
-
+<script type="text/javascript">
+$("#phone_mobile").mask(egcallme_mask);
+</script>
 				<input type="hidden" name="alias" id="alias" value="{l s='My address'}"/>
 				<div class="form-group" style="display:none">
 					<div class="col-sm-offset-4 col-sm-8 col-md-offset-4 col-md-8">

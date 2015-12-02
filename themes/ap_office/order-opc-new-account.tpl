@@ -317,6 +317,7 @@
 						<input type="text" class="text form-control validate" name="phone" id="phone"  data-validate="isPhoneNumber" value="{if isset($guestInformations) && isset($guestInformations.phone) && $guestInformations.phone}{$guestInformations.phone}{/if}" />
 					</div>
 				</div>
+
 				<div class="{if isset($one_phone_at_least) && $one_phone_at_least}required {/if}form-group">
 					<label class="control-label col-sm-4" for="phone_mobile">{l s='Mobile phone'}{if isset($one_phone_at_least) && $one_phone_at_least} <sup>*</sup>{/if}</label>
 					<div class="col-sm-6">
@@ -482,6 +483,9 @@
 					</div>
 					<input type="hidden" name="alias_invoice" id="alias_invoice" value="{l s='My Invoice address'}" />
 				</div>
+<script type="text/javascript">
+$("#phone_mobile").mask(egcallme_mask);
+</script>								
 				{$HOOK_CREATE_ACCOUNT_FORM}
 				<div class="submit opc-add-save clearfix">
                 		<p class="required opc-required pull-right">

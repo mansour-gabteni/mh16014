@@ -46,7 +46,8 @@ class EgcallmeajaxModuleFrontController extends ModuleFrontController
     	foreach ($params as $key => $value) {
     		$request = str_replace($key,$value,$request);
     	}
-    	$request = str_replace('{text}',urldecode($text),$request);
+    	$text = urldecode($text);
+    	$request = str_replace('{text}',$text,$request);
     	return $request;
     }
     	
@@ -98,13 +99,13 @@ class EgcallmeajaxModuleFrontController extends ModuleFrontController
 
  			$requests = Configuration::getMultiple(array(
 									'EGCALLME_HTTPNOT_1',
-									'EGCALLME_HTTPNOT_2',
-									'EGCALLME_HTTPNOT_3'
+									'EGCALLME_HTTPNOT_2'//,
+//									'EGCALLME_HTTPNOT_3'
 						));
             $texts = Configuration::getMultiple(array(
 									'EGCALLME_HTTPNOT_1_TXT',
-									'EGCALLME_HTTPNOT_2_TXT',
-									'EGCALLME_HTTPNOT_3_TXT'
+									'EGCALLME_HTTPNOT_2_TXT'//,
+//									'EGCALLME_HTTPNOT_3_TXT'
 						));	
 			foreach ($requests as $key => $request) {
             	$request = $this->replaceKeywords($param, $request, $texts[$key.'_TXT']);
