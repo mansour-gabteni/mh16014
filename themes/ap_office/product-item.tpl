@@ -50,19 +50,26 @@
 			{if (!$PS_CATALOG_MODE AND ((isset($product.show_price) && $product.show_price) || (isset($product.available_for_order) && $product.available_for_order)))}
 				<div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="content_price">
 					{if isset($product.show_price) && $product.show_price && !isset($restricted_country_mode)}
-						<span itemprop="price" class="price product-price">{l s='price from'}
+						<span itemprop="price" class="price product-price">
+		  				    {if !isset($product.id_attribute)}
+							 {l s='price from'}
+						    {/if}	
 							{if !$priceDisplay}{convertPrice price=$product.price}{else}{convertPrice price=$product.price_tax_exc}{/if}
 						</span>
 						<meta itemprop="priceCurrency" content="{$currency->iso_code}" />
 						{if isset($product.specific_prices) && $product.specific_prices && isset($product.specific_prices.reduction) && $product.specific_prices.reduction > 0}
 							{hook h="displayProductPriceBlock" product=$product type="old_price"}
 							<span class="old-price product-price">
-								<nobr>{displayWtPrice p=$product.price_without_reduction}</nobr>
+								<nobr>
+								{displayWtPrice p=$product.price_without_reduction}</nobr>
 							</span>
 							{if $product.specific_prices.reduction_type == 'percentage'}
 								<span class="price-percent-reduction">-{$product.specific_prices.reduction * 100}%</span>
 							{/if}
 						{/if}
+						{if isset($product.id_attribute)}
+						 <div style="font-size:12px;font-weight: bold;">{$product.public_name}: {$product.id_attribute_name}</div>
+						{/if} 							
 						{hook h="displayProductPriceBlock" product=$product type="price"}
 						{hook h="displayProductPriceBlock" product=$product type="unit_price"}
 					{/if}

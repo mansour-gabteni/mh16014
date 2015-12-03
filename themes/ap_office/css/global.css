@@ -8010,7 +8010,7 @@ input[type="file"] {
 
 .content_scene_cat_bg .image {
   margin-bottom: 10px;
-  float: left;
+  /*float: left; eg*/
   margin-right: 10px;
 }
 .rtl .content_scene_cat_bg .image {

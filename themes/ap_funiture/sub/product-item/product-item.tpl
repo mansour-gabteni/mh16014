@@ -71,33 +71,37 @@
 				<div class="color-list-container">{$product.color_list} </div>
 			{/if}
 			
-			<div class="functional-buttons">
-				{if (!$PS_CATALOG_MODE && ((isset($product.show_price) && $product.show_price) || (isset($product.available_for_order) && $product.available_for_order)))}
-					<div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="content_price">
-						{if isset($product.show_price) && $product.show_price && !isset($restricted_country_mode)}
-							<meta itemprop="priceCurrency" content="{$currency->iso_code}" />
-							{if isset($product.specific_prices) && $product.specific_prices && isset($product.specific_prices.reduction) && $product.specific_prices.reduction > 0}
-								{hook h="displayProductPriceBlock" product=$product type="old_price"}
-								<span class="old-price product-price">
-									{displayWtPrice p=$product.price_without_reduction}
-								</span>
-								{if $product.specific_prices.reduction_type == 'percentage'}
-									<span class="price-percent-reduction">-{$product.specific_prices.reduction * 100}%</span>
-								{/if}
-							{/if}<br />
-							<span itemprop="price" class="price product-price">
-								{l s='price from'} {if !$priceDisplay}{convertPrice price=$product.price}{else}{convertPrice price=$product.price_tax_exc}{/if}
-							</span>
-							{hook h="displayProductPriceBlock" product=$product type="price"}
-							{hook h="displayProductPriceBlock" product=$product type="unit_price"}
-						{/if}
-					</div>
-				{/if}
-				
-				{if $page_name !='product'}	
+<div class="functional-buttons">
+{if (!$PS_CATALOG_MODE && ((isset($product.show_price) && $product.show_price) || (isset($product.available_for_order) && $product.available_for_order)))}
+<div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="content_price">
+{if isset($product.show_price) && $product.show_price && !isset($restricted_country_mode)}
+ <meta itemprop="priceCurrency" content="{$currency->iso_code}" />							
+  {if isset($product.id_attribute)}
+   <div style="font-size:12px;font-weight: bold;">{$product.public_name}: {$product.id_attribute_name}</div>
+  {/if} 
+  {if isset($product.specific_prices) && $product.specific_prices && isset($product.specific_prices.reduction) && $product.specific_prices.reduction > 0}
+   {hook h="displayProductPriceBlock" product=$product type="old_price"}
+   <span class="old-price product-price">{displayWtPrice p=$product.price_without_reduction}</span>
+  {/if}								
+							
+  <span itemprop="price" class="price product-price"><nobr>
+  {if !isset($product.id_attribute)}
+  {l s='price from'}
+  {/if}							
+  {if !$priceDisplay}{convertPrice price=$product.price}{else}{convertPrice price=$product.price_tax_exc}{/if}
+  </nobr></span>
+  {if $product.specific_prices.reduction_type == 'percentage'}
+  <span class="price-percent-reduction">-{$product.specific_prices.reduction * 100}%</span>
+  {/if}															
+  {hook h="displayProductPriceBlock" product=$product type="price"}
+  {hook h="displayProductPriceBlock" product=$product type="unit_price"}
+{/if}
+</div>
+{/if}
+{$param_product_url}
+{if $page_name !='product'}	
 					<div class="cart">
 						{if ($product.id_product_attribute == 0 || (isset($add_prod_display) && ($add_prod_display == 1))) && $product.available_for_order && !isset($restricted_country_mode) && $product.minimal_quantity <= 1 && $product.customizable != 2 && !$PS_CATALOG_MODE}
-						
 							{if (!isset($product.customization_required) || !$product.customization_required) && ($product.allow_oosp || $product.quantity > 0)}
 								{if isset($static_token)}
 									<a class="button ajax_add_to_cart_button btn" href="{$link->getPageLink('cart',false, NULL, "add=1&amp;id_product={$product.id_product|intval}&amp;token={$static_token}", false)|escape:'html':'UTF-8'}" rel="nofollow" title="{l s='Add to cart'}" data-id-product="{$product.id_product|intval}">
@@ -108,10 +112,6 @@
 										<i class="fa fa-shopping-cart"></i><span>{l s='Add to cart'}</span>
 									</a>
 								{/if}
-							{else}
-								<div class="btn btn-default disabled" title="{l s='Out of stock'}">
-									<i class="fa fa-shopping-cart"></i><span>{l s='Out of stock'}</span> 
-								</div>
 							{/if}
 						{/if}
 					</div>
@@ -119,15 +119,23 @@
 					{if isset($param_product_url)}	
 					<a itemprop="url" class="button btn btn-outline" href="{$product.link|escape:'html':'UTF-8'}#{$param_product_url}" title="{l s='View'}">
 							<span>{l s='More'}</span>
-						</a>
+					</a>
 					{else}
+					
+					<!-- 
+					getProductLink($product, $alias = null, $category = null, $ean13 = null, $id_lang = null, $id_shop = null, $ipa = 0)
+					<a itemprop="url" class="button btn btn-outline" href="{$link->getProductLink}" title="{l s='View'}">
+							<span>{l s='More'}</span>
+					</a>
+					-->	
 					<a itemprop="url" class="button btn btn-outline" href="{$product.link|escape:'html':'UTF-8'}" title="{l s='View'}">
 							<span>{l s='More'}</span>
-						</a>					
+					</a>
+														
 					{/if}
 					</div>  
-				{/if}
-			</div>
+{/if}
+</div>
 
 		</div> <!-- end product meta -->
 		

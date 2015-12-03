@@ -150,12 +150,8 @@
 				<p class="online_only">{l s='Online only'}</p>
 			{/if}
 	
-			<h1 itemprop="name">{$product->name|escape:'html':'UTF-8'}</h1>
-			
-			<p id="product_reference"{if empty($product->reference) || !$product->reference} style="display: none;"{/if}>
-				<label>{l s='Reference:'} </label>
-				<span class="editable" itemprop="sku">{if !isset($groups)}{$product->reference|escape:'html':'UTF-8'}{/if}</span>
-			</p>
+			<h1 itemprop="name" class="product-name">{$product->name|escape:'html':'UTF-8'}</h1>
+
 			{if !$product->is_virtual && $product->condition}
 			<p id="product_condition">
 				<label>{l s='Condition:'} </label>

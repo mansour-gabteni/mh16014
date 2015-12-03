@@ -14875,7 +14875,7 @@ div.verticalmenu .widget-heading {
   color: #bbbbbb;
   text-decoration: line-through;
   font-size: 12px;
-  position: absolute;
+  /*position: absolute;eg*/
   top: -20px;
 }
 .product-block .price {
@@ -14889,7 +14889,7 @@ div.verticalmenu .widget-heading {
   background: #f2434a;
   color: white;
   padding: 3px 5px;
-  display: none;
+  /*display: none;eg*/
 }
 .product-block .product-desc {
   display: none;

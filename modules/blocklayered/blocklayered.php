@@ -3018,7 +3018,7 @@ class BlockLayered extends Module
 
 		$selected_filters = $this->getSelectedFilters();
 		$filter_block = $this->getFilterBlock($selected_filters);
-		$this->getProducts($selected_filters, $products, $nb_products, $p, $n, $pages_nb, $start, $stop, $range);
+		$this->getProducts($selected_filters, $products, $nb_products, $p, $n, $pages_nb, $start, $stop, $range);//eg
 
 		// Add pagination variable
 		$nArray = (int)Configuration::get('PS_PRODUCTS_PER_PAGE') != 10 ? array((int)Configuration::get('PS_PRODUCTS_PER_PAGE'), 10, 20, 50) : array(10, 20, 50);
@@ -3119,6 +3119,8 @@ class BlockLayered extends Module
 		$products = $this->getProductByFilters($selected_filters);
 		$products = Product::getProductsProperties((int)$cookie->id_lang, $products);
 		$nb_products = $this->nbr_products;
+		$id_lang = (int)Context::getContext()->language->id;
+		$id_shop = (int)Context::getContext()->shop->id;
 		$range = 2; /* how many pages around page selected */
 
 		$n = (int)Tools::getValue('n', Configuration::get('PS_PRODUCTS_PER_PAGE'));
@@ -3155,14 +3157,27 @@ class BlockLayered extends Module
 				//находим ид атрибута по его типу
 				$key_value = array_values($selected_filters['id_attribute_group']);
 				$value = explode('_', $key_value[0]);
-				$q_eg = 'SELECT ps_product_attribute.id_product_attribute id_product_attribute
-				FROM `'._DB_PREFIX_.'product_attribute_combination` 
-				inner join `'._DB_PREFIX_.'product_attribute` on
-					ps_product_attribute.id_product_attribute = `ps_product_attribute_combination`.id_product_attribute
-				WHERE `id_attribute` = '.(int) $value[1].' and ps_product_attribute.id_product = '.(int) $product['id_product'];
+				$q_eg = 'SELECT pac.id_product_attribute, 
+				pac.id_attribute id_attribute
+				,al.name name, agl.public_name
+				FROM `'._DB_PREFIX_.'product_attribute_combination` pac 
+				inner join `'._DB_PREFIX_.'product_attribute` pa on	pa.id_product_attribute = pac.id_product_attribute
+				inner join '._DB_PREFIX_.'attribute a on a.id_attribute = pac.id_attribute
+				inner join '._DB_PREFIX_.'attribute_lang al on al.id_attribute = pac.id_attribute
+				inner join '._DB_PREFIX_.'attribute_group_lang agl on a.id_attribute_group=agl.id_attribute_group 	
+				WHERE pac.id_attribute = '.(int) $value[1].' and pa.id_product = '.(int) $product['id_product'];
 				
-				$id_product_attribute = Db::getInstance()->getValue($q_eg);
-				$product['price'] = (float)Product::getPriceStatic($product['id_product'], true, $id_product_attribute);
+				$link = Db::getInstance()->executeS($q_eg);
+				$product['price'] = (float)Product::getPriceStatic($product['id_product'], true, $link[0]['id_product_attribute'],6, null,
+				false, true);
+				$product['id_product_attribute'] = $link[0]['id_product_attribute'];
+				$product['id_attribute'] = $link[0]['id_attribute'];
+				$product['price_without_reduction'] = (float)Product::getPriceStatic($product['id_product'], true, $link[0]['id_product_attribute'],6, null,
+				false, false);
+				$product['id_attribute_name'] = $link[0]['name'];
+				$product['link'] = $this->context->link->getProductLink($product['id_product'], null, null, null, $id_lang, $id_shop, $product['id_product_attribute'] );
+				$product['public_name'] = $link[0]['public_name'];
+				
 			}	
 						
 		}
