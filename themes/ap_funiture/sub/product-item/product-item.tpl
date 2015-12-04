@@ -98,7 +98,7 @@
 {/if}
 </div>
 {/if}
-{$param_product_url}
+
 {if $page_name !='product'}	
 					<div class="cart">
 						{if ($product.id_product_attribute == 0 || (isset($add_prod_display) && ($add_prod_display == 1))) && $product.available_for_order && !isset($restricted_country_mode) && $product.minimal_quantity <= 1 && $product.customizable != 2 && !$PS_CATALOG_MODE}
@@ -116,23 +116,9 @@
 						{/if}
 					</div>
 					<div class="view">
-					{if isset($param_product_url)}	
-					<a itemprop="url" class="button btn btn-outline" href="{$product.link|escape:'html':'UTF-8'}#{$param_product_url}" title="{l s='View'}">
+					<a itemprop="url" class="button btn btn-outline" href="{$link->getProductLink($product.id_product, null, null, null, null, null, (isset($product.id_attribute) && $product.id_attribute>0)?$product.id_product_attribute:0, Configuration::get('PS_REWRITING_SETTINGS'), false, true)|escape:'html':'UTF-8'}" title="{l s='View'}">
 							<span>{l s='More'}</span>
 					</a>
-					{else}
-					
-					<!-- 
-					getProductLink($product, $alias = null, $category = null, $ean13 = null, $id_lang = null, $id_shop = null, $ipa = 0)
-					<a itemprop="url" class="button btn btn-outline" href="{$link->getProductLink}" title="{l s='View'}">
-							<span>{l s='More'}</span>
-					</a>
-					-->	
-					<a itemprop="url" class="button btn btn-outline" href="{$product.link|escape:'html':'UTF-8'}" title="{l s='View'}">
-							<span>{l s='More'}</span>
-					</a>
-														
-					{/if}
 					</div>  
 {/if}
 </div>

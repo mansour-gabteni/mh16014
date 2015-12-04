@@ -148,16 +148,10 @@
 							{/if}
 						{/if}
 					</div>
-					<div class="view">
-					{if isset($param_product_url)}	
-					<a itemprop="url" class="button btn btn-outline" href="{$product.link|escape:'html':'UTF-8'}#{$param_product_url}" title="{l s='View'}">
+					<div class="view">	
+					<a itemprop="url" class="button btn btn-outline" href="{$link->getProductLink($product.id_product, null, null, null, null, null, (isset($product.id_attribute) && $product.id_attribute>0)?$product.id_product_attribute:0, Configuration::get('PS_REWRITING_SETTINGS'), false, true)|escape:'html':'UTF-8'}" title="{l s='View'}">
 							<span>{l s='More'}</span>
 						</a>
-					{else}
-					<a itemprop="url" class="button btn btn-outline" href="{$product.link|escape:'html':'UTF-8'}" title="{l s='View'}">
-							<span>{l s='More'}</span>
-						</a>					
-					{/if}
 					</div>
 					
 				</div>

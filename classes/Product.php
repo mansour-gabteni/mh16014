@@ -5118,7 +5118,7 @@ class ProductCore extends ObjectModel
 		// if blocklayered module is installed we check if user has set custom attribute name
 		if (Module::isInstalled('blocklayered') && Module::isEnabled('blocklayered'))
 		{
-			$nb_custom_values = Db::getInstance()->executeS('
+			$s='
 			SELECT DISTINCT la.`id_attribute`, la.`url_name` as `name`
 			FROM `'._DB_PREFIX_.'attribute` a
 			LEFT JOIN `'._DB_PREFIX_.'product_attribute_combination` pac
@@ -5130,7 +5130,8 @@ class ProductCore extends ObjectModel
 				ON (la.`id_attribute` = a.`id_attribute` AND la.`id_lang` = '.(int)$id_lang.')
 			WHERE la.`url_name` IS NOT NULL AND la.`url_name` != \'\'
 			AND pa.`id_product` = '.(int)$id_product.'
-			AND pac.`id_product_attribute` = '.(int)$id_product_attribute);
+			AND pac.`id_product_attribute` = '.(int)$id_product_attribute;
+			$nb_custom_values = Db::getInstance()->executeS($s);
 
 			if (!empty($nb_custom_values))
 			{
@@ -5313,18 +5314,19 @@ class ProductCore extends ObjectModel
 	 * @param integer $id_product_attribute
 	 * @return string
 	 */
-	public function getAnchor($id_product_attribute)
-	{
-		$attributes = Product::getAttributesParams($this->id, $id_product_attribute);
-		$anchor = '#';
-		foreach ($attributes as &$a)
-		{
-			foreach ($a as &$b)
-				$b = str_replace(Configuration::get('PS_ATTRIBUTE_ANCHOR_SEPARATOR'), '_', Tools::link_rewrite($b));
-			$anchor .= '/'.$a['group'].Configuration::get('PS_ATTRIBUTE_ANCHOR_SEPARATOR').$a['name'];
-		}
-		return $anchor;
-	}
+    public function getAnchor($id_product_attribute, $with_id = false)
+    {
+        $attributes = Product::getAttributesParams($this->id, $id_product_attribute);
+        $anchor = '#';
+        $sep = Configuration::get('PS_ATTRIBUTE_ANCHOR_SEPARATOR');
+        foreach ($attributes as &$a) {
+            foreach ($a as &$b) {
+                $b = str_replace($sep, '_', Tools::link_rewrite($b));
+            }
+            $anchor .= '/'.($with_id && isset($a['id_attribute']) && $a['id_attribute']? (int)$a['id_attribute'].$sep : '').$a['group'].$sep.$a['name'];
+        }
+        return $anchor;
+    }
 
 	/**
 	 * Gets the name of a given product, in the given lang

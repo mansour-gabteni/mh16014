@@ -3175,7 +3175,8 @@ class BlockLayered extends Module
 				$product['price_without_reduction'] = (float)Product::getPriceStatic($product['id_product'], true, $link[0]['id_product_attribute'],6, null,
 				false, false);
 				$product['id_attribute_name'] = $link[0]['name'];
-				$product['link'] = $this->context->link->getProductLink($product['id_product'], null, null, null, $id_lang, $id_shop, $product['id_product_attribute'] );
+				//$product['link'] = $this->context->link->getProductLink($product['id_product'], null, null, null, $id_lang, $id_shop, $product['id_product_attribute'] );
+				//$product['link'] = $this->context->link->getProductLink($product['id_product'], null, null, null, null, null, (isset($product.id_product_attribute) && $product.id_product_attribute!='')?$product.id_product_attribute:0, Configuration::get('PS_REWRITING_SETTINGS'), false, true)
 				$product['public_name'] = $link[0]['public_name'];
 				
 			}	
