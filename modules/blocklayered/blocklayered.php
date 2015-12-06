@@ -3168,6 +3168,12 @@ class BlockLayered extends Module
 				$product['minimal_quantity'] = $product['product_attribute_minimal_quantity'];
 			// show cart only if one atribute active
 			
+			$q_eg='SELECT distinct count(pa.id_product_attribute) c 
+					FROM '._DB_PREFIX_.'product_attribute pa
+					where pa.id_product = '.(int) $product['id_product'];	
+			$link = Db::getInstance()->executeS($q_eg);
+			$product['product_attribute_count'] = $link[0]['c'];
+				
 			if (isset($selected_filters['id_attribute_group'])  
 				//&& count($selected_filters['id_attribute_group'])==1
 				)	

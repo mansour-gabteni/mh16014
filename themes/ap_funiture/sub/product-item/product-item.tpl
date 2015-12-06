@@ -85,7 +85,7 @@
   {/if}								
 							
   <span itemprop="price" class="price product-price"><nobr>
-  {if !isset($product.attributes)}
+  {if !isset($product.attributes) && $product.product_attribute_count > 1}
   {l s='price from'}
   {/if}							
   {if !$priceDisplay}{convertPrice price=$product.price}{else}{convertPrice price=$product.price_tax_exc}{/if}

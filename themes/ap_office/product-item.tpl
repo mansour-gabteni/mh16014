@@ -51,7 +51,7 @@
 				<div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="content_price">
 					{if isset($product.show_price) && $product.show_price && !isset($restricted_country_mode)}
 						<span itemprop="price" class="price product-price">
-		  				    {if !isset($product.attributes)}
+		  				    {if !isset($product.attributes) && $product.product_attribute_count > 1}
 							 {l s='price from'}
 						    {/if}	
 							{if !$priceDisplay}{convertPrice price=$product.price}{else}{convertPrice price=$product.price_tax_exc}{/if}
