@@ -76,16 +76,16 @@
 <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="content_price">
 {if isset($product.show_price) && $product.show_price && !isset($restricted_country_mode)}
  <meta itemprop="priceCurrency" content="{$currency->iso_code}" />							
-  {if isset($product.id_attribute)}
-   <div style="font-size:12px;font-weight: bold;">{$product.public_name}: {$product.id_attribute_name}</div>
-  {/if} 
+  {foreach from=$product.attributes item='attribute'}
+   <div style="font-size:12px;font-weight: bold;">{$attribute.name}: {$attribute.value}</div>
+  {/foreach}
   {if isset($product.specific_prices) && $product.specific_prices && isset($product.specific_prices.reduction) && $product.specific_prices.reduction > 0}
    {hook h="displayProductPriceBlock" product=$product type="old_price"}
    <span class="old-price product-price">{displayWtPrice p=$product.price_without_reduction}</span>
   {/if}								
 							
   <span itemprop="price" class="price product-price"><nobr>
-  {if !isset($product.id_attribute)}
+  {if !isset($product.attributes)}
   {l s='price from'}
   {/if}							
   {if !$priceDisplay}{convertPrice price=$product.price}{else}{convertPrice price=$product.price_tax_exc}{/if}
@@ -116,7 +116,7 @@
 						{/if}
 					</div>
 					<div class="view">
-					<a itemprop="url" class="button btn btn-outline" href="{$link->getProductLink($product.id_product, null, null, null, null, null, (isset($product.id_attribute) && $product.id_attribute>0)?$product.id_product_attribute:0, Configuration::get('PS_REWRITING_SETTINGS'), false, true)|escape:'html':'UTF-8'}" title="{l s='View'}">
+					<a itemprop="url" class="button btn btn-outline" href="{$link->getProductLink($product.id_product, null, null, null, null, null, $product.id_product_attribute, Configuration::get('PS_REWRITING_SETTINGS'), false, true)|escape:'html':'UTF-8'}" title="{l s='View'}">
 							<span>{l s='More'}</span>
 					</a>
 					</div>  

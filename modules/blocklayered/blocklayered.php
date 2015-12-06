@@ -3144,20 +3144,36 @@ class BlockLayered extends Module
 		$stop = (int)($p + $range);
 		if ($stop > $pages_nb)
 			$stop = (int)($pages_nb);
-
+		//$id_attributes[] = array();
+		
+		//находим ид атрибута по его типу
+		$key_values = array_values($selected_filters['id_attribute_group']);
+		foreach ($key_values as $key => $key_value){
+			$values = explode('_', $key_value);
+			$id_attributes[$key]['id'] = $values[1];
+			$q_eg='SELECT a.id_attribute, agl.public_name, al.name
+					FROM ps_attribute a
+					inner join ps_attribute_lang al on al.id_attribute = a.id_attribute
+					inner join ps_attribute_group_lang agl on a.id_attribute_group=agl.id_attribute_group 	
+					where a.id_attribute = '.(int)$id_attributes[$key]['id'];
+			$link = Db::getInstance()->executeS($q_eg);
+					
+			$id_attributes[$key]['name'] = $link[0]['public_name'];
+			$id_attributes[$key]['value'] = $link[0]['name'];
+		}	
+			
 		foreach ($products as &$product)
 		{
 			if ($product['id_product_attribute'] && isset($product['product_attribute_minimal_quantity']))
 				$product['minimal_quantity'] = $product['product_attribute_minimal_quantity'];
 			// show cart only if one atribute active
 			
-			if (isset($selected_filters['id_attribute_group']) && 
-				count($selected_filters['id_attribute_group'])==1)	
+			if (isset($selected_filters['id_attribute_group'])  
+				//&& count($selected_filters['id_attribute_group'])==1
+				)	
 			{
-				//находим ид атрибута по его типу
-				$key_value = array_values($selected_filters['id_attribute_group']);
-				$value = explode('_', $key_value[0]);
-				$q_eg = 'SELECT pac.id_product_attribute, 
+
+				$q_eg = 'SELECT distinct pac.id_product_attribute, 
 				pac.id_attribute id_attribute
 				,al.name name, agl.public_name
 				FROM `'._DB_PREFIX_.'product_attribute_combination` pac 
@@ -3165,19 +3181,27 @@ class BlockLayered extends Module
 				inner join '._DB_PREFIX_.'attribute a on a.id_attribute = pac.id_attribute
 				inner join '._DB_PREFIX_.'attribute_lang al on al.id_attribute = pac.id_attribute
 				inner join '._DB_PREFIX_.'attribute_group_lang agl on a.id_attribute_group=agl.id_attribute_group 	
-				WHERE pac.id_attribute = '.(int) $value[1].' and pa.id_product = '.(int) $product['id_product'];
+				WHERE pa.id_product = '.(int) $product['id_product'];
 				
+				foreach ($id_attributes as $id_attribute) {
+					$q_eg.=' and pa.id_product_attribute in(
+					SELECT pa.id_product_attribute
+					FROM '._DB_PREFIX_.'product_attribute_combination pac 
+					inner join '._DB_PREFIX_.'product_attribute pa on	pa.id_product_attribute = pac.id_product_attribute 	
+					WHERE pa.id_product = '.(int) $product['id_product'].' and pac.id_attribute in ('.(int) $id_attribute['id'].') 
+					)
+					';
+				}
 				$link = Db::getInstance()->executeS($q_eg);
-				$product['price'] = (float)Product::getPriceStatic($product['id_product'], true, $link[0]['id_product_attribute'],6, null,
-				false, true);
+				
+				$product['price'] = (float)Product::getPriceStatic($product['id_product'], true, $link[0]['id_product_attribute'],6, null, false, true);
 				$product['id_product_attribute'] = $link[0]['id_product_attribute'];
-				$product['id_attribute'] = $link[0]['id_attribute'];
-				$product['price_without_reduction'] = (float)Product::getPriceStatic($product['id_product'], true, $link[0]['id_product_attribute'],6, null,
-				false, false);
-				$product['id_attribute_name'] = $link[0]['name'];
+				$product['attributes'] = $id_attributes;
+				$product['price_without_reduction'] = (float)Product::getPriceStatic($product['id_product'], true, $link[0]['id_product_attribute'],6, null, false, false);
+				//$product['id_attribute_name'] = $link[0]['name'];
 				//$product['link'] = $this->context->link->getProductLink($product['id_product'], null, null, null, $id_lang, $id_shop, $product['id_product_attribute'] );
 				//$product['link'] = $this->context->link->getProductLink($product['id_product'], null, null, null, null, null, (isset($product.id_product_attribute) && $product.id_product_attribute!='')?$product.id_product_attribute:0, Configuration::get('PS_REWRITING_SETTINGS'), false, true)
-				$product['public_name'] = $link[0]['public_name'];
+				//$product['public_name'] = $link[0]['public_name'];
 				
 			}	
 						
