@@ -13,6 +13,6 @@
 
 {if $view=="specialmodal"}
 <div id="specialmess"></div>
-<a href="http://{$host}/content/8-darim-dengi-za-pokupki"><img src="http://{$host}/img/cms/darimdengi.jpg"></a>
+<a href="http://{$host}/content/8-darim-dengi-za-pokupki"><img src="http://{$host}/darimdengi1.jpg"></a>
 <p align="center"><a style="font-size:18px;" href="http://{$host}/content/8-darim-dengi-za-pokupki">{l s='more' mod='egmarketing'}</a></p>
 {/if}
