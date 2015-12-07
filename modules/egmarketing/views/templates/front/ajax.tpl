@@ -13,19 +13,6 @@
 
 {if $view=="specialmodal"}
 <div id="specialmess"></div>
-<form id="specialform" name="specialform" action="#" method="post">
-<img src="http://{$host}/s.jpg">
-<fieldset>
-	<div class="clearfix">
-		<label for="ocontact">{l s='get by email' mod='egmarketing'}</label> <!-- {l s='get by phone' mod='egmarketing'} -->
-			<input class="form-control grey validate" type="" placeholder="" id="ocontact" name="ocontact" maxlength="32"  required="">
-	</div>
-	<input type="hidden" id="ajax" name="ajax" value="">
-	<input type="hidden" id="action" name="action" value="apecialadd">
-	<input type="hidden" id="urlaction" name="urlaction" value="{$ajaxcontroller}">
-	<div class="submit">
-		<button type="submit" name="submitspecial" id="submitspecial" class="button btn btn-outline button-medium"><span>{l s='get coupon' mod='egmarketing'}</span></button>
-	</div>
-</fieldset>
-</form>
+<a href="http://{$host}/content/8-darim-dengi-za-pokupki"><img src="http://{$host}/img/cms/darimdengi.jpg"></a>
+<p align="center"><a style="font-size:18px;" href="http://{$host}/content/8-darim-dengi-za-pokupki">{l s='more' mod='egmarketing'}</a></p>
 {/if}

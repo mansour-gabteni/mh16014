@@ -4,7 +4,7 @@
 $(document).ready(function() { 
 	
 	//loadCallme();
-	//window.setTimeout('special()',10000);
+	window.setTimeout('special()',10000);
 	
 /*	
 	$(document).on('click', '#submitspecial', function(e){

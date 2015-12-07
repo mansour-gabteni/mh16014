@@ -117,18 +117,17 @@ if (!defined('_PS_VERSION_'))
 	
   	public function hookDisplayFooter($params)
 	{
-		/*
-		$utm = Tools::getValue('utm_source');
 		
+		$utm = Tools::getValue('utm_source');
+		/*
 		if (egmultishop::isMarketingSite()
 			&& !$this->context->cookie->__isset('special')
 			//&& !$this->context->__get('special')==""
 			)
-			
+			*/
 		
-		//if(egmultishop::isMarketingSite()
-		// && $utm!=""
-		// )
+		if(egmultishop::isMarketingSite()
+		 )
 		{
 			$this->context->cookie->__set('special', 'shown');
 	 		$this->smarty->assign(array(
@@ -137,7 +136,7 @@ if (!defined('_PS_VERSION_'))
 		
 			return $this->display(__FILE__, 'special.tpl');
 		}
-		*/		
+				
 	}	
 	
   	public static function isMarketingSite()
