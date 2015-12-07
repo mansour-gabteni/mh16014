@@ -119,12 +119,12 @@ if (!defined('_PS_VERSION_'))
 	{
 		
 		$utm = Tools::getValue('utm_source');
-		/*
+		
 		if (egmultishop::isMarketingSite()
 			&& !$this->context->cookie->__isset('special')
 			//&& !$this->context->__get('special')==""
 			)
-			*/
+			
 		
 		if(egmultishop::isMarketingSite()
 		 )
