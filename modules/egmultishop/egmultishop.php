@@ -312,21 +312,25 @@ class egmultishop extends Module
 
 	public function hookDisplayProductDeliveryTime()
 	{
-		
-		 
-		if(egmultishop::isMarketingSite()>0)
-		{
+		$page = $this->getMultishopPage("freedeliv");
 			
-			$page = $this->getMultishopPage("freedeliv");
+		$page = $this->replaceCeoWords($page);
+
+	    $sql = 'SELECT fdelivery, delivery_price FROM `'._DB_PREFIX_.'shop_url` su
+		INNER JOIN `'._DB_PREFIX_.'egmultishop_url` mu ON
+			mu.`id_url`=su.`id_shop_url`
+		WHERE su.domain =\''.Tools::getHttpHost().'\'';
+	    $id_product = (int)Tools::getValue('id_product'); 
+	    $links = Db::getInstance()->executeS($sql);
+		if (in_array($id_product,array(15,16,17,18,19,20)))
+			$links[0]['fdelivery'] = 0; 
+	    
+		$this->smarty->assign(array(
+			'free_price' => 	$links[0]['fdelivery'],
+			'delivery_price' => $links[0]['delivery_price'] 	
+		));	
 			
-			$page = $this->replaceCeoWords($page);
-			
-			$this->smarty->assign(array(
-				'page' => 	$page	
-			));	
-			
-			return $this->display(__FILE__, 'egmultishop_page.tpl');
-		}
+		return $this->display(__FILE__, 'egmultishop_delivery.tpl');
 	}
 	
 	public function hookDisplayNav($params)

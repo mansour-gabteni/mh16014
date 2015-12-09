@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS `PREFIX_egmultishop_url` (
   PRIMARY KEY (`id_url`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;
 
-INSERT INTO `PREFIX_egmultishop_url` (`id_url`, `city_name`, `city1_name`, `city2_name`, `yandex_verify`, `yandex_metr`, `google_verify`, `google_anal`, `phone`, `delivery`, `selfout`) VALUES
+INSERT INTO `PREFIX_egmultishop_url` (`id_url`, `city_name`, `city1_name`, `city2_name`, `yandex_verify`, `yandex_metr`, `google_verify`, `google_anal`, `phone`) VALUES
 (1, 'Нижний Новгород', 'Нижнем Новгороде', '', 'wewerrwrwre', 'qweqwe', '777777', '', '8(960)165-25-25', 'доставка НН', 'самовывоз НН'),
 (2, 'Нижний Новгород', 'Нижнем Новгороде', '', '', '', '', 'df', '8(960)165-25-25', '0', '0'),
 (3, 'Москва', 'Москва', '', '', '', '', '', '8(960)165-25-25', '0', '0');
