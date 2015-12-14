@@ -20,5 +20,5 @@ $_MODULE['<{egcallme}ap_funiture>ajax_bfbb12dc2dce9d328e8303093db2ca33'] = 'Фа
 $_MODULE['<{egcallme}ap_funiture>ajax_78e731027d8fd50ed642340b7c9a63b3'] = 'Сообщение';
 $_MODULE['<{egcallme}ap_funiture>ajax_5829a954bd245531339dc10a081abff5'] = 'Перезвонить мне';
 $_MODULE['<{egcallme}ap_funiture>ajax_b5b54571e590dbf5c01b217424563999'] = 'Поле обязательно для заполнения';
-$_MODULE['<{egcallme}ap_funiture>main_hook_8069a762fc04f1fc29bca4c47c4cee21'] = 'Заказа обратный звонок';
-$_MODULE['<{egcallme}ap_funiture>main_hook_681bf5d55f13cc1db21b4676f0d40773'] = 'Перезвонить мне!';
+$_MODULE['<{egcallme}ap_funiture>main_hook_8069a762fc04f1fc29bca4c47c4cee21'] = 'Заказать обратный звонок';
+$_MODULE['<{egcallme}ap_funiture>main_hook_681bf5d55f13cc1db21b4676f0d40773'] = 'Перезвонить мне';
