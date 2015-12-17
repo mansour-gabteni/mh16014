@@ -211,6 +211,30 @@ class MetaCore extends ObjectModel
 
 		return Meta::getHomeMetas($id_lang, $page_name);
 	}
+	
+	public static function getEgCEOWords($type, $id=null, $ret)
+	{
+		$sql = 'SELECT * FROM `'._DB_PREFIX_.'egceowords` sw
+		INNER JOIN `'._DB_PREFIX_.'shop_url` su ON
+			sw.`id_url`=su.`id_shop_url`
+		WHERE su.domain =\''.Tools::getHttpHost().'\'
+		and sw.type = \''.$type.'\'' ;
+		if($id!=null)
+			$sql.=' and id_content = '.$id;
+		    
+		if (!$links = Db::getInstance()->executeS($sql)) {
+		  	return '';
+		}
+		
+	//	if($type == 'category') {
+						$ret['meta_title'] = $links[0]['title'];
+						$ret['meta_description'] = $links[0]['description'];
+						$ret['meta_keywords'] = $links[0]['keywords'];
+						$ret['description'] = $links[0]['content'];
+	//	}
+		
+		return $ret;
+	}
 
 	/**
 	 * Get meta tags for a given page
@@ -227,6 +251,7 @@ class MetaCore extends ObjectModel
 		$ret['meta_description'] = (isset($metas['description']) && $metas['description']) ? $metas['description'] : '';
 		$ret['meta_keywords'] = (isset($metas['keywords']) && $metas['keywords']) ? $metas['keywords'] :  '';
 		
+		$ret = Meta::getEgCeoWords('HOME', null, $ret);
 		return Meta::replaceCity($ret);
 	}
 	
@@ -355,8 +380,10 @@ class MetaCore extends ObjectModel
 			}
 			else
 				$result = Meta::getHomeMetas($id_lang, $page_name);
-				
+
+			$result = Meta::getEgCeoWords('category', $id_category);	
 			$result = Meta::replaceCity($result);
+			//$row['meta_description'] = $result['description'];
 			$row = Meta::replaceCity($row);
 			Cache::store($cache_id, $result);
 		}

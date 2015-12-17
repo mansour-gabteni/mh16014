@@ -95,6 +95,7 @@ if (!defined('_PS_VERSION_'))
 	
   	public function hookDisplayTopColumn($params)
 	{
+		
 		$mshop = new egmultishop();
 		
 		$npage = "npage"; //page for all
@@ -113,11 +114,12 @@ if (!defined('_PS_VERSION_'))
 		));	
 		
 		return $this->display(__FILE__, 'page.tpl');
+		
 	}
 	
   	public function hookDisplayFooter($params)
 	{
-		
+		/*
 		$utm = Tools::getValue('utm_source');
 		
 		if (egmultishop::isMarketingSite()
@@ -136,7 +138,7 @@ if (!defined('_PS_VERSION_'))
 		
 			return $this->display(__FILE__, 'special.tpl');
 		}
-				
+			*/	
 	}	
 	
   	public static function isMarketingSite()

@@ -322,7 +322,7 @@ class egmultishop extends Module
 		WHERE su.domain =\''.Tools::getHttpHost().'\'';
 	    $id_product = (int)Tools::getValue('id_product'); 
 	    $links = Db::getInstance()->executeS($sql);
-		if (in_array($id_product,array(15,16,17,18,19,20)))
+		if (in_array($id_product,array(15,16,17,18,19,20,228)))
 			$links[0]['fdelivery'] = 0; 
 	    
 		$this->smarty->assign(array(

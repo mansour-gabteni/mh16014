@@ -140,6 +140,8 @@ class CategoryCore extends ObjectModel
 		$this->meta_title = Meta::replaceCity($this->meta_title);
 		$this->meta_keywords = Meta::replaceCity($this->meta_keywords);
 		$this->meta_description = Meta::replaceCity($this->meta_description);
+		$row = Meta::getEgCEOWords('category', $id_category);
+		$this->description = ($row)?$row['description']:$this->description;
 		$this->description = Meta::replaceCity($this->description);
 	}
 
@@ -264,7 +266,7 @@ class CategoryCore extends ObjectModel
 				$this->description[$lang] = Category::getDescriptionClean($description);
 		else
 			$this->description = Category::getDescriptionClean($this->description);
-
+		//$this->description = "hello";
 		return array(
 			'id' => (int)$this->id,
 			'link' => Context::getContext()->link->getCategoryLink($this->id, $this->link_rewrite),
