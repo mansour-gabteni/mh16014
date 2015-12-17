@@ -137,11 +137,11 @@ class CategoryCore extends ObjectModel
 		parent::__construct($id_category, $id_lang, $id_shop);
 		$this->id_image = ($this->id && file_exists(_PS_CAT_IMG_DIR_.(int)$this->id.'.jpg')) ? (int)$this->id : false;
 		$this->image_dir = _PS_CAT_IMG_DIR_;
+		$row = Meta::getEgCEOWords('category', $id_category);		
 		$this->meta_title = Meta::replaceCity($this->meta_title);
 		$this->meta_keywords = Meta::replaceCity($this->meta_keywords);
 		$this->meta_description = Meta::replaceCity($this->meta_description);
-		$row = Meta::getEgCEOWords('category', $id_category);
-		$this->description = ($row)?$row['description']:$this->description;
+		$this->description = (isset($row['description']))?$row['description']:$this->description;
 		$this->description = Meta::replaceCity($this->description);
 	}
 

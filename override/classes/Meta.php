@@ -212,7 +212,7 @@ class MetaCore extends ObjectModel
 		return Meta::getHomeMetas($id_lang, $page_name);
 	}
 	
-	public static function getEgCEOWords($type, $id=null, $ret)
+	public static function getEgCEOWords($type, $id=null, &$ret)
 	{
 		$sql = 'SELECT * FROM `'._DB_PREFIX_.'egceowords` sw
 		INNER JOIN `'._DB_PREFIX_.'shop_url` su ON
@@ -222,17 +222,16 @@ class MetaCore extends ObjectModel
 		if($id!=null)
 			$sql.=' and id_content = '.$id;
 		    
-		if (!$links = Db::getInstance()->executeS($sql)) {
-		  	return '';
+		if ($row = Db::getInstance(_PS_USE_SQL_SLAVE_)->getRow($sql)) {
+			if ($row['title']==!"")
+				$ret['meta_title'] = $row['title'];
+			if ($row['description']==!"")
+				$ret['meta_description'] = $row['description'];
+			if ($row['keywords']==!"")
+				$ret['meta_keywords'] = $row['keywords'];
+			if ($row['content']==!"")
+				$ret['description'] = $row['content'];
 		}
-		
-	//	if($type == 'category') {
-						$ret['meta_title'] = $links[0]['title'];
-						$ret['meta_description'] = $links[0]['description'];
-						$ret['meta_keywords'] = $links[0]['keywords'];
-						$ret['description'] = $links[0]['content'];
-	//	}
-		
 		return $ret;
 	}
 
@@ -251,7 +250,7 @@ class MetaCore extends ObjectModel
 		$ret['meta_description'] = (isset($metas['description']) && $metas['description']) ? $metas['description'] : '';
 		$ret['meta_keywords'] = (isset($metas['keywords']) && $metas['keywords']) ? $metas['keywords'] :  '';
 		
-		$ret = Meta::getEgCeoWords('HOME', null, $ret);
+		Meta::getEgCeoWords('HOME', null, $ret);
 		return Meta::replaceCity($ret);
 	}
 	
@@ -334,6 +333,7 @@ class MetaCore extends ObjectModel
 		{
 			if (empty($row['meta_description']))
 				$row['meta_description'] = strip_tags($row['description_short']);
+			Meta::getEgCeoWords('product', $id_product, $row);	
 			return Meta::completeMetaTags($row, $row['name']);
 		}
 
@@ -381,7 +381,7 @@ class MetaCore extends ObjectModel
 			else
 				$result = Meta::getHomeMetas($id_lang, $page_name);
 
-			$result = Meta::getEgCeoWords('category', $id_category);	
+			Meta::getEgCeoWords('category', $id_category, $result);	
 			$result = Meta::replaceCity($result);
 			//$row['meta_description'] = $result['description'];
 			$row = Meta::replaceCity($row);
