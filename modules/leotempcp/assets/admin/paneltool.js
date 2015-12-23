@@ -94,6 +94,11 @@ $(document).ready(function(){
             $(this).addClass('current-theme-skin');
 
             selectedSkin = $(this).data('theme-skin-id');
+            //add class to html when selec skin
+            $('.leo-dynamic-theme-skin').each(function(){
+                    $('html').removeClass($(this).data('theme-skin-id'));
+            });
+            $('html').addClass(selectedSkin);
             if(selectedSkin=='default')
             {
                 $('head #leo-dynamic-skin-css').remove();

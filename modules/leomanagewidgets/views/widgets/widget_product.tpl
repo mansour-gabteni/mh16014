@@ -20,8 +20,8 @@
  			 <div class="product-container clearfix">	
 				
 				<div class="image ">
-					<a href="{$product.link}" title="{$product.name|escape:html:'UTF-8'}" class="product_image">
-						<img class="img-responsive" src="{$link->getImageLink($product.link_rewrite, $product.id_image, 'home_default')}"  alt="{$product.name|escape:html:'UTF-8'}" />
+					<a href="{$product.link}" title="{$product.name|escape:'html':'UTF-8'}" class="product_image">
+						<img class="img-responsive" src="{$link->getImageLink($product.link_rewrite, $product.id_image, 'home_default')}"  alt="{$product.name|escape:'html':'UTF-8'}" />
 						{if isset($product.new) && $product.new == 1}<span class="new">{l s='New' mod='leomanagewidgets'}</span>{/if}
 					</a>
 				</div>

@@ -16,6 +16,7 @@ class Datasample
 	private $_content = '';
 	private $_createTable = '';
 	public $_id_shop = 0;
+        public $_id_lang = 0;
 	private $_languages = array();
 	private $_languagesKey = array();
 	private $_html = array("error" => array(), "confirm" => array());
@@ -31,6 +32,7 @@ class Datasample
 		$this->context = Context::getContext();
 		$context = Context::getContext();
 		$this->_id_shop = $context->shop->id;
+                $this->_id_lang =  $this->context->language->id;
 		$languages = Language::getLanguages(false);
 		foreach ($languages as $lang)
 		{
@@ -389,10 +391,12 @@ class Datasample
 			}
 			else
 			{
-				if (!$parrentObj->add())
-				{
-					//print_r($parrentObj);
-				}
+				if($objectMName!="ApPageBuilderProfilesModel"){
+                                    if (!$parrentObj->add())
+                                    {
+                                            //print_r($parrentObj);
+                                    }
+                                }
 			}
 			//update params widget for menu
 			if (($objectMName == 'Btmegamenu' || $objectMName == 'Sbmegamenu') && isset($parrentField->params) && $parrentField->params && $parrentObj->id)
@@ -411,13 +415,32 @@ class Datasample
 				$this->importData($parrentField->child_field, $objectMName, $searchField, $searchValue, $moduleName, $parrentObj->id);
 			}
 
-			if (isset($parrentField->fields))
-			{
-				if (!$this->includeObjModel($moduleName, $parrentField->fields->attributes()->objectFile))
-					continue;
-				$this->importData($parrentField->fields, (string)$parrentField->fields->attributes()->objectName, (string)$parrentField->fields->attributes()->searchField, (int)$parrentObj->id, $moduleName);
-			}
+			//only for appagebuilder
+                        if($objectMName=="ApPageBuilderProfilesModel"){
+                            if (!$this->includeObjModel($moduleName, $parrentField->fields->attributes()->objectFile))
+                                            continue;
+                            
+                            foreach($parrentField->fields as $posField){
+                                $parrentObj->{(string)$posField->attributes()->position} =  $this->importData($posField, (string)$posField->attributes()->objectName, (string)$posField->attributes()->searchField, (int)$parrentObj->id, $moduleName);
+                            }
+                            
+                            
+                            if (!$parrentObj->add())
+                            {
+                                    
+                            }
+                            
+                        }else{
+                            if (isset($parrentField->fields))
+                            {
+                                    if (!$this->includeObjModel($moduleName, $parrentField->fields->attributes()->objectFile))
+                                            continue;
+                                    $this->importData($parrentField->fields, (string)$parrentField->fields->attributes()->objectName, (string)$parrentField->fields->attributes()->searchField, (int)$parrentObj->id, $moduleName);
+                            }
+                        }
 		}
+            if(isset($parrentObj) && isset($parrentObj->id))    
+            return $parrentObj->id;
 	}
 
 	public function isEmptyArray($array)
@@ -791,6 +814,67 @@ class Datasample
 					}
 					$this->_content .= '</hooks>';
 					$this->_content .= '</dataSample>';
+                                        
+                                        //replace sample for module
+                                        if($moduleXml->name=='appagebuilder'){
+                                            if (strpos($this->_content, "ApBlog") != false){
+                                                preg_match_all( '/chk_cat\=\"([^\"]+)\"{0,1}/i', $this->_content, $matches, PREG_OFFSET_CAPTURE );
+                                                if(isset($matches['1'])){
+                                                    foreach($matches['1'] as $slideVal){
+                                                        $where = " WHERE id_leoblogcat IN (".$slideVal[0].") AND id_lang = ".(int)$this->_id_lang;
+                                                        $result = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS('SELECT id_leoblogcat,link_rewrite FROM `'._DB_PREFIX_.'leoblogcat_lang` '.$where);
+                                                        $blogLink = "";
+                                                        foreach($result as $blogVal){
+                                                            $blogLink .= ($blogLink=="")?$blogVal['link_rewrite']:",".$blogVal['link_rewrite'];
+                                                        }
+                                                        
+                                                        $this->_content = str_replace('chk_cat="'.$slideVal[0].'"', 'chk_cat="'.$blogLink.'"', $this->_content);
+                                                    }
+                                                    
+                                                }
+                                            }
+                                            
+                                            //slideshow_group
+                                            if (strpos($this->_content, "ApSlideShow") != false){
+                                                preg_match_all( '/slideshow_group\=\"([^\"]+)\"{0,1}/i', $this->_content, $matches, PREG_OFFSET_CAPTURE );
+                                                
+                                                if(isset($matches['1'])){
+                                                    $where = "";
+                                                    foreach($matches['1'] as $slideVal){
+                                                       $where .= ($where=="")?"".$slideVal[0]:",".$slideVal[0];
+                                                    }
+                                                    $where = " WHERE id_leoslideshow_groups IN (".$where.")";
+                                                    $result = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS('SELECT id_leoslideshow_groups,title FROM `'._DB_PREFIX_.'leoslideshow_groups` '.$where);
+                                                    $strSearch = $strReplace = array();
+                                                    foreach($result as $slideVal){
+                                                        $strSearch[] = 'slideshow_group="'.$slideVal['id_leoslideshow_groups'].'"';
+                                                        $strReplace[] = 'slideshow_group="'.$slideVal['title'].'"';
+                                                    }
+                                                    $this->_content = str_replace($strSearch , $strReplace , $this->_content);
+                                                }
+                                            }
+                                            
+                                            //slideshow_group
+                                            if (strpos($this->_content, "ApSliderLayer") != false){
+                                                preg_match_all( '/slideshow_group\=\"([^\"]+)\"{0,1}/i', $this->_content, $matches, PREG_OFFSET_CAPTURE );
+                                                
+                                                if(isset($matches['1'])){
+                                                    $where = "";
+                                                    foreach($matches['1'] as $slideVal){
+                                                       $where .= ($where=="")?"".$slideVal[0]:",".$slideVal[0];
+                                                    }
+                                                    $where = " WHERE id_leosliderlayer_groups IN (".$where.")";
+                                                    $result = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS('SELECT id_leosliderlayer_groups,title FROM `'._DB_PREFIX_.'leosliderlayer_groups` '.$where);
+                                                    $strSearch = $strReplace = array();
+                                                    foreach($result as $slideVal){
+                                                        $strSearch[] = 'slideshow_group="'.$slideVal['id_leosliderlayer_groups'].'"';
+                                                        $strReplace[] = 'slideshow_group="'.$slideVal['title'].'"';
+                                                    }
+                                                    $this->_content = str_replace($strSearch , $strReplace , $this->_content);
+                                                }
+                                            }
+                                        }
+                                        
 					//save data
 					$fp = @fopen($savePath.$moduleXml->name.".xml", 'w');
 					fwrite($fp, $this->_content);
@@ -908,10 +992,34 @@ class Datasample
 				$result = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS('SELECT * FROM `'.($tableShop != '' ? $tableShop : $tableName).'`'.$where);
 			}
 		}
+                
 
 		foreach ($result as $value)
 		{
-			$obj = new $className($value[$defined["primary"]]);
+			
+                    
+                        $obj = new $className($value[$defined["primary"]]);
+                        
+                        if(!$obj->id) continue;
+                        
+                        if($className == 'ApPageBuilderProfilesModel'){
+                            
+                                if(!$this->ap_profile_status)
+                                    $this->ap_profile_status = $this->getProfileStatus();
+                                
+                                if(isset($this->ap_profile_status[$value[$defined["primary"]]]))
+                                    $obj->active = $this->ap_profile_status[$value[$defined["primary"]]];
+                        }
+                        
+                        if($className == 'ApPageBuilderProductsModel'){
+                            
+                                if(!$this->ap_products_status)
+                                    $this->ap_products_status = $this->getProfileProductStatus();
+                                
+                                if(isset($this->ap_products_status[$value[$defined["primary"]]]))
+                                    $obj->active = $this->ap_products_status[$value[$defined["primary"]]];
+                        }
+                        
 			if ($className == 'Btmegamenu' || $className == 'Sbmegamenu')
 			{
 				//change image link
@@ -1046,15 +1154,56 @@ class Datasample
 				{
 					if (!$this->includeObjModel($moduleName, $f->objectMFile))
 						return;
-					//build struct of sub table
-					$this->_content .= '<fields objectName="'.$f->objectMName.'" objectFile="'.$f->objectMFile.'" searchField="'.$f->searchField.'">';
-					$this->buildStruct($f, $f->searchField, $obj->id, $moduleName);
-					$this->_content .= '</fields>';
+                                        if ($className == 'ApPageBuilderProfilesModel'){
+                                            
+                                            $this->_content .= '<fields objectName="'.$f->objectMName.'" objectFile="'.$f->objectMFile.'" searchField="'.$f->searchField.'" position="header">';
+                                            $this->buildStruct($f, $f->searchField, $obj->header, $moduleName);
+                                            $this->_content .= '</fields>';
+                                            
+                                            $this->_content .= '<fields objectName="'.$f->objectMName.'" objectFile="'.$f->objectMFile.'" searchField="'.$f->searchField.'" position="content">';
+                                            $this->buildStruct($f, $f->searchField, $obj->content, $moduleName);
+                                            $this->_content .= '</fields>';
+                                            
+                                            $this->_content .= '<fields objectName="'.$f->objectMName.'" objectFile="'.$f->objectMFile.'" searchField="'.$f->searchField.'" position="footer">';
+                                            $this->buildStruct($f, $f->searchField, $obj->footer, $moduleName);
+                                            $this->_content .= '</fields>';
+                                            
+                                            $this->_content .= '<fields objectName="'.$f->objectMName.'" objectFile="'.$f->objectMFile.'" searchField="'.$f->searchField.'" position="product">';
+                                            $this->buildStruct($f, $f->searchField, $obj->product, $moduleName);
+                                            $this->_content .= '</fields>';
+                                        }else{
+                                            //build struct of sub table
+                                            $this->_content .= '<fields objectName="'.$f->objectMName.'" objectFile="'.$f->objectMFile.'" searchField="'.$f->searchField.'">';
+                                            $this->buildStruct($f, $f->searchField, $obj->id, $moduleName);
+                                            $this->_content .= '</fields>';
+                                        }
 				}
 			}
 			$this->_content .= '</field>';
 		}
 	}
+        
+        public static function getProfileStatus(){
+                $id_shop = (int)Context::getContext()->shop->id;
+                $sql = 'SELECT * FROM `'._DB_PREFIX_.'appagebuilder_profiles_shop` WHERE id_shop='.$id_shop;
+                $result = Db::getInstance()->executes($sql);
+                $profiles = array();
+                foreach($result as $key=>$val)
+                    $profiles[$val['id_appagebuilder_profiles']] = $val['active'];
+                
+                return $profiles;
+        }
+        
+        public static function getProfileProductStatus(){
+                $id_shop = (int)Context::getContext()->shop->id;
+                $sql = 'SELECT * FROM `'._DB_PREFIX_.'appagebuilder_products_shop` WHERE id_shop='.$id_shop;
+                $result = Db::getInstance()->executes($sql);
+                $profiles = array();
+                foreach($result as $key=>$val)
+                    $profiles[$val['id_appagebuilder_products']] = $val['active'];
+                
+                return $profiles;
+        }
 
 	public function treeCategory($id, $children, $fieldName)
 	{

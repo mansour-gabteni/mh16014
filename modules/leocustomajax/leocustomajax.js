@@ -192,7 +192,7 @@ function addJSProduct(currentProduct) {
  //   }   
 }
 function addEffectProducts(){
-    if(leoOption != 'undefined' && leoOption.productInfo){
+    if(typeof(leoOption) != 'undefined' && leoOption.productInfo){
         $(".leo-more-info").each(function() {
             addJSProduct($(this).data("idproduct"));
         });

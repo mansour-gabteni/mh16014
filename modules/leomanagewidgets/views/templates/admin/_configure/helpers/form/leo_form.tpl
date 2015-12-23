@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="col-md-8 leo-redirect">
-            <div class="alert alert-success">{l s="Click on hook you want to config" mod="leomanagewidgets"}</div>
+            <div class="alert alert-success">{l s='Click on hook you want to config' mod='leomanagewidgets'}</div>
             <ol class="breadcrumb">
                 <li class="active">HEADER</li>
                 <li><a data-element="displaybanner" href="#">displayBanner</a></li>
@@ -53,7 +53,7 @@
             <input type="hidden" id="data_delete" name="data_delete" value=""/>
         </div>
         <div class="col-md-4 leo-guide">
-            <div class="alert alert-success">{l s="How to use groups" mod="leomanagewidgets"}</div>
+            <div class="alert alert-success">{l s='How to use groups' mod='leomanagewidgets'}</div>
             <div class="form">
                 <div class="row"><b class="title">{l s='Group' mod='leomanagewidgets'}</b></div>
                 <div class="row group-wrap">
@@ -73,7 +73,7 @@
             </div>
         </div>
         <div class="col-md-12">
-            <div class="alert alert-success leo-alert">{l s="Please Select monitor size to configuration" mod='leomanagewidgets'}</div>
+            <div class="alert alert-success leo-alert">{l s='Please Select monitor size to configuration' mod='leomanagewidgets'}</div>
             <div class="leo-explain">
                 <b>{l s='Default' mod='leomanagewidgets'}</b>
                 {l s='Default monitor' mod='leomanagewidgets'} <br>

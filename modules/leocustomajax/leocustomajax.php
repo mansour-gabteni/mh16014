@@ -370,7 +370,7 @@ class Leocustomajax extends Module
 		$link = new Link($protocol_link, $protocol_content);
 
 		$id_lang = Context::getContext()->language->id;
-		$where = ' WHERE i.`id_product` IN ('.$listPro.') AND ish.`cover`=0';
+		$where = ' WHERE i.`id_product` IN ('.$listPro.') AND (ish.`cover`=0 OR ish.`cover` IS NULL) AND ish.`id_shop` = '.Context::getContext()->shop->id;
 		$order = ' ORDER BY i.`id_product`,`position`';
 		$limit = ' LIMIT 0,1';
 		//get product info
@@ -459,7 +459,7 @@ class Leocustomajax extends Module
 		{
 			$tmpImg = array();
 			$coverImg = array();
-			$where = ' WHERE i.`id_product` IN ('.$productList.')';
+			$where = ' WHERE i.`id_product` IN ('.$productList.') AND ish.`id_shop` = '.Context::getContext()->shop->id;
 			$order = ' ORDER BY i.`id_product`,`position`';
 
 			switch (Configuration::get('LEO_MINFO_SORT'))

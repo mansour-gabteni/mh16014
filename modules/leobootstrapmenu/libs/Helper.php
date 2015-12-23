@@ -41,7 +41,7 @@ class LeoBtmegamenuHelper
 		global $cookie;
 		$id_lang = intval($cookie->id_lang);
 
-		$join = 'JOIN `'._DB_PREFIX_.'category_shop` cs ON(c.`id_category` = cs.`id_category` AND cs.`id_shop` = '.(int)(Context::getContext()->shop->id).')';
+		$join = 'JOIN `'._DB_PREFIX_.'category_shop` cs ON(c.`id_category` = cs.`id_category` AND cs.`id_shop` = '.(int)Context::getContext()->shop->id.')';
 
 		$allCat = Db::getInstance()->ExecuteS('
 		SELECT c.*, cl.id_lang, cl.name, cl.description, cl.link_rewrite, cl.meta_title, cl.meta_keywords, cl.meta_description
@@ -80,20 +80,63 @@ class LeoBtmegamenuHelper
 		return Tools::getValue($key.($id_lang ? '_'.$id_shop.'_'.$id_lang : ''), $defaultValue);
 	}
 	
-	public static function getCookie()
+	public static function getPost($keys = array(), $lang = false )
 	{
-		$data = $_COOKIE;
-		return $data;
+		$post = array();
+		if($lang === false)
+		{
+			foreach ($keys as $key)
+			{
+				// get value from $_POST
+				$post[$key] = Tools::getValue($key);
+			}
+		}
+		if ($lang === true)
+		{
+			foreach ($keys as $key)
+			{
+				// get value multi language from $_POST
+				foreach (Language::getIDs(false) as $id_lang)
+					$post[$key.'_'.(int)$id_lang] = Tools::getValue($key.'_'.(int)$id_lang);
+			}
+		}
+		return $post;
 	}
 
-	public static function getPost(){
-		$data = $_POST;
-		return $data;
+	public static function getConfigKey($multi_lang = false)
+	{
+		if ($multi_lang == false)
+		{
+			return array(
+				'saveleobootstrapmenu',
+				'id_btmegamenu',
+				'id_parent',
+				'active',
+				'show_title',
+				'type',
+				'product_type',
+				'cms_type',
+				'category_type',
+				'manufacture_type',
+				'supplier_type',
+				'target',
+				'menu_class',
+				'icon_class',
+				'filename',
+				'is_group',
+				'colums',
+				'tab',
+			);
+		}
+		else
+		{
+			return array(
+				'title',
+				'text',
+				'url',
+				'content_text',
+			);
+		}
 	}
-
-	public static function getGet(){
-		$data = $_GET;
-		return $data;
-	}
-
+	
 }

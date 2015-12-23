@@ -120,6 +120,10 @@
                     $('.caption',$('#sliderlayer{/literal}{$sliderIDRand}{literal}')).click(function(){
                         if($(this).data('link') != undefined && $(this).data('link') != '') location.href = $(this).data('link');
                     });
+
+                    $('li',$('#sliderlayer{/literal}{$sliderIDRand}{literal}')).click(function(){
+                        if($(this).data('link') != undefined && $(this).data('link') != '') location.href = $(this).data('link');
+                    });
                  });
              {/literal}
 </script>

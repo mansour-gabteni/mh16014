@@ -67,6 +67,6 @@
 {/if}
 {addJsDefL name=placeholder_leomanagewidgets}{l s='Enter your e-mail' mod='leomanagewidgets' js=1}{/addJsDefL}
 {if isset($msg) && $msg}
-	{addJsDefL name=alert_leomanagewidgets}{l s='Newsletter : %1$s' sprintf=$msg js=1 mod="leomanagewidgets"}{/addJsDefL}
+	{addJsDefL name=alert_leomanagewidgets}{l s='Newsletter : %1$s' sprintf=$msg js=1 mod='leomanagewidgets'}{/addJsDefL}
 {/if}
 {/strip}

@@ -2,7 +2,7 @@
 <module>
 	<name>leosliderlayer</name>
 	<displayName><![CDATA[Leo Slider Layer for your homepage.]]></displayName>
-	<version><![CDATA[1.0]]></version>
+	<version><![CDATA[1.0.0]]></version>
 	<description><![CDATA[Adds image or text slider to your homepage.]]></description>
 	<author><![CDATA[LeoTheme]]></author>
 	<tab><![CDATA[front_office_features]]></tab>

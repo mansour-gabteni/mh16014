@@ -694,17 +694,17 @@
             <div class="form-group button-wrapper">
                     <div class="col-lg-9 col-lg-offset-3">
                         <button class="button btn btn-success" name="submitBackup" id="module_form_submit_btn" type="submit">
-                                 {l s="Back-up" mod='leotempcp'}
+                                 {l s='Back-up' mod='leotempcp'}
                         </button>
                         <button class="button btn btn-danger" name="submitRestore" data-confirm="{l s='Are you sure you want to restore back-up file?' mod='leotempcp'}" id="module_form_submit_btn" type="submit">
-                                 {l s="Restore Back-up File" mod='leotempcp'}
+                                 {l s='Restore Back-up File' mod='leotempcp'}
                         </button>
                         
                         <button class="button btn btn-success" name="submitSample" id="module_form_submit_btn" type="submit">
-                                 {l s="Export Sample Data" mod='leotempcp'}
+                                 {l s='Export Sample Data' mod='leotempcp'}
                         </button>
                         <button class="button btn btn-danger" name="submitImport" data-confirm="{l s='Are you sure you want to restore data sample of template. You will lost all data of module' mod='leotempcp'}" id="module_form_submit_btn" type="submit">
-                                 {l s="Restore Sample Data" mod='leotempcp'}
+                                 {l s='Restore Sample Data' mod='leotempcp'}
                         </button>
                         <p class="help-block">{l s='Data Sample is only for theme developer' mod='leotempcp'}</p>
                     </div>
@@ -721,7 +721,7 @@
             <div class="form-group">
                 <div class="col-lg-9 col-lg-offset-3">
                     <button class="button btn btn-success" name="submitExportDBStruct" id="module_form_submit_btn" type="submit">
-                            {l s="Export Data Struct" mod='leotempcp'}
+                            {l s='Export Data Struct' mod='leotempcp'}
                     </button>
                     <p class="help-block">{l s='You can download file in modules/leotemcp/install. This function is only for theme developer' mod='leotempcp'}</p>
                 </div>

@@ -45,16 +45,16 @@
                 <div class="row">
                     <a class="fancybox" data-toggle="tooltip" href="{$image.link}" title="{l s='Click to view' mod='leomanagewidgets'}">
                         <i class="icon-eye-open"></i>
-                        {l s="View" mod='leomanagewidgets'}
+                        {l s='View' mod='leomanagewidgets'}
                     </a>
-                    <a href="{$link->getAdminLink('AdminLeomanagewidgetsImages')}&imgName={$image.name|escape:'url'}" class="text-danger delete-image" title="{l s='Delete Selected Image?' mod='leomanagewidgets'}" onclick="if (confirm('{l s='Delete Selected Image?' mod='leomanagewidgets'}')) {
+                    <a href="{$link->getAdminLink('AdminLeomanagewidgetsImages')}&imgName={$image.name|rtrim}" class="text-danger delete-image" title="{l s='Delete Selected Image?' mod='leomanagewidgets'}" onclick="if (confirm('{l s='Delete Selected Image?' mod='leomanagewidgets'}')) {
                             return deleteImage($(this));
                         } else {
                             return false;
                         }
                         ;">
                         <i class="icon-remove"></i>
-                        {l s="Delete" mod='leomanagewidgets'}
+                        {l s='Delete' mod='leomanagewidgets'}
                     </a>
                 </div></li>
         {/foreach}
@@ -63,7 +63,7 @@
     </div>
 </div>
 <script type="text/javascript">
-var upbutton = '{l s='Upload an image' mod='leomanagewidgets'}';
+var upbutton = "{l s='Upload an image' mod='leomanagewidgets'}";
 var imgManUrl = '{$imgManUrl}';
 {literal}
     $(document).ready(function(){

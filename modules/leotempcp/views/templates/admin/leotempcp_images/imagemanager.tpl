@@ -44,7 +44,7 @@
                 <div class="row">
                     <a class="fancybox" data-toggle="tooltip" href="{$image.link}" title="{l s='Click to view' mod='leotempcp'}">
                         <i class="icon-eye-open"></i>
-                        {l s="View" mod='leotempcp'}
+                        {l s='View' mod='leotempcp'}
                     </a>
                     <a href="{$link->getAdminLink('AdminLeotempcpImages')}&imgName={$image.name|escape:'url'}" class="text-danger delete-image" title="{l s='Delete Selected Image?' mod='leotempcp'}" onclick="if (confirm('{l s='Delete Selected Image?' mod='leotempcp'}')) {
                             return deleteImage($(this));
@@ -53,7 +53,7 @@
                         }
                         ;">
                         <i class="icon-remove"></i>
-                        {l s="Delete" mod='leotempcp'}
+                        {l s='Delete' mod='leotempcp'}
                     </a>
                 </div></li>
         {/foreach}
@@ -62,7 +62,7 @@
     </div>
 </div>
 <script type="text/javascript">
-var upbutton = '{l s='Upload an image' mod='leotempcp'}';
+var upbutton = "{l s='Upload an image' mod='leotempcp'}";
 var imgManUrl = '{$imgManUrl}';
 {literal}
     $(document).ready(function(){

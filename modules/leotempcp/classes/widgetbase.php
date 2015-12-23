@@ -74,7 +74,7 @@ if (!class_exists('LeoWidgetBase'))
 					if (isset($input['lang']))
 					{
 						foreach ($languages as $lang)
-							$fields_values[$input['name']][$lang['id_lang']] = isset($obj[$input['name'].'_'.$lang['id_lang']]) ? $obj[$input['name'].'_'.$lang['id_lang']] : $input['default'];
+							$fields_values[$input['name']][$lang['id_lang']] = isset($obj[$input['name'].'_'.$lang['id_lang']]) ? Tools::stripslashes($obj[$input['name'].'_'.$lang['id_lang']]) : $input['default'];
 					}
 					else
 					{
@@ -87,7 +87,7 @@ if (!class_exists('LeoWidgetBase'))
 								$thumb = __PS_BASE_URI__.'modules/'.$this->name.'/img/'.$value;
 								$this->fields_form[$k]['form']['input'][$j]['thumb'] = $thumb;
 							}
-							$fields_values[$input['name']] = $value;
+							$fields_values[$input['name']] = Tools::stripslashes($value);
 						}
 						else
 						{

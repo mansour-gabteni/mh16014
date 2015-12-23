@@ -47,17 +47,17 @@ class Btmegamenu extends ObjectModel
 	public $content_text;
 	public $submenu_catids;
 	public $is_cattree = 1;
-	private $shopUrl;
-	private $_editString = '';
-	private $megaConfig = array();
-	private $_editStringCol = '';
-	private $_isLiveEdit = true;
-	private $_module = null;
+	private $shop_url;
+	private $edit_string = '';
+	private $mega_config = array();
+	private $edit_string_col = '';
+	private $is_live_edit = true;
+	private $leo_module = null;
 	public $id_shop = '';
 
 	public function setModule($module)
 	{
-		$this->_module = $module;
+		$this->leo_module = $module;
 	}
 
 	/**
@@ -106,10 +106,8 @@ class Btmegamenu extends ObjectModel
 		),
 	);
 
-	public function copyFromPost()
+	public function copyFromPost($post = array())
 	{
-		$post = LeoBtmegamenuHelper::getPost();
-
 		/* Classical fields */
 		foreach ($post as $key => $value)
 			if (key_exists($key, $this) && $key != 'id_'.$this->table)
@@ -122,9 +120,9 @@ class Btmegamenu extends ObjectModel
 			foreach ($languages as $language)
 				foreach ($this->fieldsValidateLang as $field => $validation)
 				{
-					if (Tools::getIsset($field.'_'.(int)($language['id_lang'])))
-						$this->{$field}[(int)($language['id_lang'])] = Tools::getValue($field.'_'.(int)($language['id_lang']));
-					
+					if (Tools::getIsset($field.'_'.(int)$language['id_lang']))
+						$this->{$field}[(int)$language['id_lang']] = Tools::getValue($field.'_'.(int)$language['id_lang']);
+
 					# validate module
 					unset($validation);
 				}
@@ -181,9 +179,9 @@ class Btmegamenu extends ObjectModel
 
 		// Delete CMS Category and its child from database
 		$list = count($to_delete) > 1 ? implode(',', $to_delete) : (int)$this->id;
-		Db::getInstance()->execute('DELETE FROM `'._DB_PREFIX_.'btmegamenu` WHERE `id_btmegamenu` IN ('.$list.')');
-		Db::getInstance()->execute('DELETE FROM `'._DB_PREFIX_.'btmegamenu_shop` WHERE `id_btmegamenu` IN ('.$list.')');
-		Db::getInstance()->execute('DELETE FROM `'._DB_PREFIX_.'btmegamenu_lang` WHERE `id_btmegamenu` IN ('.$list.')');
+		Db::getInstance()->execute('DELETE FROM `'._DB_PREFIX_.'btmegamenu` WHERE `id_btmegamenu` IN ('.pSQL($list).')');
+		Db::getInstance()->execute('DELETE FROM `'._DB_PREFIX_.'btmegamenu_shop` WHERE `id_btmegamenu` IN ('.pSQL($list).')');
+		Db::getInstance()->execute('DELETE FROM `'._DB_PREFIX_.'btmegamenu_lang` WHERE `id_btmegamenu` IN ('.pSQL($list).')');
 		Btmegamenu::cleanPositions($this->id_parent);
 		return true;
 	}
@@ -193,18 +191,18 @@ class Btmegamenu extends ObjectModel
 		$return = 1;
 		foreach ($menus as $id_btmegamenu)
 		{
-			$objMenu = new Btmegamenu($id_btmegamenu);
-			$return &= $objMenu->delete();
+			$obj_menu = new Btmegamenu($id_btmegamenu);
+			$return &= $obj_menu->delete();
 		}
 		return $return;
 	}
 
 	public function calcLevelDepth()
 	{
-		$parentBtmegamenu = new Btmegamenu($this->id_parent);
-		if (!$parentBtmegamenu)
+		$parent_btmegamenu = new Btmegamenu($this->id_parent);
+		if (!$parent_btmegamenu)
 			die('parent Menu does not exist');
-		return $parentBtmegamenu->level_depth + 1;
+		return $parent_btmegamenu->level_depth + 1;
 	}
 
 	public function updatePosition($way, $position)
@@ -226,7 +224,7 @@ class Btmegamenu extends ObjectModel
 		// since BETWEEN is treated differently according to databases
 		return (Db::getInstance()->execute('
 			UPDATE `'._DB_PREFIX_.'btmegamenu`
-			SET `position`= `position` '.($way ? '- 1' : '+ 1').'
+			SET `position`= `position` '.pSQL($way ? '- 1' : '+ 1').'
 			WHERE `position`
 			'.($way ? '> '.(int)$moved_menu['position'].' AND `position` <= '.(int)$position : '< '.(int)$moved_menu['position'].' AND `position` >= '.(int)$position).'
 			AND `id_parent`='.(int)$moved_menu['id_parent']) && Db::getInstance()->execute('
@@ -270,7 +268,7 @@ class Btmegamenu extends ObjectModel
 		$sql = 'SELECT m.*, md.title, md.description, md.content_text , md.url
 				FROM '._DB_PREFIX_.'megamenu m
 				LEFT JOIN '._DB_PREFIX_.'btmegamenu_lang md ON m.id_btmegamenu = md.id_btmegamenu AND md.id_lang = '.(int)$id_lang
-				.' JOIN '._DB_PREFIX_.'btmegamenu_shop bs ON m.id_btmegamenu = bs.id_btmegamenu AND bs.id_shop = '.(int)($id_shop);
+				.' JOIN '._DB_PREFIX_.'btmegamenu_shop bs ON m.id_btmegamenu = bs.id_btmegamenu AND bs.id_shop = '.(int)$id_shop;
 		$sql .= ' WHERE m.id_btmegamenu='.(int)$id_btmegamenu;
 
 		return Db::getInstance()->executeS($sql);
@@ -286,7 +284,7 @@ class Btmegamenu extends ObjectModel
 		$sql = ' SELECT m.*, md.title, md.text, md.description, md.content_text, md.url
 				FROM '._DB_PREFIX_.'btmegamenu m
 				LEFT JOIN '._DB_PREFIX_.'btmegamenu_lang md ON m.id_btmegamenu = md.id_btmegamenu AND md.id_lang = '.(int)$id_lang
-				.' JOIN '._DB_PREFIX_.'btmegamenu_shop bs ON m.id_btmegamenu = bs.id_btmegamenu AND bs.id_shop = '.(int)($id_shop);
+				.' JOIN '._DB_PREFIX_.'btmegamenu_shop bs ON m.id_btmegamenu = bs.id_btmegamenu AND bs.id_shop = '.(int)$id_shop;
 		if ($active)
 			$sql .= ' WHERE m.`active`=1 ';
 
@@ -383,8 +381,8 @@ class Btmegamenu extends ObjectModel
 	 */
 	public function renderAttrs($menu)
 	{
-		$t = sprintf($this->_editString, $menu['id_btmegamenu'], $menu['is_group'], $menu['colums']);
-		if ($this->_isLiveEdit)
+		$t = sprintf($this->edit_string, $menu['id_btmegamenu'], $menu['is_group'], $menu['colums']);
+		if ($this->is_live_edit)
 		{
 			if (isset($menu['megaconfig']->subwidth) && $menu['megaconfig']->subwidth)
 			{
@@ -413,7 +411,7 @@ class Btmegamenu extends ObjectModel
 				if ($param)
 				{
 					# validate module
-					$this->megaConfig[$param->id] = $param;
+					$this->mega_config[$param->id] = $param;
 				}
 			}
 		}
@@ -422,7 +420,7 @@ class Btmegamenu extends ObjectModel
 	public function hasMegaMenuConfig($menu)
 	{
 		$id = $menu['id_btmegamenu'];
-		return isset($this->megaConfig[$id]) ? $this->megaConfig[$id] : array();
+		return isset($this->mega_config[$id]) ? $this->mega_config[$id] : array();
 	}
 
 	public function getFrontTree($parent = 1, $edit = false, $params = array())
@@ -431,18 +429,18 @@ class Btmegamenu extends ObjectModel
 		if ($edit)
 		{
 			# validate module
-			$this->_editString = ' data-id="%s" data-group="%s"  data-cols="%s" ';
+			$this->edit_string = ' data-id="%s" data-group="%s"  data-cols="%s" ';
 		}
 		else
 		{
-			$this->_isLiveEdit = false;
+			$this->is_live_edit = false;
 			$this->model_menu_widget = new LeoTempcpWidget();
 			$this->model_menu_widget->setTheme(Context::getContext()->shop->getTheme());
 			$this->model_menu_widget->langID = Context::getContext()->language->id;
 			$this->model_menu_widget->loadWidgets(Context::getContext()->shop->id);
 			$this->model_menu_widget->loadEngines();
 		}
-		$this->_editStringCol = ' data-colwidth="%s" data-class="%s" ';
+		$this->edit_string_col = ' data-colwidth="%s" data-class="%s" ';
 
 		$childs = $this->getChild(null, null, null, true);
 		foreach ($childs as $child)
@@ -465,12 +463,11 @@ class Btmegamenu extends ObjectModel
 			$this->children[$child['id_parent']][] = $child;
 		}
 
-
 		$parent = 1;
-		$themeName = Context::getContext()->shop->getTheme();
+		$theme_name = Context::getContext()->shop->getTheme();
 		$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? 'https://' : 'http://';
-		$this->image_base_url = Tools::htmlentitiesutf8($protocol.$_SERVER['HTTP_HOST'].__PS_BASE_URI__).'themes/'.$themeName.'/img/modules/leobootstrapmenu/icons/';
-		$this->shopUrl = $this->image_base_url;
+		$this->image_base_url = Tools::htmlentitiesutf8($protocol.$_SERVER['HTTP_HOST'].__PS_BASE_URI__).'themes/'.$theme_name.'/img/modules/leobootstrapmenu/icons/';
+		$this->shop_url = $this->image_base_url;
 		$output = '';
 		if ($this->hasChild($parent))
 		{
@@ -602,13 +599,13 @@ class Btmegamenu extends ObjectModel
 			$output .= '</ul>';
 		}
 
-		$this->_module = null;
+		$this->leo_module = null;
 		return $output;
 	}
 
 	public function renderWidgetsInCol($col)
 	{
-		if (is_object($col) && isset($col->widgets) && !$this->_editString)
+		if (is_object($col) && isset($col->widgets) && !$this->edit_string)
 		{
 			$widgets = $col->widgets;
 			$widgets = explode('|wid-', '|'.$widgets);
@@ -620,7 +617,7 @@ class Btmegamenu extends ObjectModel
 				foreach ($widgets as $wid)
 				{
 					$content = $this->model_menu_widget->renderContent($wid);
-					$output .= $this->_module->getWidgetContent($wid, $content['type'], $content['data'], 0);
+					$output .= $this->leo_module->getWidgetContent($wid, $content['type'], $content['data'], 0);
 				}
 				return $output;
 			}
@@ -633,7 +630,7 @@ class Btmegamenu extends ObjectModel
 	public function getColumnDataConfig($col)
 	{
 		$output = '';
-		if (is_object($col) && $this->_isLiveEdit)
+		if (is_object($col) && $this->is_live_edit)
 		{
 			$vars = get_object_vars($col);
 			foreach ($vars as $key => $var)
@@ -648,7 +645,7 @@ class Btmegamenu extends ObjectModel
 	/**
 	 * display mega content based on user configuration
 	 */
-	public function genMegaMenuByConfig($parentId, $level, $menu, $hascat = false)
+	public function genMegaMenuByConfig($parent_id, $level, $menu, $hascat = false)
 	{
 		$attrw = '';
 		$align = '';
@@ -718,8 +715,8 @@ class Btmegamenu extends ObjectModel
 
 		$output .= '</div></div>';
 		$output .= '</li>';
-		unset($parentId); # validate module
-		
+		unset($parent_id); # validate module
+
 		return $output;
 	}
 
@@ -731,7 +728,7 @@ class Btmegamenu extends ObjectModel
 		$page_name = Dispatcher::getInstance()->getController();
 		$value = (int)$menu['item'];
 		$result = '';
-		switch ($menu['type']) 
+		switch ($menu['type'])
 		{
 			case 'product':
 				if ($value == Tools::getValue('id_product') && $page_name == 'product')
@@ -781,7 +778,7 @@ class Btmegamenu extends ObjectModel
 		return $result;
 	}
 
-	public function genFrontTree($parentId, $level, $parent)
+	public function genFrontTree($parent_id, $level, $parent)
 	{
 		$attrw = '';
 		$class = $parent['is_group'] ? 'dropdown-mega' : 'dropdown-menu';
@@ -791,9 +788,9 @@ class Btmegamenu extends ObjectModel
 			$attrw .= ' style="width:'.$parent['megaconfig']->subwidth.'px"';
 		}
 
-		if ($this->hasChild($parentId))
+		if ($this->hasChild($parent_id))
 		{
-			$data = $this->getNodes($parentId);
+			$data = $this->getNodes($parent_id);
 			$parent['colums'] = (int)$parent['colums'];
 			if ($parent['colums'] > 1)
 			{
@@ -841,12 +838,12 @@ class Btmegamenu extends ObjectModel
 					$output = '<div class="'.$class.' dropdown-sub mega-cols cols'.$parent['colums'].'" '.$attrw.' ><div class="dropdown-menu-inner"><div class="row">';
 					$cols = array_chunk($data, ceil(count($data) / $parent['colums']));
 
-					$oSpans = $this->getColWidth($parent, (int)$parent['colums']);
+					$o_spans = $this->getColWidth($parent, (int)$parent['colums']);
 
 					foreach ($cols as $i => $menus)
 					{
-						$colwidth = str_replace('col-sm-', '', $oSpans[$i + 1]);
-						$output .= '<div class="mega-col '.$oSpans[$i + 1].' col-'.($i + 1).'" data-type="menu" data-colwidth="'.$colwidth.'"><div class="inner"><ul>';
+						$colwidth = str_replace('col-sm-', '', $o_spans[$i + 1]);
+						$output .= '<div class="mega-col '.$o_spans[$i + 1].' col-'.($i + 1).'" data-type="menu" data-colwidth="'.$colwidth.'"><div class="inner"><ul>';
 						foreach ($menus as $menu)
 						{
 							# validate module
@@ -861,7 +858,6 @@ class Btmegamenu extends ObjectModel
 			}
 			else
 			{
-//				$failse = false;
 				if (!empty($parent['megaconfig']->rows))
 				{
 					$output = '<div class="'.$class.' level'.$level.'" '.$attrw.' ><div class="dropdown-menu-inner">';
@@ -952,104 +948,103 @@ class Btmegamenu extends ObjectModel
 	public function genCatByTree($parent, $context, $result)
 	{
 		$context = Context::getContext();
-		$resultParents = array();
-		$resultIds = array();
+		$result_parents = array();
+		$result_ids = array();
 
 		foreach ($result as &$row)
 		{
-			$resultParents[$row['id_parent']][] = &$row;
-			$resultIds[$row['id_category']] = &$row;
+			$result_parents[$row['id_parent']][] = &$row;
+			$result_ids[$row['id_category']] = &$row;
 		}
 
 		//get cat
-		$blockCategTree = array();
-		$leoProcessCat = array();
-		foreach ($resultParents as $rkey => $rrow)
+		$block_categ_tree = array();
+		$leo_process_cat = array();
+		foreach ($result_parents as $rkey => $rrow)
 		{
-			if (!in_array($rkey, $leoProcessCat))
+			if (!in_array($rkey, $leo_process_cat))
 			{
-				$resultCat = $this->getCatTree($leoProcessCat, $context, $resultParents, $resultIds, 0, $rkey, 0);
-				$blockCategTree[$rkey] = $resultCat;
+				$result_cat = $this->getCatTree($leo_process_cat, $context, $result_parents, $result_ids, 0, $rkey, 0);
+				$block_categ_tree[$rkey] = $result_cat;
 			}
 			# validate module
 			unset($rrow);
 		}
 
-		$oSpans = $this->getColWidth($parent, (int)$parent['colums']);
+		$o_spans = $this->getColWidth($parent, (int)$parent['colums']);
 
 		$level = 1;
 
 		$html = '';
-		foreach ($blockCategTree as $val)
+		foreach ($block_categ_tree as $val)
 		{
 			if ($val['children'])
 			{
 				# validate module
-				$this->genCatBySubTree($html, $val['children'], $level, $oSpans, $parent['target'], (int)$parent['colums']);
+				$this->genCatBySubTree($html, $val['children'], $level, $o_spans, $parent['target'], (int)$parent['colums']);
 			}
 		}
 
-		unset($leoProcessCat, $resultParents, $resultIds);
+		unset($leo_process_cat, $result_parents, $result_ids);
 
 		//die($html);
 		return $html;
 	}
 
-	public function genCatBySubTree(&$html, $result, $level, $oSpans, $target, $columns)
+	public function genCatBySubTree(&$html, $result, $level, $o_spans, $target, $columns)
 	{
 		$index = 1;
-		$closeTag = 0;
+		$close_tag = 0;
 
 		foreach ($result as $val)
 		{
-			$classLi = '';
-			$classUl = 'dropdown-menu';
+			$class_li = '';
+			$class_ul = 'dropdown-menu';
 			//$classUl = 'dropdown-mega';
-			$classDiv = '';
+			$class_div = '';
 
 			if ($val['currentDepth'] == 1)
 			{
 				if ($index == 1 || (($index - 1) % $columns) == 0)
 				{
 					//open div row tag
-					$html .= ($closeTag ? '</div><div class="row">' : '<div class="row">');
-					$closeTag++;
+					$html .= ($close_tag ? '</div><div class="row">' : '<div class="row">');
+					$close_tag++;
 				}
-				if (isset($oSpans[$index]))
-					$classDiv = $oSpans[$index];
+				if (isset($o_spans[$index]))
+					$class_div = $o_spans[$index];
 				else
 				{
-					if (isset($oSpans[$index - $columns]))
-						$classDiv = $oSpans[$index - $columns];
+					if (isset($o_spans[$index - $columns]))
+						$class_div = $o_spans[$index - $columns];
 					else
-						$classDiv = 'col-md-12';
+						$class_div = 'col-md-12';
 				}
-				$modColumn = $index % $columns;
-				if ($modColumn == 0)
-					$modColumn = $columns;
-				if (isset($oSpans[$modColumn]))
-					$classDiv = $oSpans[$modColumn];
+				$mod_column = $index % $columns;
+				if ($mod_column == 0)
+					$mod_column = $columns;
+				if (isset($o_spans[$mod_column]))
+					$class_div = $o_spans[$mod_column];
 				else
-					$classDiv = 'col-md-12';
+					$class_div = 'col-md-12';
 
 				//open mega div + ul
-				$html .= '<div class="mega-col '.$classDiv.' col-'.$index.'"><ul>';
-				$classLi = 'mega-group ';
-				$classUl = 'dropdown-mega';
+				$html .= '<div class="mega-col '.$class_div.' col-'.$index.'"><ul>';
+				$class_li = 'mega-group ';
+				$class_ul = 'dropdown-mega';
 			}
 			if ($val['children'])
-				$classLi .= 'parent dropdown-submenu';
-			$html .= '<li class="'.$classLi.'">';
+				$class_li .= 'parent dropdown-submenu';
+			$html .= '<li class="'.$class_li.'">';
 			$html .= '<a class="dropdown-toggle" target='.$target.' href="'.$val['link'].'"><span class="menu-title">'.$val['name'].'</span>';
 			if ($val['children'] && $val['currentDepth'] > 1)
 				$html .= '<b class="caret"></b>';
 
-
 			$html .= '</a>';
 			if ($val['children'])
 			{
-				$html .= '<ul class="'.$classUl.' level'.$level.'">';
-				$this->genCatBySubTree($html, $val['children'], $level + 1, $oSpans, $target, $columns);
+				$html .= '<ul class="'.$class_ul.' level'.$level.'">';
+				$this->genCatBySubTree($html, $val['children'], $level + 1, $o_spans, $target, $columns);
 				$html .= '</ul>';
 			}
 			$html .= '</li>';
@@ -1064,27 +1059,27 @@ class Btmegamenu extends ObjectModel
 			$index++;
 		}
 		//close div row tag
-		$html .= ($closeTag ? '</div>' : '');
+		$html .= ($close_tag ? '</div>' : '');
 		//$level++;
 	}
 
-	public function getCatTree(&$leoProcessCat, $context, $resultParents, $resultIds, $maxDepth, $id_category = null, $currentDepth = 0)
+	public function getCatTree(&$leo_process_cat, $context, $result_parents, $result_ids, $max_depth, $id_category = null, $current_depth = 0)
 	{
 		$children = array();
-		if (isset($resultParents[$id_category]) && count($resultParents[$id_category]) && ($maxDepth == 0 || $currentDepth < $maxDepth))
-			foreach ($resultParents[$id_category] as $subcat)
-				$children[] = $this->getCatTree($leoProcessCat, $context, $resultParents, $resultIds, $maxDepth, $subcat['id_category'], $currentDepth + 1);
-		$leoProcessCat[] = $id_category;
+		if (isset($result_parents[$id_category]) && count($result_parents[$id_category]) && ($max_depth == 0 || $current_depth < $max_depth))
+			foreach ($result_parents[$id_category] as $subcat)
+				$children[] = $this->getCatTree($leo_process_cat, $context, $result_parents, $result_ids, $max_depth, $subcat['id_category'], $current_depth + 1);
+		$leo_process_cat[] = $id_category;
 
 		$link_rewrite = '';
 		$name = '';
-		if (isset($resultIds[$id_category]['link_rewrite']))
-			$link_rewrite = $resultIds[$id_category]['link_rewrite'];
-		if (isset($resultIds[$id_category]['link_rewrite']))
-			$name = $resultIds[$id_category]['name'];
+		if (isset($result_ids[$id_category]['link_rewrite']))
+			$link_rewrite = $result_ids[$id_category]['link_rewrite'];
+		if (isset($result_ids[$id_category]['link_rewrite']))
+			$name = $result_ids[$id_category]['name'];
 
 		$return = array('id' => $id_category, 'link' => $context->link->getCategoryLink($id_category, $link_rewrite),
-			'name' => $name, 'currentDepth' => $currentDepth,
+			'name' => $name, 'currentDepth' => $current_depth,
 			'children' => $children);
 
 		return $return;
@@ -1223,7 +1218,7 @@ class Btmegamenu extends ObjectModel
 
 	public function getLink($menu)
 	{
-		if ($this->_editString)
+		if ($this->edit_string)
 		{
 			# validate module
 			return '#';
@@ -1235,35 +1230,35 @@ class Btmegamenu extends ObjectModel
 		switch ($menu['type'])
 		{
 			case 'product':
-				if (Validate::isLoadedObject($objPro = new Product($value, true, $id_lang)))
+				if (Validate::isLoadedObject($obj_pro = new Product($value, true, $id_lang)))
 				{
 					# validate module
-					$result = $link->getProductLink((int)$objPro->id, $objPro->link_rewrite, null, null, $id_lang);
+					$result = $link->getProductLink((int)$obj_pro->id, $obj_pro->link_rewrite, null, null, $id_lang);
 				}
 				break;
 			case 'category':
-				if (Validate::isLoadedObject($objCate = new Category($value, $id_lang)))
+				if (Validate::isLoadedObject($obj_cate = new Category($value, $id_lang)))
 				{
 					# validate module
-					$result = $link->getCategoryLink((int)$objCate->id, $objCate->link_rewrite, $id_lang);
+					$result = $link->getCategoryLink((int)$obj_cate->id, $obj_cate->link_rewrite, $id_lang);
 				}
 				break;
 			case 'cms':
-				if (Validate::isLoadedObject($objCMS = new CMS($value, $id_lang)))
+				if (Validate::isLoadedObject($obj_cms = new CMS($value, $id_lang)))
 				{
 					# validate module
-					$result = $link->getCMSLink((int)$objCMS->id, $objCMS->link_rewrite, $id_lang);
+					$result = $link->getCMSLink((int)$obj_cms->id, $obj_cms->link_rewrite, $id_lang);
 				}
 				break;
 			case 'url':
 				$value = $menu['url'];
-				$regex = '((https?|ftp)\:\/\/)?'; // SCHEME 
-				$regex .= '([a-z0-9+!*(),;?&=\$_.-]+(\:[a-z0-9+!*(),;?&=\$_.-]+)?@)?'; // User and Pass 
-				$regex .= '([a-z0-9-.]*)\.([a-z]{2,3})'; // Host or IP 
-				$regex .= '(\:[0-9]{2,5})?'; // Port 
-				$regex .= '(\/([a-z0-9+\$_-]\.?)+)*\/?'; // Path 
-				$regex .= '(\?[a-z+&\$_.-][a-z0-9;:@&%=+\/\$_.-]*)?'; // GET Query 
-				$regex .= '(#[a-z_.-][a-z0-9+\$_.-]*)?'; // Anchor 
+				$regex = '((https?|ftp)\:\/\/)?'; // SCHEME
+				$regex .= '([a-z0-9+!*(),;?&=\$_.-]+(\:[a-z0-9+!*(),;?&=\$_.-]+)?@)?'; // User and Pass
+				$regex .= '([a-z0-9-.]*)\.([a-z]{2,3})'; // Host or IP
+				$regex .= '(\:[0-9]{2,5})?'; // Port
+				$regex .= '(\/([a-z0-9+\$_-]\.?)+)*\/?'; // Path
+				$regex .= '(\?[a-z+&\$_.-][a-z0-9;:@&%=+\/\$_.-]*)?'; // GET Query
+				$regex .= '(#[a-z_.-][a-z0-9+\$_.-]*)?'; // Anchor
 				if ($value == 'index' || $value == 'index.php')
 				{
 					$result = $link->getPageLink('index.php', false, $id_lang);
@@ -1280,17 +1275,17 @@ class Btmegamenu extends ObjectModel
 				//echo "<pre>".print_r($result,1);die;
 				break;
 			case 'manufacture':
-				if (Validate::isLoadedObject($objManu = new Manufacturer($value, $id_lang)))
+				if (Validate::isLoadedObject($obj_manu = new Manufacturer($value, $id_lang)))
 				{
 					# validate module
-					$result = $link->getManufacturerLink((int)$objManu->id, $objManu->link_rewrite, $id_lang);
+					$result = $link->getManufacturerLink((int)$obj_manu->id, $obj_manu->link_rewrite, $id_lang);
 				}
 				break;
 			case 'supplier':
-				if (Validate::isLoadedObject($objSupp = new Supplier($value, $id_lang)))
+				if (Validate::isLoadedObject($obj_supp = new Supplier($value, $id_lang)))
 				{
 					# validate module
-					$result = $link->getSupplierLink((int)$objSupp->id, $objSupp->link_rewrite, $id_lang);
+					$result = $link->getSupplierLink((int)$obj_supp->id, $obj_supp->link_rewrite, $id_lang);
 				}
 				break;
 			default:

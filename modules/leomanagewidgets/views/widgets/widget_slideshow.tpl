@@ -7,58 +7,73 @@
  * @license   GNU General Public License version 2
 *}
 
-{if $slides}	
+{if $slides}  
 {assign var="t_image" value="image_`$iso_code`"}
 {assign var="t_thumb" value="thum_`$iso_code`"}
 {assign var="t_title" value="title_`$iso_code`"}
+{assign var="t_link" value="link_`$iso_code`"}
 {assign var="t_description" value="description_`$iso_code`"}
-<div class="container">
+
     <!-- main slider carousel -->
     <div class="row">
         <div class="col-md-12" id="slider">
-                <div class="col-md-12" id="carousel-bounding-box">
+                <div id="carousel-example-generic">
                     <div id="myCarousel" class="carousel slide">
+            <ol class="carousel-indicators">
+              {foreach $slides as $slide name=item}
+              <li data-target="#carousel-example-generic" data-slide-to="{$smarty.foreach.item.index}" {if $smarty.foreach.item.first}class="active"{/if}></li>
+              {/foreach}  
+            </ol>
                         <!-- main slider carousel items -->
                         <div class="carousel-inner">
-							{foreach $slides as $slide name=slides}
-								<div class="item {if $smarty.foreach.slides.first}active{/if} " data-slide-number="{$smarty.foreach.slides.index}">
-									{if  isset($slide[$t_image]) && $slide[$t_image]}
-										<img src="{$pathimg}{$slide[$t_image]}" alt="" style="width:{$img_width}px;height:{$img_height}px" class="img-responsive">
-									{/if}	
-									  <div class="carousel-caption">
-										{if  isset($slide[$t_title]) && $slide[$t_title]}<h3>{$slide[$t_title]}</h3>{/if}
-										{if  isset($slide[$t_description]) && $slide[$t_description]}<p>{$slide[$t_description]}</p>{/if}		
-									  </div>
-								</div>
-							{/foreach}
-                        </div>
-                        <!-- main slider carousel nav controls --> <a class="carousel-control left" href="#myCarousel" data-slide="prev">‹</a>
-
-                        <a class="carousel-control right" href="#myCarousel" data-slide="next">›</a>
+              {foreach $slides as $slide name=slides}
+                <div class="item {if $smarty.foreach.slides.first}active{/if} " data-slide-number="{$smarty.foreach.slides.index}">
+                  {if  isset($slide[$t_image]) && $slide[$t_image]}
+                    {if  isset($slide[$t_link]) && $slide[$t_link]}
+                    <a href="{$slide[$t_link]}" title="{$slide[$t_title]}">
+                    {/if}
+                    <img src="{$pathimg}{$slide[$t_image]}" alt="" style="width:{$img_width}px;height:{$img_height}px" class="img-responsive">
+                    {if  isset($slide[$t_link]) && $slide[$t_link]}
+                    </a>
+                    {/if}
+                  {/if} 
+                    <div class="carousel-caption">
+                    {if  isset($slide[$t_title]) && $slide[$t_title]}
+                      <h3>
+                        {if  isset($slide[$t_link]) && $slide[$t_link]}
+                        <a href="{$slide[$t_link]}" title="{$slide[$t_title]}">
+                        {/if}
+                          {$slide[$t_title]}
+                        {if  isset($slide[$t_link]) && $slide[$t_link]}
+                        </a>
+                        {/if}
+                      </h3>
+                    {/if}
+                    {if  isset($slide[$t_description]) && $slide[$t_description]}<p>{$slide[$t_description]}</p>{/if}   
                     </div>
                 </div>
-        </div>
-    </div>
-    <!--/main slider carousel-->
+              {/foreach}
+                        </div>
+            <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+              <span class="fa fa-angle-left"></span>
+            </a>
+            <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+              <span class="fa fa-angle-right"></span>
+            </a>
+                    </div>
+                </div>
+          <!-- Controls -->
 
-   	<!-- thumb navigation carousel -->
-    <div class="col-md-12 hidden-sm hidden-xs" id="slider-thumbs">
-        <!-- thumb navigation carousel items -->
-        <ul class="list-inline">
-			{foreach $slides as $slide name=item}
-				<li> <a id="carousel-selector-{$smarty.foreach.item.index}" {if $smarty.foreach.item.first}class="selected"{/if}>
-					<img src="{$paththum}{$slide[$t_thumb]}" alt="" style="width:{$thumb_width}px;height:{$thumb_height}px" class="img-responsive"></a>
-				</li>
-			{/foreach}	
-        </ul>
-    </div>
+        </div>
+   
+    <!--/main slider carousel-->
 </div>
 
 {/if}  
 <script type="text/javascript">
 {literal}
 $('#myCarousel').carousel({
-    interval: {/literal}4000{literal}
+    interval: {/literal}{$interval}{literal}
 });
 
 // handles the carousel thumbnails

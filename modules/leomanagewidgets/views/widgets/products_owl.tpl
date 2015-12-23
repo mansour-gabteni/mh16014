@@ -105,7 +105,7 @@
 												</span>
 											{/if}
 										{/if}
-										111<a itemprop="url" class="button lnk_view btn btn-default" href="{$product.link|escape:'html':'UTF-8'}" title="{l s='View' mod='leomanagewidgets'}">
+										<a itemprop="url" class="button lnk_view btn btn-default" href="{$product.link|escape:'html':'UTF-8'}" title="{l s='View' mod='leomanagewidgets'}">
 											<span>{l s='More' mod='leomanagewidgets'}</span>
 										</a>
 									</div>

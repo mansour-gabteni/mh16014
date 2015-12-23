@@ -16,7 +16,7 @@ class AdminLeotempcpModuleController extends ModuleAdminControllerCore
 
 	public function __construct()
 	{
-		$url = 'index.php?controller=adminmodules&configure=leotempcp&token='.Tools::getAdminTokenLite('AdminModules').'&tab_module=Home&module_name=leotempcp';
+		$url = 'index.php?controller=adminmodules&configure=leotempcp&tab_module=Home&module_name=leotempcp&token='.Tools::getAdminTokenLite('AdminModules');
 		Tools::redirectAdmin($url);
 
 		$this->bootstrap = true;

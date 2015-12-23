@@ -48,7 +48,7 @@
                         }
                         ;">
                         <i class="icon-remove"></i>
-                        {l s="Delete" mod='leosliderlayer'}
+                        {l s='Delete' mod='leosliderlayer'}
                     </a>
                 </div></li>
         {/foreach}
@@ -58,8 +58,8 @@
     <div class="alert alert-info">{l s='If you can not update Image. Please set permission 755 for folder' mod='leosliderlayer'} {$imgUploadDir}</div>
 </div>
 <script type="text/javascript">
-var upbutton = '{l s='Upload an image' mod='leosliderlayer'}';
-var imgManUrl = '{$imgManUrl}';
+var upbutton = "{l s='Upload an image' mod='leosliderlayer'}";
+var imgManUrl = "{$imgManUrl}";
 {literal}
     $(document).ready(function(){
         $('.fancybox').fancybox();

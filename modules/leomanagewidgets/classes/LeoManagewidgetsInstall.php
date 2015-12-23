@@ -177,7 +177,7 @@ if (!class_exists('LeoManagewidgetsInstall'))
 		public static function installModuleTab($module_name, $title, $class_sfx = '', $parent = '')
 		{
 			$class = 'Admin'.Tools::ucfirst($module_name).Tools::ucfirst($class_sfx);
-			@copy(_PS_MODULE_DIR_.$module_name.'/logo.gif', _PS_IMG_DIR_.'t/'.$class.'.gif');
+			@Tools::copy(_PS_MODULE_DIR_.$module_name.'/logo.gif', _PS_IMG_DIR_.'t/'.$class.'.gif');
 			if ($parent == '')
 				$position = Tab::getCurrentTabId();
 			else

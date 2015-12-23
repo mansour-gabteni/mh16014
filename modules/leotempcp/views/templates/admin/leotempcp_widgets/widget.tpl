@@ -15,6 +15,7 @@
 	</script>	
  {else}
  <div class="col-lg-12" style="padding:20px;">
+		 {if $is_using_managewidget}
 		<div class="col-lg-5">
 		<h3>{l s='Only for Module leomanagewidgets' mod='leotempcp'}</h3> 
 			{foreach $types as $widget => $text}
@@ -26,6 +27,7 @@
 				{/if}	
 			{/foreach} 
 		</div>
+		{/if}
 		<div class="col-lg-6 col-lg-offset-1">
 		<h3>{l s='For all module (leomanagewidget,leomenubootstrap, leomenusidebar)' mod='leotempcp'}</h3> 
 			{foreach $types as $widget => $text}

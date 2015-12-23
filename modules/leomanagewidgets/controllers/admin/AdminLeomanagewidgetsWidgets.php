@@ -166,6 +166,26 @@ class AdminLeomanagewidgetsWidgetsController extends ModuleAdminControllerCore
 
 				$tmp = array();
 				$post = LeomanagewidgetsHelper::getPost();
+
+				$widget_type = Tools::getValue('widget_type');
+				# GET POST - BEGIN
+				$widget_type = Tools::getValue('widget_type');
+				$file_name = _PS_MODULE_DIR_.'leomanagewidgets/classes/widget/'.$widget_type.'.php';
+				require_once($file_name);
+				$class_name = 'LeoWidget'.Tools::ucfirst($widget_type);
+				$widget = new $class_name;
+				$keys = array('addleowidgets', 'id_leowidgets', 'widget_name', 'widget_type', 'saveandstayleotempcp');
+				$post = LeomanagewidgetsHelper::getPost($keys, 0);
+				$keys = array('widget_title');
+				$post += LeomanagewidgetsHelper::getPost($keys, 1);
+				$keys = $widget->getConfigKey(0);
+				$post += LeomanagewidgetsHelper::getPost($keys, 0);
+				$keys = $widget->getConfigKey(1);
+				$post += LeomanagewidgetsHelper::getPost($keys, 1);
+				$keys = $widget->getConfigKey(2);
+				$post += LeomanagewidgetsHelper::getPost($keys, 2);
+				# GET POST - END
+
 				foreach ($post as $key => $value)
 				{
 					$tmp[$key] = str_replace(array('\'', '\"'), array("'", '"'), $value);

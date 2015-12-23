@@ -609,11 +609,12 @@
 							type: 'iframe',
 							href: $globalthis.widgetLink + "&key=" + keyWidget + "&updateleowidgets",
 							afterLoad: function () {
-								$globalthis.hideSomeElement();
-								$('.fancybox-iframe').load($globalthis.hideSomeElement);
+								setTimeout(function(){
+                                  $globalthis.hideSomeElement();
+                                }, 2000);
 							},
 							beforeShow: function () {
-								$globalthis.hideSomeElement();
+								//$globalthis.hideSomeElement();
 							},
 							afterShow: function () {
 								$globalthis.hideSomeElement();
@@ -636,8 +637,9 @@
 							href: $globalthis.moduleLink + '&configure=' + module_name + '&module_name=' + module_name,
 							afterLoad: function () {
 								if ($('body', $('.fancybox-iframe').contents()).find("#main").length) {
-									$globalthis.hideSomeElement();
-									$('.fancybox-iframe').load($globalthis.hideSomeElement);
+									setTimeout(function(){
+                                      $globalthis.hideSomeElement();
+                                    }, 2000);
 								} else {
 									$('body', $('.fancybox-iframe').contents()).find("#psException").html('<div class="alert error">No Configuration For This Module</div>');
 								}
@@ -960,8 +962,9 @@
                             type: 'iframe',
                             href: $globalthis.widgetLink,
                             afterLoad: function () {
-                                $globalthis.hideSomeElement();
-                                $('.fancybox-iframe').load($globalthis.hideSomeElement);
+                                setTimeout(function(){
+                                  $globalthis.hideSomeElement();
+                                }, 2000);
                             },
                             afterClose: function (event, ui) {
                                 location.reload();
@@ -1028,10 +1031,11 @@
             });
         };
         this.hideSomeElement = function () {
-            $('body', $('.fancybox-iframe').contents()).find("#header").hide();
-            $('body', $('.fancybox-iframe').contents()).find("#footer").hide();
-            $('body', $('.fancybox-iframe').contents()).find(".page-head, #nav-sidebar ").hide();
-            $('body', $('.fancybox-iframe').contents()).find("#content.bootstrap").css('padding', 0).css('margin', 0);
+            $('.fancybox-iframe').contents().find("#header").remove();
+            $('.fancybox-iframe').contents().find("#footer").remove();
+            $('.fancybox-iframe').contents().find("#nav-sidebar").remove();
+            $('.fancybox-iframe').contents().find(".page-head").remove();
+            $('.fancybox-iframe').contents().find("#content.bootstrap").css('padding', 0).css('margin', 0);
         };
         this.returnWidthClass = function () {
             $globalthis = this;

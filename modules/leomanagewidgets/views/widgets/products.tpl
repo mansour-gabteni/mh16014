@@ -110,15 +110,9 @@
 												</span>
 											{/if}
 										{/if}
-										{if isset($param_product_url)}	
-										<a itemprop="url" class="button lnk_view btn btn-default" href="{$product.link|escape:'html':'UTF-8'}#{$param_product_url}" title="{l s='View' mod='leomanagewidgets'}">
-											<span>{l s='More' mod='leomanagewidgets'}</span>
-										</a>
-										{else}
 										<a itemprop="url" class="button lnk_view btn btn-default" href="{$product.link|escape:'html':'UTF-8'}" title="{l s='View' mod='leomanagewidgets'}">
 											<span>{l s='More' mod='leomanagewidgets'}</span>
 										</a>
-										{/if}
 									</div>
 									{if isset($product.color_list)}
 										<div class="color-list-container">{$product.color_list} </div>

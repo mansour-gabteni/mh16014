@@ -293,7 +293,7 @@
 <div id="overidehook" style="display:none">
 	<div id="oh-close">Close</div>
 	<form action="{$currentURL}&action=overridehook" method="post">
-	<p class="clearfix"><label>{l s="Select override hook" mod='leotempcp'}</lable><br>
+	<p class="clearfix"><label>{l s='Select override hook' mod='leotempcp'}</lable><br>
 	<select  name="name_hook">
 		<option value="0">{l s='--- Use Self Hook ---'  mod='leotempcp'}</option>
 
@@ -426,7 +426,9 @@ $(".editmod").fancybox({
  	'height':500,
  	afterLoad:function(   ){
  		if( $('body',$('.fancybox-iframe').contents()).find("#main").length  ){  
-	 			hideSomeElement();
+	 			setTimeout(function(){
+                                      $globalthis.hideSomeElement();
+                                    }, 2000);
 	 			 $('.fancybox-iframe').load( hideSomeElement );
 
  		}else { 

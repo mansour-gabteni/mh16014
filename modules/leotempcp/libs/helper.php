@@ -785,28 +785,72 @@ if (!class_exists("LeoFrameworkHelper"))
 				 		<img src="'._PS_ADMIN_IMG_.'delete.gif"></span></a>
 				 	</span>'.$display.'</div>';
 		}
-
-		public static function json_readable_encode($in, $indent = 0, Closure $_escape = null)
-		{
-			
-		}
 		
+		/**
+		 * get array languages 
+		 * @param : id_lang, name, active, iso_code, language_code, date_format_lite, date_format_full, is_rtl, id_shop, shops (array)
+		 * return array (
+		 *		1 => en,
+		 *		2 => vn,
+		 * )
+		 */
+		public static function getLangAtt($attribute = 'iso_code')
+		{
+			$languages = array();
+			foreach (Language::getLanguages(false, false, false) as $lang)
+			{
+				$languages[] = $lang[$attribute];
+			}
+			return $languages;
+		}
+
 		public static function getCookie()
 		{
 			$data = $_COOKIE;
 			return $data;
 		}
 
-		public static function getPost(){
-			$data = $_POST;
-			return $data;
+		/**
+		 * @param 
+		 * 0 no multi_lang
+		 * 1 multi_lang follow id_lang
+		 * 2 multi_lnag follow code_lang
+		 * @return array
+		 */
+		public static function getPost($keys = array(), $multi_lang = 0 )
+		{
+			$post = array();
+			if($multi_lang == 0)
+			{
+				foreach ($keys as $key)
+				{
+					// get value from $_POST
+					$post[$key] = Tools::getValue($key);
+				}
+			}
+			elseif ($multi_lang == 1)
+			{
+				
+				foreach ($keys as $key)
+				{
+					// get value multi language from $_POST
+					foreach (Language::getIDs(false) as $id_lang)
+						$post[$key.'_'.(int)$id_lang] = Tools::getValue($key.'_'.(int)$id_lang);
+				}
+			}
+			elseif ( $multi_lang == 2)
+			{
+				$languages = self::getLangAtt();
+				foreach ($keys as $key)
+				{
+					// get value multi language from $_POST
+					foreach ($languages as $id_code)
+						$post[$key.'_'.$id_code] = Tools::getValue($key.'_'.$id_code);
+				}
+			}
+		
+			return $post;
 		}
 
-		public static function getGet(){
-			$data = $_GET;
-			return $data;
-		}
-		
 	}
 }
-?>

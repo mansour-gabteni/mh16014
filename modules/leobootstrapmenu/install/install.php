@@ -93,7 +93,7 @@ if (count($rows) <= 0)
 	# validate module : not use this in this file
 	$context = Context::getContext();
 	$res &= (bool)Db::getInstance()->execute('
-		INSERT INTO `'._DB_PREFIX_.'btmegamenu_shop`(`id_btmegamenu`,`id_shop`) VALUES( 1, '.(int)($context->shop->id).' )
+		INSERT INTO `'._DB_PREFIX_.'btmegamenu_shop`(`id_btmegamenu`,`id_shop`) VALUES( 1, '.(int)$context->shop->id.' )
 	');
 }
 
@@ -103,6 +103,6 @@ if (count($rows) == 1 && file_exists(_PS_MODULE_DIR_.'leobootstrapmenu/install/s
 {
 	# validate module
 	include_once( _PS_MODULE_DIR_.'leobootstrapmenu/install/sample.php' );
-}	
+}
 /* END REQUIRED */
 

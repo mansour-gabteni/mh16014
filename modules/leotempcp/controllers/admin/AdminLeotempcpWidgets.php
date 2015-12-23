@@ -138,9 +138,15 @@ class AdminLeotempcpWidgetsController extends ModuleAdminControllerCore
 		}
 
 		$form = $model->getForm($widget_selected, $widget_data);
+		$is_using_managewidget = 1;
+		if (!file_exists(_PS_MODULE_DIR_.'leomanagewidgets/leomanagewidgets.php') || !Module::isInstalled('leomanagewidgets'))
+		{
+			$is_using_managewidget = 0;
+		}
 		$tpl->assign(array(
 			'types' => $types,
 			'form' => $form,
+			'is_using_managewidget' => $is_using_managewidget,
 			'widget_selected' => $widget_selected,
 			'table' => $this->table,
 			'max_size' => Configuration::get('PS_ATTACHMENT_MAXIMUM_SIZE'),
@@ -168,7 +174,26 @@ class AdminLeotempcpWidgetsController extends ModuleAdminControllerCore
 				$languages = Language::getLanguages(false);
 
 				$tmp = array();
-				$post = LeoFrameworkHelper::getPost();
+				
+				
+				# GET POST - BEGIN
+				$widget_type = Tools::getValue('widget_type');
+				$file_name = _PS_MODULE_DIR_.'leotempcp/classes/widget/' . $widget_type . '.php';
+				require_once($file_name);
+				$class_name = 'LeoWidget' . Tools::ucfirst($widget_type);
+				$widget = new $class_name;
+				$keys = array('addleowidgets', 'id_leowidgets', 'widget_name', 'widget_type', 'saveandstayleotempcp');
+				$post = LeoFrameworkHelper::getPost($keys, 0);
+				$keys = array('widget_title');
+				$post += LeoFrameworkHelper::getPost($keys, 1);
+				$keys = $widget->getConfigKey(0);
+				$post += LeoFrameworkHelper::getPost($keys, 0);
+				$keys = $widget->getConfigKey(1);
+				$post += LeoFrameworkHelper::getPost($keys, 1);
+				$keys = $widget->getConfigKey(2);
+				$post += LeoFrameworkHelper::getPost($keys, 2);
+				# GET POST - END
+
 				foreach ($post as $key => $value)
 				{
 					$tmp[$key] = str_replace(array('\'', '\"'), array("'", '"'), $value);

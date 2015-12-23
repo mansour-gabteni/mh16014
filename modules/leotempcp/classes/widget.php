@@ -231,7 +231,7 @@ if (!class_exists('LeoTempcpWidget'))
 			$args = array();
 			$data = Tools::jsonDecode(call_user_func('base64'.'_decode', $data), true);
 
-			$data['widget_heading'] = isset($data['widget_title_'.$this->langID]) ? $data['widget_title_'.$this->langID] : '';
+			$data['widget_heading'] = isset($data['widget_title_'.$this->langID]) ? Tools::stripslashes($data['widget_title_'.$this->langID]) : '';
 
 			//echo $method;
 			if (isset($this->engines[$type]))

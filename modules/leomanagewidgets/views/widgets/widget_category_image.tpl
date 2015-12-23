@@ -37,4 +37,25 @@
 	</div>
 </div>
 {/if}
-
+<script type="text/javascript">
+{literal} 
+  jQuery(document).ready(function(){
+    var limit = {/literal}{if $limit}{$limit}{else}5{/if}{literal};
+    var level = {/literal}{if $cate_depth}{$cate_depth}{else}0{/if}{literal};
+    // $("ul.level" + level + " li").remove();
+    $("ul.level0").each(function() {
+      $(this).find("ul.level" + level + " li").remove();
+      var element = $(this).find("ul.level" + (level - 1) + " li").length;
+      var count = 0;
+      if(level > 0) {
+        $(this).find("ul.level" + (level - 1) + " >li").each(function(){
+          count = count + 1;
+          if(count > limit){
+            $(this).remove();
+          }
+        });
+      }
+    });
+  });
+{/literal}
+</script>

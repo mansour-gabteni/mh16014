@@ -211,7 +211,7 @@ class Leotempcp extends Module
 	private function installModuleTab($title, $class_sfx = '', $parent = '')
 	{
 		$class = 'Admin'.Tools::ucfirst($this->name).Tools::ucfirst($class_sfx);
-		@copy(_PS_MODULE_DIR_.$this->name.'/logo.gif', _PS_IMG_DIR_.'t/'.$class.'.gif');
+		@Tools::copy(_PS_MODULE_DIR_.$this->name.'/logo.gif', _PS_IMG_DIR_.'t/'.$class.'.gif');
 		if ($parent == '')
 		{
 			# validate module

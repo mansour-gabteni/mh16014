@@ -21,12 +21,13 @@ if (file_exists(_PS_MODULE_DIR_.'leotempcp/classes/widget.php'))
 class Leobootstrapmenu extends Module
 {
 	private $_html = '';
-	private $_configs = '';
+	private $configs = '';
 	protected $params = null;
 	public $_languages;
 	public $_defaultFormLanguage;
 	public $base_config_url;
 	public $widget;
+	public $theme_name;
 
 	/**
 	 * Constructor
@@ -54,9 +55,9 @@ class Leobootstrapmenu extends Module
 
 		$this->displayName = $this->l('Leo Bootstrap Megamenu');
 		$this->description = $this->l('Leo Bootstrap Megamenu Support Leo Framework Version 3.0.0');
-		$this->Languages();
-		$this->themeName = Context::getContext()->shop->getTheme();
-		$this->img_path = _PS_ALL_THEMES_DIR_.$this->themeName.'/img/modules/'.$this->name.'/icons/';
+		$this->languages();
+		$this->theme_name = Context::getContext()->shop->getTheme();
+		$this->img_path = _PS_ALL_THEMES_DIR_.$this->theme_name.'/img/modules/'.$this->name.'/icons/';
 
 		$this->widget = new LeoTempcpWidget();
 	}
@@ -64,23 +65,23 @@ class Leobootstrapmenu extends Module
 	/**
 	 *
 	 */
-	public function Languages()
+	public function languages()
 	{
 		//global $cookie;
 		$cookie = $this->context->cookie;
-		$allowEmployeeFormLang = Configuration::get('PS_BO_ALLOW_EMPLOYEE_FORM_LANG') ? Configuration::get('PS_BO_ALLOW_EMPLOYEE_FORM_LANG') : 0;
-		if ($allowEmployeeFormLang && !$cookie->employee_form_lang)
-			$cookie->employee_form_lang = (int)(Configuration::get('PS_LANG_DEFAULT'));
-		$useLangFromCookie = false;
+		$allow_employee_form_lang = Configuration::get('PS_BO_ALLOW_EMPLOYEE_FORM_LANG') ? Configuration::get('PS_BO_ALLOW_EMPLOYEE_FORM_LANG') : 0;
+		if ($allow_employee_form_lang && !$cookie->employee_form_lang)
+			$cookie->employee_form_lang = (int)Configuration::get('PS_LANG_DEFAULT');
+		$use_lang_from_cookie = false;
 		$this->_languages = Language::getLanguages(false);
-		if ($allowEmployeeFormLang)
+		if ($allow_employee_form_lang)
 			foreach ($this->_languages as $lang)
 				if ($cookie->employee_form_lang == $lang['id_lang'])
-					$useLangFromCookie = true;
-		if (!$useLangFromCookie)
-			$this->_defaultFormLanguage = (int)(Configuration::get('PS_LANG_DEFAULT'));
+					$use_lang_from_cookie = true;
+		if (!$use_lang_from_cookie)
+			$this->_defaultFormLanguage = (int)Configuration::get('PS_LANG_DEFAULT');
 		else
-			$this->_defaultFormLanguage = (int)($cookie->employee_form_lang);
+			$this->_defaultFormLanguage = (int)$cookie->employee_form_lang;
 	}
 
 	public function install()
@@ -115,14 +116,14 @@ class Leobootstrapmenu extends Module
 	 */
 	protected function createTables()
 	{
-		if ($this->_installDataSample())
+		if ($this->installDataSample())
 			return true;
 		$res = 1;
 		include_once( dirname(__FILE__).'/install/install.php' );
 		return $res;
 	}
 
-	private function _installDataSample()
+	private function installDataSample()
 	{
 		if (!file_exists(_PS_MODULE_DIR_.'leotempcp/libs/DataSample.php'))
 			return false;
@@ -139,7 +140,7 @@ class Leobootstrapmenu extends Module
 	{
 //        $resultCheck = Db::getInstance(_PS_USE_SQL_SLAVE_)->getRow('SELECT `id_btmegamenu` as id FROM `' . _DB_PREFIX_ . 'btmegamenu_shop` WHERE `id_btmegamenu` = 1 AND `id_shop`=' . (int) ($this->context->shop->id));
 //        if ($resultCheck["id"] != 1){
-//            Db::getInstance()->execute('INSERT INTO `'._DB_PREFIX_.'btmegamenu_shop`(`id_btmegamenu`,`id_shop`) VALUES( 1, '.(int)($this->context->shop->id).' )');
+//            Db::getInstance()->execute('INSERT INTO `'._DB_PREFIX_.'btmegamenu_shop`(`id_btmegamenu`,`id_shop`) VALUES( 1, '.(int)$this->context->shop->id.' )');
 //        }
 		$output = '';
 		$this->_html .= $this->headerHTML();
@@ -151,14 +152,14 @@ class Leobootstrapmenu extends Module
 			$list = Tools::getValue('list');
 			$root = 1;
 			$child = array();
-			foreach ($list as $id => $parentId)
+			foreach ($list as $id => $parent_id)
 			{
-				if ($parentId <= 0)
+				if ($parent_id <= 0)
 				{
 					# validate module
-					$parentId = $root;
+					$parent_id = $root;
 				}
-				$child[$parentId][] = $id;
+				$child[$parent_id][] = $id;
 			}
 			$res = true;
 			foreach ($child as $id_parent => $menus)
@@ -213,7 +214,13 @@ class Leobootstrapmenu extends Module
 				# validate module
 				$megamenu = new Btmegamenu();
 			}
-			$megamenu->copyFromPost();
+
+			$keys = LeoBtmegamenuHelper::getConfigKey(false);
+			$post = LeoBtmegamenuHelper::getPost($keys, false);
+			$keys = LeoBtmegamenuHelper::getConfigKey(true);
+			$post += LeoBtmegamenuHelper::getPost($keys, true);
+
+			$megamenu->copyFromPost($post);
 			$megamenu->id_shop = $this->context->shop->id;
 
 			if ($megamenu->type && $megamenu->type != 'html' && Tools::getValue($megamenu->type.'_type'))
@@ -221,20 +228,19 @@ class Leobootstrapmenu extends Module
 				# validate module
 				$megamenu->item = Tools::getValue($megamenu->type.'_type');
 			}
-			$urlDefault = '';
-			foreach ($megamenu->url as $menuUrl)
+			$url_default = '';
+			foreach ($megamenu->url as $menu_url)
 			{
-				if ($menuUrl)
+				if ($menu_url)
 				{
-					$urlDefault = $menuUrl;
+					$url_default = $menu_url;
 					break;
 				}
 			}
-			if ($urlDefault)
-				foreach ($megamenu->url as &$menuUrl)
-					if (!$menuUrl)
-						$menuUrl = $urlDefault;
-
+			if ($url_default)
+				foreach ($megamenu->url as &$menu_url)
+					if (!$menu_url)
+						$menu_url = $url_default;
 
 			if ($megamenu->validateFields(false) && $megamenu->validateFieldsLang(false))
 			{
@@ -244,11 +250,11 @@ class Leobootstrapmenu extends Module
 					$this->checkFolderIcon();
 					if (ImageManager::validateUpload($_FILES['image']))
 						return false;
-					elseif (!($tmpName = tempnam(_PS_TMP_IMG_DIR_, 'PS')) || !move_uploaded_file($_FILES['image']['tmp_name'], $tmpName))
+					elseif (!($tmp_name = tempnam(_PS_TMP_IMG_DIR_, 'PS')) || !move_uploaded_file($_FILES['image']['tmp_name'], $tmp_name))
 						return false;
-					elseif (!ImageManager::resize($tmpName, $this->img_path.$_FILES['image']['name']))
+					elseif (!ImageManager::resize($tmp_name, $this->img_path.$_FILES['image']['name']))
 						return false;
-					unlink($tmpName);
+					unlink($tmp_name);
 					$megamenu->image = $_FILES['image']['name'];
 					$megamenu->save();
 				}
@@ -279,14 +285,13 @@ class Leobootstrapmenu extends Module
 			}
 		}
 
-
-		return $output.$this->_displayForm();
+		return $output.$this->displayForm();
 	}
 
 	/**
 	 * show megamenu item configuration.
 	 */
-	protected function _showFormSetting()
+	protected function showFormSetting()
 	{
 		$this->context->controller->addJS(__PS_BASE_URI__.'modules/leobootstrapmenu/assets/admin/jquery.nestable.js');
 		$this->context->controller->addJS(__PS_BASE_URI__.'modules/leobootstrapmenu/assets/admin/form.js');
@@ -301,7 +306,7 @@ class Leobootstrapmenu extends Module
 //		$widget = $this->widget;
 
 		$id_lang = $this->context->language->id;
-		$id_btmegamenu = (int)(Tools::getValue('id_btmegamenu'));
+		$id_btmegamenu = (int)Tools::getValue('id_btmegamenu');
 		$obj = new Btmegamenu($id_btmegamenu);
 		$tree = $obj->getTree();
 		$categories = LeoBtmegamenuHelper::getCategories();
@@ -531,7 +536,6 @@ class Leobootstrapmenu extends Module
 			)
 		);
 
-
 		$helper = new HelperForm();
 		$helper->module = $this;
 		$helper->name_controller = $this->name;
@@ -556,7 +560,7 @@ class Leobootstrapmenu extends Module
 			'languages' => $this->context->controller->getLanguages(),
 			'id_language' => $this->context->language->id
 		);
-		$liveeditorURL = AdminController::$currentIndex.'&configure='.$this->name.'&liveeditor=1&token='.Tools::getAdminTokenLite('AdminModules');
+		$live_editor_url = AdminController::$currentIndex.'&configure='.$this->name.'&liveeditor=1&token='.Tools::getAdminTokenLite('AdminModules');
 
 		$action = AdminController::$currentIndex.'&configure='.$this->name.'&save'.$this->name.'&token='.Tools::getAdminTokenLite('AdminModules');
 		$helper->toolbar_btn = array(
@@ -572,7 +576,7 @@ class Leobootstrapmenu extends Module
 			)
 		);
 
-		$html = $this->_html.'<div class="col-lg-12"> <div class="alert alert-info clearfix"><div class="pull-right">Using <a href="'.$liveeditorURL.'" class="btn btn-danger"> '
+		$html = $this->_html.'<div class="col-lg-12"> <div class="alert alert-info clearfix"><div class="pull-right">Using <a href="'.$live_editor_url.'" class="btn btn-danger"> '
 				.$this->l('Live Edit Tools').'</a> '.$this->l('To Make Rich Content For Megamenu').'</div></div></div>';
 
 		$output = $html.'
@@ -586,8 +590,8 @@ class Leobootstrapmenu extends Module
         ';
 		$show_cavas = Configuration::get('LEO_MEGAMENU_CAVAS');
 		$addnew = AdminController::$currentIndex.'&token='.Tools::getAdminTokenLite('AdminModules').'&configure='.$this->name.'&tab_module=front_office_features&module_name='.$this->name;
-		$output .= '<div class="col-md-4"><div class="panel panel-default"><h3 class="panel-title">'.$this->l('Tree Megamenu Management').'</h3>'
-				.'<div class="panel-content">'.$this->l('To sort orders or update parent-child, you drap and drop expected menu, then click to Update button to Save')
+		$output .= '<div class="col-md-4"><div class="panel panel-default"><h3 class="panel-title">'.$this->l('Tree Megamenu Management').'</h3>
+				<div class="panel-content">'.$this->l('To sort orders or update parent-child, you drap and drop expected menu, then click to Update button to Save')
 				.'<hr><p><input type="button" value="'.$this->l('New Menu Item').'" id="addcategory" data-loading-text="'.$this->l('Processing ...').'" class="btn btn-danger" name="addcategory">
 					<a   href="'.Context::getContext()->link->getAdminLink('AdminLeotempcpWidgets').'" class="leo-modal-action btn btn-modeal btn-success btn-info">'.$this->l('List Widget').'</a></p>
 					<hr><p><input type="button" value="'.$this->l('Update').'" id="show_cavas" data-loading-text="'.$this->l('Processing ...').'" class="btn btn-info" ></p>
@@ -596,9 +600,9 @@ class Leobootstrapmenu extends Module
 							<option value="1" '.((isset($show_cavas) && $show_cavas == 1) ? 'checked' : null).'>'.$this->l('Yes').'</option>
 							<option value="0" '.((isset($show_cavas) && $show_cavas == 0) ? 'checked' : null).'>'.$this->l('No').'</option>
 						</select>
-					<hr><p><input type="button" value="'.$this->l('Update Positions').'" id="serialize" data-loading-text="'.$this->l('Processing ...').'" class="btn btn-danger" name="serialize"></p><hr>'.$tree.'</div></div></div>'
-				.'<div class="col-md-8">'.$helper->generateForm($this->fields_form).'</div>'
-				.'<script type="text/javascript">var addnew ="'.$addnew.'"; var action="'.$action.'";$("#content").PavMegaMenuList({action:action,addnew:addnew});</script>';
+					<hr><p><input type="button" value="'.$this->l('Update Positions').'" id="serialize" data-loading-text="'.$this->l('Processing ...').'" class="btn btn-danger" name="serialize"></p><hr>'.$tree.'</div></div></div>
+				<div class="col-md-8">'.$helper->generateForm($this->fields_form).'</div>
+				<script type="text/javascript">var addnew ="'.$addnew.'"; var action="'.$action.'";$("#content").PavMegaMenuList({action:action,addnew:addnew});</script>';
 		$output .= '</div>';
 		$output .= '</div><script>$(\'#myTab a[href="#profile"]\').tab(\'show\')</script>';
 		return $output;
@@ -609,7 +613,7 @@ class Leobootstrapmenu extends Module
 		$languages = Language::getLanguages(false);
 		$fields_values = array();
 		$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? 'https://' : 'http://';
-		$this->image_base_url = Tools::htmlentitiesutf8($protocol.$_SERVER['HTTP_HOST'].__PS_BASE_URI__).'themes/'.$this->themeName.'/img/modules/leobootstrapmenu/icons/';
+		$this->image_base_url = Tools::htmlentitiesutf8($protocol.$_SERVER['HTTP_HOST'].__PS_BASE_URI__).'themes/'.$this->theme_name.'/img/modules/leobootstrapmenu/icons/';
 //		$a = array();
 
 		foreach ($this->fields_form as $k => $f)
@@ -719,7 +723,7 @@ class Leobootstrapmenu extends Module
 	/**
 	 * show live editor tools 
 	 */
-	protected function _showLiveEditorSetting()
+	protected function showLiveEditorSetting()
 	{
 		$this->context->controller->addJS(__PS_BASE_URI__.'js/jquery/ui/jquery.ui.dialog.min.js');
 		$this->context->controller->addJS(__PS_BASE_URI__.'js/jquery/ui/jquery.ui.draggable.min.js');
@@ -761,11 +765,11 @@ class Leobootstrapmenu extends Module
 				unset($widgets[$key]);
 		}
 		ob_start();
+		$this_module = $this;
 		require_once ( dirname(__FILE__).'/liveeditor.php' );
 		$output = ob_get_contents();
 		ob_end_clean();
-		
-		
+
 		# validate module
 		unset($liveedit_action);
 		unset($action_backlink);
@@ -774,11 +778,12 @@ class Leobootstrapmenu extends Module
 		unset($ajxgenmenu);
 		unset($ajxmenuinfo);
 		unset($live_site_url);
-		
+		unset($this_module);
+
 		return $output;
 	}
 
-	private function _displayForm()
+	private function displayForm()
 	{
 		if (Tools::getValue('liveeditor'))
 		{
@@ -801,20 +806,20 @@ class Leobootstrapmenu extends Module
 			else
 			{
 				# validate module
-				return $this->_showLiveEditorSetting();
+				return $this->showLiveEditorSetting();
 			}
 		}
 		else
 		{
 			# validate module
-			return $this->_showFormSetting();
+			return $this->showFormSetting();
 		}
 	}
 
 	/**
 	 *
 	 */
-	private function _postProcess()
+	private function postProcess()
 	{
 //		$errors = array();
 	}
@@ -888,7 +893,6 @@ class Leobootstrapmenu extends Module
 			$params['params'] = Configuration::get('LEO_MEGAMENU_PARAMS');
 			$show_cavas = Configuration::get('LEO_MEGAMENU_CAVAS');
 			$current_link = $link->getPageLink('', false, $this->context->language->id);
-//			$menu_config = array();
 			if (isset($params['params']) && !empty($params['params']))
 			{
 				# validate module
@@ -913,7 +917,7 @@ class Leobootstrapmenu extends Module
 			$hook,
 			date('Ymd'),
 			(int)Tools::usingSecureMode(),
-			(int)$this->context->shop->id_shop_url, //$this->context->shop->id,
+			(int)$this->context->shop->id,
 			(int)Group::getCurrent()->id,
 			(int)$this->context->language->id,
 			(int)$this->context->currency->id,
@@ -955,15 +959,15 @@ class Leobootstrapmenu extends Module
 	/**
 	 *
 	 */
-	public function getWidgetContent($id, $type, $data, $showWidgetID = 1)
+	public function getWidgetContent($id, $type, $data, $show_widget_id = 1)
 	{
 		$data['id_lang'] = $this->context->language->id;
 
 		$this->smarty->assign($data);
-		$idText = '';
-		if ($showWidgetID)
-			$idText = ' id="wid-'.$id.'"';
-		$output = '<div class="leo-widget"'.$idText.'>';
+		$id_text = '';
+		if ($show_widget_id)
+			$id_text = ' id="wid-'.$id.'"';
+		$output = '<div class="leo-widget"'.$id_text.'>';
 		$output .= $this->display(__FILE__, 'views/widgets/widget_'.$type.'.tpl');
 		$output .= '</div>';
 		return $output;
@@ -1058,8 +1062,8 @@ class Leobootstrapmenu extends Module
 			return;
 		if (!file_exists($this->img_path) && !is_dir($this->img_path))
 		{
-			@mkdir(_PS_ALL_THEMES_DIR_.$this->themeName.'/img/modules/', 0777, true);
-			@mkdir(_PS_ALL_THEMES_DIR_.$this->themeName.'/img/modules/'.$this->name.'/', 0777, true);
+			@mkdir(_PS_ALL_THEMES_DIR_.$this->theme_name.'/img/modules/', 0777, true);
+			@mkdir(_PS_ALL_THEMES_DIR_.$this->theme_name.'/img/modules/'.$this->name.'/', 0777, true);
 			@mkdir($this->img_path, 0777, true);
 		}
 	}

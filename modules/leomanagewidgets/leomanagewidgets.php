@@ -50,6 +50,7 @@ class LeoManagewidgets extends Module
 	private $_bg_style_fullwidth = 0;
 	private $_bg_style_config_data = array();
 	private $_load_owl_carousel_lib = false;	 # only load library carousel when have widget use owl carousel
+	private $cache_param = array();
 
 	public function __construct()
 	{
@@ -170,6 +171,7 @@ class LeoManagewidgets extends Module
 		{
 			$res &= $this->registerHook('header');
 			$res &= $this->registerHook('actionShopDataDuplication');
+			$res &= $this->registerHook('actionAdminPerformanceControllerAfter');	// clear cache
 			foreach ($this->_hooksPos as $value)
 				$res &= $this->registerHook($value);
 		}
@@ -1109,7 +1111,8 @@ class LeoManagewidgets extends Module
 			'hidden-sm' => $this->l('Hidden in Small devices'), 'hidden-xs' => $this->l('Hidden in Extra small devices'), 'hidden-sp' => $this->l('Hidden in Smart Phone'));
 
 		$leo_json_data = Tools::jsonEncode($this->_groupList);
-		$leo_json_data = str_replace(array('\n', '\r', '\t', '\'', '"'), array('', '', '', '\'', '\"'), $leo_json_data);
+		$leo_json_data = str_replace(array('\n', '\r', '\t', "'", '"'), array('', '', '', "\\'", '\"'), $leo_json_data);
+		
 		$helper->tpl_vars = array(
 			'base_url' => $this->context->shop->getBaseURL(),
 			'language' => array(
@@ -1199,8 +1202,8 @@ class LeoManagewidgets extends Module
 							{
 								$content = $this->_widgets->renderContent($row['key_widget']);
 								$content['type'] = LeomanagewidgetsHelper::processWidgetType($hook_name, $row['key_widget'], $content['type'], $content['data']);
-								if ($this->_load_owl_carousel_lib == false)
-									$this->_load_owl_carousel_lib = LeomanagewidgetsHelper::enableLoadOwlCarouselLib($content['data']);
+								//if ($this->_load_owl_carousel_lib == false)
+								//	$this->_load_owl_carousel_lib = LeomanagewidgetsHelper::enableLoadOwlCarouselLib($content['data']);
 								$row['content'] = $this->getWidgetContent($hook_name, $row['key_widget'], $content['type'], $content['data']);
 								//is a module   
 							}
@@ -1242,7 +1245,10 @@ class LeoManagewidgets extends Module
 	private function _processHook($hook_name)
 	{
 		$hook_name = Tools::strtolower($hook_name);
-
+		
+		$this->context->controller->addCSS($this->_path.'assets/owl-carousel/owl.carousel.css', 'all');
+		$this->context->controller->addCSS($this->_path.'assets/owl-carousel/owl.theme.css', 'all');
+			
 		if ($this->_leotype == 1)
 		{
 			if (!file_exists(_PS_MODULE_DIR_.'leotempcp/classes/widgetbase.php'))
@@ -1260,38 +1266,48 @@ class LeoManagewidgets extends Module
 		else
 			$tplFile = 'views/widgets/group.tpl';
 
-		if (!$this->_widgets)
+		$this->setParams($hook_name);
+		$cache_id = $this->getCacheId();
+		if (!$this->isCached($tplFile, $cache_id))
 		{
-			$this->_widgets = new LeoTempcpWidget();
-			$this->_widgets->setTheme(Context::getContext()->shop->getTheme());
-			$this->_widgets->langID = Context::getContext()->language->id;
-			$this->_widgets->loadWidgets();
-			$this->_widgets->loadEngines();
+			# generate cache
+			if (!$this->_widgets)
+			{
+				$this->_widgets = new LeoTempcpWidget();
+				$this->_widgets->setTheme(Context::getContext()->shop->getTheme());
+				$this->_widgets->langID = Context::getContext()->language->id;
+				$this->_widgets->loadWidgets();
+				$this->_widgets->loadEngines();
+			}
+
+			if (!$this->_columnList)
+			{
+				$this->_columnList = $this->parseColumnByGroup(LeoManageWidgetColumn::getAllColumn(' AND `active`=1', 0, 1, 1), 1);
+				$this->_groupList = $this->parseGroupByHook(LeoManageWidgetGroup::getAllGroup(' AND `active`=1'), 1);
+			}
+
+			//return if don't exist
+			if (!isset($this->_groupList[$hook_name]))
+				return false;
+			$groups = array();
+			$groups = $this->_setGroupData($this->_groupList[$hook_name], $hook_name);
+
+			$this->smarty->assign('leoGroup', $groups);
+
+			if ($this->_has_bg_style)
+				$this->smarty->assign('LEO_BG_STYLE_DATA', $this->_bg_style_config_data);
+	
+//		    if($this->_load_owl_carousel_lib){
+//		    }
+			return $this->display(__FILE__, $tplFile, $this->getCacheId());
+			
+		}else{
+			# load cache
+			return $this->display(__FILE__, $tplFile, $cache_id);
+			
 		}
-
-		if (!$this->_columnList)
-		{
-			$this->_columnList = $this->parseColumnByGroup(LeoManageWidgetColumn::getAllColumn(' AND `active`=1', 0, 1, 1), 1);
-			$this->_groupList = $this->parseGroupByHook(LeoManageWidgetGroup::getAllGroup(' AND `active`=1'), 1);
-		}
-
-		//return if don't exist
-		if (!isset($this->_groupList[$hook_name]))
-			return false;
-		$groups = array();
-		$groups = $this->_setGroupData($this->_groupList[$hook_name], $hook_name);
-
-		$this->smarty->assign('leoGroup', $groups);
-
-		if ($this->_has_bg_style)
-			$this->smarty->assign('LEO_BG_STYLE_DATA', $this->_bg_style_config_data);
-
-//        if($this->_load_owl_carousel_lib){
-		$this->context->controller->addJS($this->_path.'assets/owl-carousel/owl.carousel.js');
-		$this->context->controller->addCSS($this->_path.'assets/owl-carousel/owl.carousel.css', 'all');
-		$this->context->controller->addCSS($this->_path.'assets/owl-carousel/owl.theme.css', 'all');
-//        }
-		return $this->display(__FILE__, $tplFile);
+		
+//		return $this->display(__FILE__, $tplFile);
 	}
 
 	public function allowShowInController($controller, $ids)
@@ -1572,6 +1588,7 @@ class LeoManagewidgets extends Module
 	{
 		$result = array();
 		$result['javascript'] = '';
+		$this->context->controller->addJS($this->_path.'assets/owl-carousel/owl.carousel.js');
 		$this->context->controller->addCSS($this->_path.'assets/styles.css');
 		$this->context->controller->addJS($this->_path.'assets/script.js');
 
@@ -1883,6 +1900,105 @@ class LeoManagewidgets extends Module
 	public function hookDeleteProduct($params)
 	{
 		$this->clearHookCache();
+	}
+	
+	public function setParams($hook_name){
+		$params = array();
+		
+		$params['hook'] = $hook_name;
+		$controller = $params['controller'] = Tools::getValue('controller');
+
+		if($controller == 'category')
+		{
+			$params['id'] = 'cateogry_id_'.Tools::getValue('id_category');
+		}
+		elseif($controller == 'product')
+		{
+			$params['id'] = 'product_id_'.Tools::getValue('id_product');
+		}
+		elseif($controller == 'cms')
+		{
+			$params['id'] = 'cms_id_'.Tools::getValue('id_cms');
+		}
+		
+		Configuration::updateValue('LEO_CURRENT_RANDOM_CACHE', '0');
+		if($params){
+			$this->cache_param = $params;
+		}
+	}
+
+	/**
+	 * use this code
+	 * Configuration::updateValue('LEO_CURRENT_RANDOM_CACHE', '1');
+	 * where you want to have RANDOM cache
+	 */
+	protected function getCacheId($name = null)
+	{
+		$cache_array = array();
+		$cache_array[] = $name !== null ? $name : $this->name;
+		
+		if (isset($this->cache_param) && $this->cache_param)
+		{
+			if(isset($this->cache_param['controller']) && $this->cache_param['controller'])
+				$cache_array[] = $this->cache_param['controller'];
+			if(isset($this->cache_param['id']) && $this->cache_param['id'])
+				$cache_array[] = $this->cache_param['id'];
+			if(isset($this->cache_param['hook']) && $this->cache_param['hook'])
+				$cache_array[] = $this->cache_param['hook'];
+			
+			// save to next time
+			if(Configuration::get('LEO_CURRENT_RANDOM_CACHE') == 1)
+			{
+				$random_cache = Configuration::get('LEO_RANDOM_CACHE');
+				if(!$random_cache){
+					$random_cache = new stdClass();
+				}else{
+					$random_cache = Tools::jsonDecode($random_cache);
+				}
+				$key = implode('|', $cache_array);
+				$random_cache->$key = date('Ymd');
+				$leo_random_cache = Tools::jsonEncode($random_cache);
+				Configuration::updateValue('LEO_RANDOM_CACHE', $leo_random_cache);
+				
+			}
+			// Check RANDOM PRODUCT
+			if($random_cache = Configuration::get('LEO_RANDOM_CACHE'))
+			{
+				$key = implode('|', $cache_array);
+				$value = date('Ymd');
+				$random_cache = Tools::jsonDecode($random_cache);
+				if(isset($random_cache->$key) && $random_cache->$key == $value)
+				{
+					// cache in one day
+					$random = date('Ymd').'_'.rand(1,LeomanagewidgetsHelper::NUMBER_CACHE_FILE);
+					$cache_array[] = 'random_'.$random;
+				}
+			}
+			
+		}
+		if (Configuration::get('PS_SSL_ENABLED'))
+			$cache_array[] = (int)Tools::usingSecureMode();
+		if (Shop::isFeatureActive())
+			$cache_array[] = (int)$this->context->shop->id;
+		if (Group::isFeatureActive())
+			$cache_array[] = (int)Group::getCurrent()->id;
+		if (Language::isMultiLanguageActivated())
+			$cache_array[] = (int)$this->context->language->id;
+		if (Currency::isMultiCurrencyActivated())
+			$cache_array[] = (int)$this->context->currency->id;
+		$cache_array[] = (int)$this->context->country->id;
+		return implode('|', $cache_array);
+	}
+	
+	public function hookActionAdminPerformanceControllerAfter($params)
+	{
+		
+		if ((bool)Tools::getValue('empty_smarty_cache'))
+		{
+			# click to clear_cache button
+			Configuration::updateValue('LEO_CURRENT_RANDOM_CACHE', 0);
+			Configuration::updateValue('LEO_RANDOM_CACHE', '');
+		}
 	}
 
 }
