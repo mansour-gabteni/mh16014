@@ -1979,7 +1979,7 @@ class LeoManagewidgets extends Module
 		if (Configuration::get('PS_SSL_ENABLED'))
 			$cache_array[] = (int)Tools::usingSecureMode();
 		if (Shop::isFeatureActive())
-			$cache_array[] = (int)$this->context->shop->id;
+			$cache_array[] = (int)$this->context->shop->id_shop_url;
 		if (Group::isFeatureActive())
 			$cache_array[] = (int)Group::getCurrent()->id;
 		if (Language::isMultiLanguageActivated())

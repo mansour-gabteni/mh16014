@@ -404,10 +404,9 @@ class egmultishop extends Module
 	
 	public function hookDisplayHome($params)
 	{
-		$page = $this->getMultishopPage("home");
 		
-		$page = $this->replaceCeoWords($page);
-		
+		$row = Meta::getEgCEOWords('home');
+		$page = $row['description'];
 		$this->smarty->assign(array(
 			'page' => $page
 		));

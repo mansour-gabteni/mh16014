@@ -214,13 +214,17 @@ class MetaCore extends ObjectModel
 	
 	public static function getEgCEOWords($type, $id=null, &$ret)
 	{
-		$sql = 'SELECT * FROM `'._DB_PREFIX_.'egceowords` sw
-		INNER JOIN `'._DB_PREFIX_.'shop_url` su ON
-			sw.`id_url`=su.`id_shop_url`
-		WHERE su.domain =\''.Tools::getHttpHost().'\'
-		and sw.type = \''.$type.'\'' ;
-		if($id!=null)
-			$sql.=' and id_content = '.$id;
+		$domain = Tools::getHttpHost();
+	
+			$sql = 'SELECT * FROM `'._DB_PREFIX_.'egceowords` sw
+			WHERE IFNULL(sw.id_url,0) in (select su.id_shop_url from `'._DB_PREFIX_.'shop_url` su where su.domain =\''.$domain.'\'';
+			//$sql.= ($id==null)?' union  all select 0 ':' ';
+			$sql.=' union  all select 0 )
+			and sw.type = \''.$type.'\'' ;
+			if($id!=null)
+				$sql.=' and sw.id_content = '.$id;
+			$sql.= ' order by sw.id_url desc';	
+		
 		    
 		if ($row = Db::getInstance(_PS_USE_SQL_SLAVE_)->getRow($sql)) {
 			if ($row['title']==!"")
@@ -232,7 +236,7 @@ class MetaCore extends ObjectModel
 			if ($row['content']==!"")
 				$ret['description'] = $row['content'];
 		}
-		return $ret;
+		return Meta::replaceCity($ret);
 	}
 
 	/**
@@ -256,11 +260,12 @@ class MetaCore extends ObjectModel
 	
 	public static function getCitys()
 	{
-		$sql = 'SELECT mu.`city_name`, mu.`city1_name`, mu.`city2_name`, mu.phone 
+		$domain = Tools::getHttpHost();
+		$sql = 'SELECT mu.`city_name`, mu.`city1_name`, mu.`city2_name`, mu.phone, \''.$domain.'\' host 
 				FROM `'._DB_PREFIX_.'shop_url` su
 				INNER JOIN `'._DB_PREFIX_.'egmultishop_url` mu ON
 					mu.`id_url`=su.`id_shop_url`
-				WHERE su.`domain` = \''.Tools::getHttpHost().'\'';
+				WHERE su.`domain` = \''.$domain.'\'';
 		//TODO: add to get default city
 
 		if (!$ret = Db::getInstance()->executeS($sql))

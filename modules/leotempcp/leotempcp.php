@@ -1501,7 +1501,7 @@ class Leotempcp extends Module
 			$hook,
 			date('Ymd'),
 			(int)Tools::usingSecureMode(),
-			(int)$this->context->shop->id,
+			(int)$this->context->shop->id_shop_url,
 			(int)Group::getCurrent()->id,
 			(int)$this->context->language->id,
 			(int)$this->context->currency->id,
