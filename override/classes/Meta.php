@@ -261,7 +261,9 @@ class MetaCore extends ObjectModel
 	public static function getCitys()
 	{
 		$domain = Tools::getHttpHost();
-		$sql = 'SELECT mu.`city_name`, mu.`city1_name`, mu.`city2_name`, mu.phone, \''.$domain.'\' host 
+		$subdomain = implode('.', array_slice(explode('.',$_SERVER['HTTP_HOST']), -2));
+		$sql = 'SELECT mu.`city_name`, mu.`city1_name`, mu.`city2_name`, 
+		mu.phone, \''.$domain.'\' host, concat(engname,\'@'.$subdomain.'\') email 
 				FROM `'._DB_PREFIX_.'shop_url` su
 				INNER JOIN `'._DB_PREFIX_.'egmultishop_url` mu ON
 					mu.`id_url`=su.`id_shop_url`

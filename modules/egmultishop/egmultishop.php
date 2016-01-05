@@ -408,10 +408,11 @@ class egmultishop extends Module
 		$row = Meta::getEgCEOWords('home');
 		$page = $row['description'];
 		$this->smarty->assign(array(
+			'title' => $row['meta_title'],
 			'page' => $page
 		));
 				
-		return $this->display(__FILE__, 'egmultishop_page.tpl');
+		return $this->display(__FILE__, 'egmultishop_home.tpl');
 
 	}
 	

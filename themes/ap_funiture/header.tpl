@@ -93,7 +93,7 @@
 			</section>
 		{/if}
 		{if in_array($page_name,array('index'))}
-			<h1 class="hidden">{$meta_title|escape:'html':'UTF-8'}</h1>
+			<!-- <h1 class="hidden">{$meta_title|escape:'html':'UTF-8'}</h1>  -->
 		{/if}
 		<section id="page" data-column="{$colValue}" data-type="{$LISTING_GRIG_MODE}">
 			<!-- Header -->
