@@ -381,6 +381,7 @@ class egmultishop extends Module
 	public function hookHeader($params)
 	{
 		//$this->context->controller->addJS($this->_path.'views/js/callme.js', 'all');
+		$this->context->controller->addJS('http://api-maps.yandex.ru/2.0-stable/?load=package.standard&lang=ru-RU', 'all');		
 		$this->context->controller->addCSS($this->_path.'views/css/egmultishop.css', 'all');
 		$this->context->controller->addJS($this->_path.'views/js/modal.js', 'all');
 		
@@ -392,12 +393,21 @@ class egmultishop extends Module
 					'yandex_verify' => (string)$this->row[0]['yandex_verify'],
 					'google_verify' => (string)$this->row[0]['google_verify'],
 					'google_anal' => (string)$this->row[0]['google_anal'],
-					'yandex_metr' => (string)$this->row[0]['yandex_metr']
+					'yandex_metr' => (string)$this->row[0]['yandex_metr'],
+					'city_link' => $this->context->link->getModuleLink('egmultishop', 'citys')
 				));
-		
-				return $this->display(__FILE__, 'egmultishop_header.tpl');
 	 		}
+		}else{
+				$this->smarty->assign(array(
+					'yandex_verify' => '',
+					'google_verify' => '',
+					'google_anal' => '',
+					'yandex_metr' => Configuration::get('BLOCK_EGMULTSOP_TESTMETR'),
+					'city_link' => $this->context->link->getModuleLink('egmultishop', 'citys')
+				));			
 		}
+		
+		return $this->display(__FILE__, 'egmultishop_header.tpl');
 	}
 	
 
@@ -454,7 +464,22 @@ class egmultishop extends Module
 		}
 		*/
 	}
-
+	public static function getCityURL($id)
+	{
+		$sql = 'select su.domain, mu.`city_name`
+				from `'._DB_PREFIX_.'shop_url` su
+				INNER JOIN `'._DB_PREFIX_.'egmultishop_url` mu ON
+					mu.`id_url`=su.`id_shop_url`
+				where su.id_shop_url='.(int)$id;
+		
+		if (!$row = Db::getInstance()->executeS($sql))
+			return false;
+		
+		return array(
+			'url' => $row[0]['domain'],
+			'city_name' => $row[0]['city_name']		
+					);
+	}
 	public function hookDisplayRightColumn($params)
 	{
 		$page = $this->getMultishopPage("home1");

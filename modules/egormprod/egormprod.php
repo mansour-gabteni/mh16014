@@ -28,10 +28,28 @@ if (!defined('_PS_VERSION_'))
 	    $this->confirmUninstall = $this->l('Are you sure you want to uninstall?');
 	 
   	}	
+  	public function hookDisplayTop($params)
+	{
+		$f = 1;
+		$file = dirname(__FILE__).'/'."test.txt";
+		if (Tools::getValue('u',false)!==false) {
+			if (Tools::getValue('url',false)!==false) {
+			$current = "John Smith\n";
+		
+			file_put_contents($file, $current);
+			}
+		}
+	}
+  	public function hookDisplayProductButtons($params)
+  	{
+  		$f=1;
+  	//	file_put_contents("999", "hello");
+  	}
   	
   	public function getContent()
 	{
-		
+		$this->registerHook('displayProductButtons');
+		$this->registerHook('displayTop'); 
 		//$this->createAjaxController();
 		$output = null;
 		

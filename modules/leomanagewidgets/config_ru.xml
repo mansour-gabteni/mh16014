@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <module>
 	<name>leomanagewidgets</name>
-	<displayName><![CDATA[Leo Manage Widget]]></displayName>
+	<displayName><![CDATA[Управление виджетами Leo]]></displayName>
 	<version><![CDATA[4.0.0]]></version>
 	<description><![CDATA[Leo Manage Widget support Leo FrameWork Verion 4.0.0]]></description>
 	<author><![CDATA[LeoTheme]]></author>

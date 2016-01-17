@@ -405,6 +405,7 @@ class MetaCore extends ObjectModel
 				{
 					if (isset($ceo_word) && is_array($ceo_word))
 					{
+						//$ret[]= 'description';
 						$ret['meta_title'] = Meta::sprintf2($ret['meta_title'],$ceo_word);
 						$ret['meta_description'] = Meta::sprintf2($ret['meta_description'],$ceo_word);
 						$ret['meta_keywords'] = Meta::sprintf2($ret['meta_keywords'],$ceo_word);

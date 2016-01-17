@@ -25,12 +25,38 @@ $(document).ready(function() {
 				});	
 	});	
 	
-	$(document).on('click', '#touch_city', function(e){
-
-		var sval = $("#city_list" ).val();
-		
-		if (sval!=0)
-			location.href = "http://" + sval; 
-	
-	});		
+	$(document).on('click', '.setregion', function(e){
+		e.preventDefault();
+		var id_region = 0;
+		if (this.id == "touch_city")
+			id_region = $("#city_list" ).val();
+		else
+			id_region = (this.id).split("-")[1];
+		if (id_region > 0)	
+			setRegion(id_region);
+	});	
 });
+
+function setRegion(region)
+{
+	$.getJSON( egmultishop_citycontroller + "?set_region="+region,
+			function(data, status) {
+      			location.href = "http://" + data.url + getAbsolutePath(); 
+    		});	
+}
+function noRegion()
+{
+	parent.$.fancybox.close();
+	  $.get( egmultishop_citycontroller + "?set_region=0",
+		    function(data, status) {
+		  		$('.city-view:visible, .city-view-mobile:visible').trigger('click'); 
+		    });
+}
+
+function getAbsolutePath() {
+    var loc = window.location;
+    var pathName = loc.pathname;
+    return loc.pathname + loc.search + loc.hash;
+    //$("*").context.baseURI
+}
+

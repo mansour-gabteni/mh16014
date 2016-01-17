@@ -718,7 +718,7 @@ class ShopCore extends ObjectModel
 		$query = new DbQuery();
 		$query->select('domain');
 		$query->from('shop_url');
-		$query->where('main = 1');
+		//$query->where('main = 1');
 		$query->where('active = 1');
 		$query .= $this->addSqlRestriction(Shop::SHARE_ORDER);
 		$domains = array();

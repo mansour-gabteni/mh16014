@@ -1,4 +1,7 @@
-
+{strip}
+{addJsDef egmultishop_free_price=(int)$free_price}
+{addJsDef egmultishop_delivery_price=(int)$delivery_price}
+{/strip}
 <p>
 <span class="availability_date_label"><strong>{l s='delivery' mod='egmultishop'}</strong></span>
 <span class="availability_value2" id="delivery_con"></span>
@@ -13,11 +16,9 @@ $(document).ready(function(){
 });
 
 function updateDelivery(){
-	var free_price = {$free_price};
-	var delivery_price = {$delivery_price};
-	if (Math.floor(priceWithDiscountsDisplay) >= free_price )
+	if (Math.floor(priceWithDiscountsDisplay) >= egmultishop_free_price )
 		$('#delivery_con').text('{l s='free' mod='egmultishop'}');
 	else
-		$('#delivery_con').text(formatCurrency(delivery_price, currencyFormat, currencySign, currencyBlank));
+		$('#delivery_con').text(formatCurrency(egmultishop_delivery_price, currencyFormat, currencySign, currencyBlank));
 }
 </script>

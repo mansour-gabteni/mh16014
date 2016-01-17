@@ -1,4 +1,6 @@
-
+{strip}
+{addJsDef egmultishop_citycontroller=$city_link}
+{/strip}
 {if !empty($yandex_metr)}
 {$yandex_metr}
 {/if}
