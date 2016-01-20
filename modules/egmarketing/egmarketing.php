@@ -136,19 +136,19 @@ if (!defined('_PS_VERSION_'))
 		
 		if (pname==''||phone.length<3)
 		{
-			alert('Укажите Ваше имя!');
+			alert('".$this->l('name empty')."');
 			return false;
 		}
 		
 		if (phone==''||phone.length<18)
 		{
-			alert('Укажите номер телефона!');
+			alert('".$this->l('phone empty')."');
 			return false;
 		}
 
 		$('#oprod').val(product);
 		
-			dataAdd();
+			dataAdd('".$prod->id."','".$prod->name."', priceWithDiscountsDisplay,'".$prod->manufacturer_name."','".$prod->category."',1);
 			dataPurchaseFast('F".date('YmdHi')."', '".$prod->id."', '".$prod->name."', priceWithDiscountsDisplay, '".$prod->manufacturer_name."', '".$prod->category."');
 		    $.ajax({
 		         type: 'POST',
