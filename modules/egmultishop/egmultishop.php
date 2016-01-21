@@ -385,13 +385,14 @@ class egmultishop extends Module
 		$this->context->controller->addCSS($this->_path.'views/css/egmultishop.css', 'all');
 		$this->context->controller->addJS($this->_path.'views/js/modal.js', 'all');
 		
+		$this->getMultishopDateById();
 		if (egmultishop::isLiveSite()){
-			$this->getMultishopDateById();
 	 		if ($this->row)
 	 		{
 				$this->smarty->assign(array(
 					'yandex_verify' => (string)$this->row[0]['yandex_verify'],
 					'google_verify' => (string)$this->row[0]['google_verify'],
+					'mail_verify' => (string)$this->row[0]['mail_verify'],
 					'google_anal' => (string)$this->row[0]['google_anal'],
 					'yandex_metr' => (string)$this->row[0]['yandex_metr'],
 					'city_link' => $this->context->link->getModuleLink('egmultishop', 'citys')
@@ -399,9 +400,10 @@ class egmultishop extends Module
 	 		}
 		}else{
 				$this->smarty->assign(array(
-					'yandex_verify' => '',
-					'google_verify' => '',
-					'google_anal' => '',
+					'yandex_verify' => (string)$this->row[0]['yandex_verify'],
+					'google_verify' => (string)$this->row[0]['google_verify'],
+					'mail_verify' => (string)$this->row[0]['mail_verify'],
+					'google_anal' => Configuration::get('BLOCK_EGMULTSOP_TESTGOOGL'),
 					'yandex_metr' => Configuration::get('BLOCK_EGMULTSOP_TESTMETR'),
 					'city_link' => $this->context->link->getModuleLink('egmultishop', 'citys')
 				));			
