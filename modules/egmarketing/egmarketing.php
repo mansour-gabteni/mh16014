@@ -264,7 +264,7 @@ if (!defined('_PS_VERSION_'))
 				return "";
 			$row = $link[0];
 			if(1==1
-			//&& !$this->context->cookie->__isset($row['id_invate'])
+			&& !$this->context->cookie->__isset($row['id_invate'])
 			)
 			{
 				$this->context->cookie->__set($row['id_invate'], 'shown');
