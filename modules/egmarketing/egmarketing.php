@@ -6,6 +6,8 @@ if (!defined('_PS_VERSION_'))
   {
   	const INSTALL_SQL_BD1NAME = 'egcallme';
   	public $host;	
+  	public $product;
+  	public $category;
     public function __construct()
     {
 	    $this->name = 'egmarketing';
@@ -80,7 +82,33 @@ if (!defined('_PS_VERSION_'))
 	            $dl.=']
 	        }
 	    }
-	});   		
+	});
+	';   	
+	        foreach ($products as $product)
+	        {
+	        	$name = ProductCore::getProductName($product['product_id']);
+	        	$category = CategoryCore::getUrlRewriteInformations($product['id_category_default']);
+	        	$brand = ManufacturerCore::getNameById($product['id_manufacturer']);
+	        	$variant = $this->getAttributeName($product['product_attribute_id']);
+	        	
+				$dl.='ga("ec:addProduct", {
+				  "id": "'.$product['product_id'].'",
+				  "name": "'.$name.'",
+				  "category": "'.$category.'",
+				  "brand": "'.$brand.'",
+				  "variant": "'.$variant.'",
+				  "price": "29.20",
+				  "quantity": 1
+				});';
+	        }
+		$dl.='ga("ec:setAction", "purchase", {
+		  "id" : "'.$order->id.'",
+		  "affiliation": location.hosts,
+		  "revenue": "777",
+		  "shipping": "'.$order->total_shipping.'"
+		});
+
+		ga("send", "pageview");
    		}); 
    		</script>';
    		
@@ -109,6 +137,7 @@ if (!defined('_PS_VERSION_'))
 	public function hookDisplayProductButtons($params) 
 	{
 		$prod = $params['product'];
+		$this->product = $prod;
 		
 		$context = Context::getContext();
 
@@ -208,10 +237,51 @@ if (!defined('_PS_VERSION_'))
     
 	public function hookDisplayTop($params)
 	{
-		//$this->context->controller->addCSS($this->_path.'views/css/egmultishop.css', 'all');
 		$this->context->controller->addJS($this->_path.'views/js/egmarketing.js', 'all');
-		
+		if(egmarketing::isMarketingSite()>0)
+		{
+			$this->context->controller->addCSS($this->_path.'views/css/messager.css', 'all');
+			$this->context->controller->addCSS($this->_path.'views/css/sbm.css', 'all');
+		}
+		if(egmarketing::isMarketingSite()>0)
+		{
 
+			$context = Context::getContext();
+			$id_shop = $context->shop->id;
+			
+			$sql = 'select i.*
+				from `'._DB_PREFIX_.'eginvate` i
+				where i.id_shop='.(int)$id_shop.'
+				and \''.$_SERVER['REQUEST_URI'].'\' like rules';
+			
+			if(Tools::getValue('id_product', false)!==false)
+				$sql.= ' and i.id_product='.Tools::getValue('id_product');
+
+			if(Tools::getValue('id_category', false)!==false)
+				$sql.= ' and i.id_category='.Tools::getValue('id_category');				
+				
+			if (!$link = Db::getInstance()->executeS($sql))
+				return "";
+			$row = $link[0];
+			if(1==1
+			//&& !$this->context->cookie->__isset($row['id_invate'])
+			)
+			{
+				$this->context->cookie->__set($row['id_invate'], 'shown');
+				
+				$ceo_word = Meta::getCitysAddr();
+				$this->smarty->assign(array(
+					'mname' => $row['mname'],
+					'mtiz' => $row['mtiz'],
+					'message' => Meta::sprintf2($row['message'],$ceo_word),
+					'message2' => Meta::sprintf2($row['message2'],$ceo_word),
+					'delay' => $row['delay'],
+		  			'oimg' => $this->_path.'views/img/'.$row['mphoto']
+				));	
+				
+				return $this->display(__FILE__, 'displaytop.tpl');  
+			}
+		}		
 	}
   
 	public function install($keep = true)
@@ -254,26 +324,7 @@ if (!defined('_PS_VERSION_'))
 	
   	public function hookDisplayFooter($params)
 	{
-		/*
-		$utm = Tools::getValue('utm_source');
-		
-		if (egmultishop::isMarketingSite()
-			&& !$this->context->cookie->__isset('special')
-			//&& !$this->context->__get('special')==""
-			)
-			
-		
-		if(egmultishop::isMarketingSite()
-		 )
-		{
-			$this->context->cookie->__set('special', 'shown');
-	 		$this->smarty->assign(array(
-				'ajaxcontroller' => $this->context->link->getModuleLink($this->name, 'ajax')
-			));
-		
-			return $this->display(__FILE__, 'special.tpl');
-		}
-			*/	
+
 	}	
 	
   	public static function isMarketingSite()

@@ -19,7 +19,7 @@ if (!defined('_PS_VERSION_'))
 	    $this->need_instance = 0;
 	    $this->ps_versions_compliancy = array('min' => '1.6', 'max' => _PS_VERSION_); 
 	    $this->bootstrap = true;
-	 
+		 
 	    parent::__construct();
 	 
 	    $this->displayName = $this->l('Get content products of ormatek');
@@ -30,20 +30,57 @@ if (!defined('_PS_VERSION_'))
   	}	
   	public function hookDisplayTop($params)
 	{
-		$f = 1;
-		$file = dirname(__FILE__).'/'."test.txt";
-		if (Tools::getValue('u',false)!==false) {
-			if (Tools::getValue('url',false)!==false) {
-			$current = "John Smith\n";
-		
-			file_put_contents($file, $current);
-			}
-		}
+
 	}
   	public function hookDisplayProductButtons($params)
   	{
-  		$f=1;
-  	//	file_put_contents("999", "hello");
+  		$product = $params['product'];
+  		$id_lang = Context::getContext()->language->id;
+  		
+  		$file = dirname(__FILE__).'/content/c_'.$product->id.'.html';
+  		$content = '';
+  		
+  		$url = Tools::getValue('url');
+		if (Tools::getValue('url',false)!==false && $url !='') {
+			$content = $this->getProductContent($url);
+			file_put_contents($file, $content);
+		}
+			  		
+		if (Tools::getValue("u",false)!==false) {
+			if($content=='') {
+				$content = file_get_contents($file);
+			}
+
+			$query = "//select[@id='sku-variants']/option";
+		
+			$dom = new DomDocument();
+			libxml_use_internal_errors(true);
+			$dom->loadHTML($content);
+			$xpath = new DomXPath($dom);
+	   		$nodes = $xpath->query($query);
+	   		
+		    if ($nodes->length==0)
+		    	return null;
+		    foreach( $nodes as $node ) 
+		    {
+		    	$product_data = json_decode($node->getAttribute('data-price'));
+		    	//$f1 = json_decode($node->getAttribute('data-cases'));
+		    	$size = str_replace(' ', '', $node->getAttribute('value'));
+		    	/*
+		    	$sql = "select al.name from "._DB_PREFIX_."attribute_lang al 
+		    	inner join "._DB_PREFIX_."product_attribute pa on 
+		    		pa.id_product_attribute = al. 
+		    	inner join "._DB_PREFIX_."product_attribute_combination pac on
+		    		pac.id_attribute = al.id_attribute
+		    	where al.name like '".$size."%'";
+		    	
+		    	if(!$links = Db::getInstance()->executeS($sql));
+					continue;
+				*/
+		    	$attrs = $product->getAttributeCombinations($id_lang);	
+		    	//$this->updateProductAttributePriceDb($product->id, $id_product_attribute, $price, $first=false);
+		    }
+		}	    		    
   	}
   	
   	public function getContent()

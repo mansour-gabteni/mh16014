@@ -75,6 +75,15 @@ function dataPurchaseFast(order, id_product, name, price_in, brand, category)
 	        }
 	    }
 	});
+	
+	ga('ec:setAction', 'purchase', {
+		  'id': order,
+		  'affiliation': location.host,
+		  'revenue': price+shipping,
+		  'shipping': shipping
+		});
+
+	ga('send', 'pageview');  
 }	
 
 function dataDisplay(currency,host,id_product,name,price_in,brand,category)
@@ -99,6 +108,16 @@ function dataDisplay(currency,host,id_product,name,price_in,brand,category)
 		        }
 		    }
 	});
+	ga('ec:addProduct', {
+		  'id': id_product,
+		  'name': name, 
+		  'category': category,   
+		  'brand': brand,   
+		  'variant': variant  
+		});
+		 
+	ga('ec:setAction', 'detail');
+	ga('send', 'pageview');
 }
 
 function dataAdd(id_product,name,price_in,brand,category,quantity)
@@ -122,6 +141,18 @@ function dataAdd(id_product,name,price_in,brand,category,quantity)
 	        }
 	    }
 	});		
+	
+	ga('ec:addProduct', {
+		  'id': id_product,
+		  'name': name,
+		  'category': category,
+		  'brand': brand,
+		  'variant': variant,
+		  'price': price,
+		  'quantity': quantity
+		});
+	ga('ec:setAction', 'add');
+	ga('send', 'event', 'UX', 'click', 'add to cart'); 
 }
 
 function dataRemove(id, name, variant, quantity)
