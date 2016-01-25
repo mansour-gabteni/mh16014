@@ -277,7 +277,7 @@ class MetaCore extends ObjectModel
 	
 	public static function getCitysAddr()
 	{
-		$sql = 'SELECT mu.`city_name`, mu.`city1_name`, mu.`city2_name`, mu.phone
+		$sql = 'SELECT mu.`city_name`, mu.`city1_name`, mu.`city2_name`, mu.phone, mu.fdelivery, mu.delivery_price
 				, mu.addr1, mu.chema, if(mu.engname=\'\',\'info\',mu.engname) engname
 				FROM `'._DB_PREFIX_.'shop_url` su
 				INNER JOIN `'._DB_PREFIX_.'egmultishop_url` mu ON

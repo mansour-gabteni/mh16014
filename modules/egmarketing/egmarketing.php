@@ -75,9 +75,10 @@ if (!defined('_PS_VERSION_'))
 	                    "brand": "'.$brand.'",
 	                    "category": "'.$category[0]['link_rewrite'].'",
 	                    "variant": "'.$variant.'",
+	                    "quantity": '.$product['product_quantity'].',
 	                    "revenue": '.$revenue.',
 	                    "shipping": '.$order->total_shipping.'
-	                }';
+	                },';
 	            }
 	            $dl.=']
 	        }
@@ -86,6 +87,8 @@ if (!defined('_PS_VERSION_'))
 	';   	
 	        foreach ($products as $product)
 	        {
+	        	$price = $product['total_price'];
+	            $revenue = $price/100*20;
 	        	$name = ProductCore::getProductName($product['product_id']);
 	        	$category = CategoryCore::getUrlRewriteInformations($product['id_category_default']);
 	        	$brand = ManufacturerCore::getNameById($product['id_manufacturer']);
@@ -94,17 +97,18 @@ if (!defined('_PS_VERSION_'))
 				$dl.='ga("ec:addProduct", {
 				  "id": "'.$product['product_id'].'",
 				  "name": "'.$name.'",
-				  "category": "'.$category.'",
+				  "category": "'.$category[0]['link_rewrite'].'",
 				  "brand": "'.$brand.'",
 				  "variant": "'.$variant.'",
-				  "price": "29.20",
-				  "quantity": 1
-				});';
+				  "price": "'.$price.'",
+				  "quantity": '.$product['product_quantity'].'
+				});
+				';
 	        }
 		$dl.='ga("ec:setAction", "purchase", {
 		  "id" : "'.$order->id.'",
 		  "affiliation": location.hosts,
-		  "revenue": "777",
+		  "revenue": "'.$order->total_paid_real.'",
 		  "shipping": "'.$order->total_shipping.'"
 		});
 
@@ -264,10 +268,10 @@ if (!defined('_PS_VERSION_'))
 				return "";
 			$row = $link[0];
 			if(1==1
-			&& !$this->context->cookie->__isset($row['id_invate'])
+			&& !$this->context->cookie->__isset($row['id_eginvate'])
 			)
 			{
-				$this->context->cookie->__set($row['id_invate'], 'shown');
+				$this->context->cookie->__set($row['id_eginvate'], 'shown');
 				
 				$ceo_word = Meta::getCitysAddr();
 				$this->smarty->assign(array(

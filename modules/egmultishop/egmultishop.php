@@ -316,14 +316,15 @@ class egmultishop extends Module
 			
 		$page = $this->replaceCeoWords($page);
 
-	    $sql = 'SELECT fdelivery, delivery_price FROM `'._DB_PREFIX_.'shop_url` su
+	    $sql = 'SELECT fdelivery, delivery_price, dlex FROM `'._DB_PREFIX_.'shop_url` su
 		INNER JOIN `'._DB_PREFIX_.'egmultishop_url` mu ON
 			mu.`id_url`=su.`id_shop_url`
 		WHERE su.domain =\''.Tools::getHttpHost().'\'';
 	    $id_product = (int)Tools::getValue('id_product'); 
 	    $links = Db::getInstance()->executeS($sql);
-		if (in_array($id_product,array(15,16,17,18,19,20,228)))
-			$links[0]['fdelivery'] = 0; 
+
+			if (in_array($id_product,explode(',', $links[0]['dlex'])))
+				$links[0]['fdelivery'] = 0; 
 	    
 		$this->smarty->assign(array(
 			'free_price' => 	$links[0]['fdelivery'],
