@@ -9,6 +9,7 @@ if (!defined('_PS_VERSION_'))
 	const INSTALL_SQL_BD1NAME = 'egormprod';
 	const INSTALL_SQL_BD2NAME = 'egormprod_data';
 	const INSTALL_SQL_BDNAME = 'gb_load';
+	public $basePrice;
   	
     public function __construct()
     {
@@ -32,22 +33,51 @@ if (!defined('_PS_VERSION_'))
 	{
 
 	}
-  	public function hookDisplayProductButtons($params)
+	
+	public static function getAttributeId($name)
+	{
+		$sql = 'select a.id_attribute from '._DB_PREFIX_.'attribute a
+				 join '._DB_PREFIX_.'attribute_lang al on a.id_attribute = al.id_attribute
+				where a.id_attribute_group = 1
+				and al.name like \''.$name.'%\';';
+		$links = Db::getInstance()->executeS($sql);
+		if ($links[0]['id_attribute']> 0 )
+			return $links[0]['id_attribute'];
+		
+		return false;
+	}
+	
+  	public function hookDisplayProductDeliveryTime($params)//hookDisplayProductButtons($params)
   	{
+
   		$product = $params['product'];
   		$id_lang = Context::getContext()->language->id;
   		
-  		$file = dirname(__FILE__).'/content/c_'.$product->id.'.html';
+  		$file = dirname(__FILE__).'/content/'.$product->id.'_c.html';
+  		$fileu = dirname(__FILE__).'/content/'.$product->id.'_u.html';
   		$content = '';
-  		
-  		$url = Tools::getValue('url');
-		if (Tools::getValue('url',false)!==false && $url !='') {
-			$content = $this->getProductContent($url);
-			file_put_contents($file, $content);
-		}
-			  		
+		
 		if (Tools::getValue("u",false)!==false) {
+
+		  	$url = Tools::getValue('url');
+			if (Tools::getValue('url',false)!==false) {
+				if ($url !='') {
+					file_put_contents($fileu, $url);
+				}
+				
+				$url = file_get_contents($fileu);
+				
+				if ($url != ''){
+					$content = $this->getProductContent($url);
+					file_put_contents($file, $content);
+					$messages[] = "load from url";
+				}else {
+					$messages[] = "Error: url not found";
+				}
+			}			
+			
 			if($content=='') {
+				$messages[] = "update content";
 				$content = file_get_contents($file);
 			}
 
@@ -61,27 +91,139 @@ if (!defined('_PS_VERSION_'))
 	   		
 		    if ($nodes->length==0)
 		    	return null;
-		    foreach( $nodes as $node ) 
+		    $tab[0] = array();
+		    $combinations = 0;
+
+		    foreach( $nodes as $key => $node ) 
 		    {
 		    	$product_data = json_decode($node->getAttribute('data-price'));
-		    	//$f1 = json_decode($node->getAttribute('data-cases'));
-		    	$size = str_replace(' ', '', $node->getAttribute('value'));
-		    	/*
-		    	$sql = "select al.name from "._DB_PREFIX_."attribute_lang al 
-		    	inner join "._DB_PREFIX_."product_attribute pa on 
-		    		pa.id_product_attribute = al. 
-		    	inner join "._DB_PREFIX_."product_attribute_combination pac on
-		    		pac.id_attribute = al.id_attribute
-		    	where al.name like '".$size."%'";
+		    	if ($key == 0){
+		    		$this->basePrice = $product_data->VALUE;
+		    	}
+		    	$f1 = json_decode($node->getAttribute('data-cases'));
 		    	
-		    	if(!$links = Db::getInstance()->executeS($sql));
-					continue;
-				*/
-		    	$attrs = $product->getAttributeCombinations($id_lang);	
-		    	//$this->updateProductAttributePriceDb($product->id, $id_product_attribute, $price, $first=false);
+		    	$size = str_replace(' ', '', $node->getAttribute('value'));
+		    	$id_attr = egormprod::getAttributeId($size);
+		    	if ($id_attr)
+		    	{
+		    		$tab[0][]= $id_attr;
+		    		$prices[] = ($product_data->VALUE - $this->basePrice);
+		    	}else{
+		    		$messages[] = "Error: size ".$size." not found ";
+		    	}
+		    	
 		    }
-		}	    		    
+		    $this->updateProductBasePrice($product->id);
+		    
+		    egormprod::setAttributesImpacts($product->id, $tab);//AdminAttributeGeneratorController::setAttributesImpacts($product->id, $tab);
+			$combinations = $this->getCombination($tab);
+			
+			$values = $this->getMap($product->id, $combinations, $prices);//array_values(array_map(array($this, 'addAttribute'), $this->combinations));
+			
+			SpecificPriceRule::disableAnyApplication();
+		
+			$product->deleteProductAttributes();
+			$product->generateMultipleCombinations($values, $combinations);
+						
+			SpecificPriceRule::enableAnyApplication();
+			SpecificPriceRule::applyAllRules(array((int)$product->id));
+			
+			$messageTextErr = "";
+			foreach ($messages as $message)
+				$messageTextErr.=$message."\\r\\n";
+			
+		}
+		
+		if (Tools::getValue("admin",false)!==false)
+		{
+			$f=1;
+			$this->context->cookie->__set('a', 1);
+  		}
+  		if (Tools::getValue("admin")=="-1")
+		{
+			$f = 1;
+			$this->context->cookie->__unset('a');
+		}
+		if ($this->context->cookie->__isset('a'))
+		{
+			$url = file_get_contents($fileu);
+		
+			$this->smarty->assign(array(
+				'messageTextErr' => $messageTextErr,
+				'url' => $url	
+			));	
+				
+			return $this->display(__FILE__, 'up.tpl');
+		}
   	}
+  	
+  	public function updateProductBasePrice($id_product, $price)
+  	{
+  		$id_shop = $this->context->shop->id;
+		
+		$sql = "update "._DB_PREFIX_."product_shop  
+				 		set 
+				 		price = ".$this->basePrice." 
+				 		where id_product=".(int) $id_product."
+				 		and id_shop IN (".implode(', ', Shop::getContextListShopID()).")";
+		if (!$links = Db::getInstance()->execute($sql))
+			return false;
+				
+		$sql = "update "._DB_PREFIX_."product  
+				 		set 
+				 		price = ".$this->basePrice." 
+				 		where id_product=".(int) $id_product;
+		if (!$links = Db::getInstance()->execute($sql))
+			return false;
+  	}
+  	
+  	public function getCombination($tab)
+  	{
+  		$result = Array();
+  		
+  		foreach ($tab[0] as $key => $item)
+  		{
+  			$result[$key] = array($item); 
+  		}
+  		return $result;
+  	}
+  	
+  	public function getMap($id_product, $combinations, $prices)
+  	{
+  		$result = array();
+  		
+  		foreach ($combinations as $key => $combination )
+  		{
+			 $result[] = array(
+				'id_product' => $id_product,
+				'price' => $prices[$key],
+				'weight' => 0,
+				'ecotax' => 0,
+				'quantity' => 0,
+				'reference' => '',
+				'default_on' => 0,
+				'available_date' => '0000-00-00'
+			);
+  		}	
+  		return $result; 
+  	}
+  	
+    protected static function setAttributesImpacts($id_product, $tab)
+    {
+        $attributes = array();
+        foreach ($tab as $group)
+            foreach ($group as $attribute)
+				{
+					$price = 0;
+					$weight = 0;
+					$attributes[] = '('.(int)$id_product.', '.(int)$attribute.', '.(float)$price.', '.(float)$weight.')';
+				}
+
+		return Db::getInstance()->execute('
+		INSERT INTO `'._DB_PREFIX_.'attribute_impact` (`id_product`, `id_attribute`, `price`, `weight`)
+		VALUES '.implode(',', $attributes).'
+		ON DUPLICATE KEY UPDATE `price` = VALUES(price), `weight` = VALUES(weight)');
+    }
   	
   	public function getContent()
 	{
