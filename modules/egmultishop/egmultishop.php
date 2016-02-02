@@ -503,35 +503,20 @@ class egmultishop extends Module
 		
 		$total = $order->total_paid;
 		$host = Tools::getHttpHost();
+		$order_id = $order->id;
 		
 		$param = array(
 				'{total_paid}'	=> $total, 
 				'{shop_url}'	=> $host
 			);
-		/*	
+
 		Mail::Send(
 				(int)$order->id_lang,
 				'event_order',
 				Mail::l('new order', (int)$order->id_lang),
 				$param,
-				"79601652555@sms.beemail.ru",
-				'Evgeny Grishin',
-				null,
-				null,
-				null,
-				null,
-				_PS_MAIL_DIR_,
-				false,
-				(int)$order->id_shop
-			);
-			*/
-		Mail::Send(
-				(int)$order->id_lang,
-				'event_order',
-				Mail::l('new order', (int)$order->id_lang),
-				$param,
-				"e.v.grishin@yandex.ru",
-				'Evgeny Grishin',
+				Configuration::get('SMS_ORDER_NEW_EMAIL'),
+				'Site Admin',
 				null,
 				null,
 				null,
@@ -546,8 +531,8 @@ class egmultishop extends Module
 				'event_order',
 				Mail::l('new order', (int)$order->id_lang),
 				$param,
-				"info@matras-house.ru",
-				'Evgeny Grishin',
+				Configuration::get('PS_SHOP_EMAIL'),
+				'Site Admin',
 				null,
 				null,
 				null,
@@ -557,10 +542,49 @@ class egmultishop extends Module
 				(int)$order->id_shop
 			);		
 		// notify to me
-		if (egmultishop::isLiveSite())
-			if (Configuration::get('BLOCK_EGMULTSOP_SNON'))
-				$result = file_get_contents("http://lk.open-sms.ru/multi.php?login=matras_house1&password=sms23Atdhfkz&message=new order ".$total." RUR in ".$host."&phones=79601652555&originator=DomMatrasov");	
+
+		if (egmultishop::isLiveSite()) {
+			//if (Configuration::get('BLOCK_EGMULTSOP_SNON')){
+				// send to client if marketing site
+				if(egmultishop::isMarketingSite()>0){
+					$message = Configuration::get('SMS_ORDER_NEW');
+					$address = new Address((int) $order->id_address_delivery);
+					$message = Meta::sprintf2($message, array(
+						'order' => $order_id,
+						'host' => $host
+					));
+					$phone = (trim($address->phone)=="")?$address->phone_mobile:$address->phone;
+					
+					egmultishop::SendSMS($phone, $message);
+				}
+		
+				
+				// send to me in any way
+		$phone = Configuration::get('SMS_ORDER_NEW_PHONE');
+		$message = "new order ".$total." RUB in ".$host;
+		egmultishop::SendSMS($phone, $message);
+		}		
+			//}	
 		// client notify	
+	}
+	
+	public static function SendSMS($phone, $message)
+	{
+		$context = Context::getContext();
+		$id_shop = $context->shop->id;
+		$id_shop_group = $context->shop->id_shop_group;
+		
+		$max_sms = 6;
+		$sms = Configuration::get('EGCALLME_SMS_REQUEST',null, $id_shop_group, $id_shop);
+		$phone = preg_replace('#\D+#', '', $phone);
+		$sms = Meta::sprintf2($sms, array(
+				'sendto' => $phone,
+				'message' => substr($message, 0, 70*$max_sms)
+				));
+					
+		if(trim($sms)!=""){		
+			$result = file_get_contents($sms);
+		}
 	}
 	
 	

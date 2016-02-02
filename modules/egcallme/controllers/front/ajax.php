@@ -21,7 +21,8 @@ class EgcallmeajaxModuleFrontController extends ModuleFrontController
             $fname = Tools::getValue('eg_fname');
             $lname = Tools::getValue('eg_lname');
             $message = Tools::getValue('eg_message');
-            $this->newMessage($phone, $fname, $lname, $message, $context);
+            if ($phone != "")
+            	$this->newMessage($phone, $fname, $lname, $message, $context);
         }
         
         
