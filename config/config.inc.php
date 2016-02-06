@@ -52,7 +52,10 @@ if (!file_exists(_PS_ROOT_DIR_.'/config/settings.inc.php'))
 }
 
 /* include settings file only if we are not in multi-tenancy mode */
-require_once(_PS_ROOT_DIR_.'/config/settings.inc.php');
+if (!substr_count($_SERVER['DOCUMENT_ROOT'], "home/matras-house.ru/www"))
+	require_once(_PS_ROOT_DIR_.'/config/settings.inc.php');
+else
+	require_once(_PS_ROOT_DIR_.'/config/settings.inc.dev.php');
 require_once(_PS_CONFIG_DIR_.'autoload.php');
 
 if (_PS_DEBUG_PROFILING_)

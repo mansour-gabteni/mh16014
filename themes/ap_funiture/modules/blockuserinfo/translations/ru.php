@@ -27,3 +27,6 @@ $_MODULE['<{blockuserinfo}ap_funiture>nav_b145abfd6b2f88971d725cbd94a5879f'] = '
 $_MODULE['<{blockuserinfo}ap_funiture>nav_7ec9cceb94985909c6994e95c31c1aa8'] = 'Мой список желаний';
 $_MODULE['<{blockuserinfo}ap_funiture>nav_9f7b857dbd2834e6dbae6d8de2611789'] = 'Список желайний';
 $_MODULE['<{blockuserinfo}ap_funiture>nav_7eece51cf3938103677db7a5051ef8f5'] = 'Сравнить товары';
+$_MODULE['<{blockuserinfo}ap_funiture>nav_7108537956afa2a526f96cc9da7b0c36'] = 'Доставка и оплата';
+$_MODULE['<{blockuserinfo}ap_funiture>nav_080fa86d527196159e0a400c3ddde8be'] = 'Самовывоз';
+$_MODULE['<{blockuserinfo}ap_funiture>nav_4136a932eb7724a00cb87c3fb9e1ea1d'] = 'Контакты';
