@@ -215,6 +215,25 @@ class egmultishop extends Module
 		return Meta::sprintf2($page,$ceo_word);
 	}
 	
+	public function getShipselfCwarNearInfo($id_url)
+	{
+		
+		$sql = 'select maincwar
+			from '._DB_PREFIX_.'egmultishop_url
+			where  id_url = '.(int) $id_url.'';
+		$row = Db::getInstance()->getRow($sql);
+		
+		$maincwar = $row['maincwar'];
+		
+		$sql = 'select addr1, chema, maincwar
+			from '._DB_PREFIX_.'egmultishop_url
+			where  id_url = '.(int) $maincwar.'';
+		
+		$row = Db::getInstance()->getRow($sql);
+		
+		return $row;
+	}
+	
 	public function replaceCeoContact($page)
 	{
 		$ceo_word = Meta::getCitysAddr();

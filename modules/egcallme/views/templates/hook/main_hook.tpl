@@ -12,6 +12,9 @@
 <div class="clearfix pull-left ddd" style="text-align: center;">
 {if $phone!=''}
 <div class="phone">{$phone|escape:'html':'UTF-8'}</div>
+	{if (strpos($phone, '800'))}
+		<div>{l s='free call' mod='egcallme'}</div>
+	{/if}
 {/if}
 <div><a class="eg_callme_btn callme" href="#" rel="#">{l s='call me order' mod='egcallme'}</a></div>
 </div>

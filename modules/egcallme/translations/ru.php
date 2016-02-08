@@ -19,5 +19,6 @@ $_MODULE['<{egcallme}prestashop>ajax_a3da707b651c79ecc39a4986516180b2'] = 'Им�
 $_MODULE['<{egcallme}prestashop>ajax_bfbb12dc2dce9d328e8303093db2ca33'] = 'Фамилия';
 $_MODULE['<{egcallme}prestashop>ajax_78e731027d8fd50ed642340b7c9a63b3'] = 'Сообщение';
 $_MODULE['<{egcallme}prestashop>ajax_5829a954bd245531339dc10a081abff5'] = 'Перезвонить мне';
+$_MODULE['<{egcallme}prestashop>main_hook_8c1757d6b98d5525df33a759df92f1d1'] = 'Звонок бесплатный';
 $_MODULE['<{egcallme}prestashop>main_hook_8069a762fc04f1fc29bca4c47c4cee21'] = 'Заказать обратный звонок';
 $_MODULE['<{egcallme}prestashop>main_hook_681bf5d55f13cc1db21b4676f0d40773'] = 'Перезвонить мне';

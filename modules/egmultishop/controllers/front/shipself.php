@@ -16,18 +16,26 @@ class egmultishopshipselfModuleFrontController extends ModuleFrontController
 		//$page = $egmultishop->getMultishopPage('shipself',$id_url);
 		$sub_domain = egmultishop::getSubdomain();
 		$page = $egmultishop->getMultishopPageDomain('shipself',$sub_domain, false);
+
 		if ($page =="")
 		{
 			$page = $egmultishop->getMultishopPage('shipself_df', null, false);
-		}	
+			
+			$shipselfPage = $egmultishop->getShipselfCwarNearInfo($id_url);
+			
+			$page = $egmultishop->replaceCeoContact($page);
+			
+		}else{	
 
-		$page = $egmultishop->replaceCeoContact($page);
+	 		$page = $egmultishop->replaceCeoContact($page);
 		
-		$add2 = $egmultishop->replaceCeoContact('%chema');
- 
+			$map = $egmultishop->replaceCeoContact('%chema');
+		}
+ 		
 		$this->context->smarty->assign(array(
 			'page' => $page,
-			'addr2' => $add2
+			'map' => $map,
+			'shipselfPage' => $shipselfPage
 		));	
 		  
 		$this->setTemplate('shipself.tpl');
