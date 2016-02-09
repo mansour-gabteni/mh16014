@@ -172,7 +172,36 @@ class egmarketingajaxModuleFrontController extends ModuleFrontController
 				));		
 		
 		$this->sendSMS($sms_message,"79601652555",2);
-
+		$param = array(
+                '{phone}'    => str_replace('+','',$phone),
+                '{message}'    => $message,
+                '{fname}' => $cname,
+            	'{type}'	=> 'FastOrder',
+            	'{host}' => $host,
+            	'{shost}' => str_replace('.','-',$host)
+            );
+		$this->sendTelegramm($param, $sms_message);
+	}
+	
+    private function replaceKeywords($params, $request, $text)
+    {
+      	foreach ($params as $key => $value) {
+    		$text = str_replace($key,$value,$text);
+    	}
+    	
+    	foreach ($params as $key => $value) {
+    		$request = str_replace($key,$value,$request);
+    	}
+    	$request = str_replace('{text}',urlencode($text),$request);
+    	return $request;
+    }	
+	
+	private function sendTelegramm($param, $sms_message)
+	{
+		$request = Configuration::get('EGCALLME_HTTPNOT_3');
+		$text = Configuration::get('EGCALLME_HTTPNOT_3_TXT');
+		$request = $this->replaceKeywords($param, $request, $text);
+        $result = file_get_contents($request);
 	}
 	
 	private function sendSMS($message, $phone, $max_sms = 1)

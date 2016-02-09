@@ -70,7 +70,9 @@ class EgcallmeajaxModuleFrontController extends ModuleFrontController
                 '{message}'    => $message,
                 '{fname}'    => $fname,
                 '{lname}'    => $lname,
-            	'{host}' => $host
+            	'{type}'	=> 'CallBack',
+            	'{host}' => $host,
+            	'{shost}' => str_replace('.','-',$host)
             );
 
             $emails = explode(';', $emails_param);

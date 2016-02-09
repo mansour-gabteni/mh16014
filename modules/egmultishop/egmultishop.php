@@ -561,32 +561,62 @@ class egmultishop extends Module
 				(int)$order->id_shop
 			);		
 		// notify to me
-
+		$message = Configuration::get('SMS_ORDER_NEW');
+		$address = new Address((int) $order->id_address_delivery);
+		$message = Meta::sprintf2($message, array(
+			'order' => $order_id,
+			'host' => $host
+			));
+		$phone_client = (trim($address->phone)=="")?$address->phone_mobile:$address->phone;
+		$phone_client = preg_replace('#\D+#', '', $phone_client);			
 		if (egmultishop::isLiveSite()) {
 			//if (Configuration::get('BLOCK_EGMULTSOP_SNON')){
 				// send to client if marketing site
-				if(egmultishop::isMarketingSite()>0){
-					$message = Configuration::get('SMS_ORDER_NEW');
-					$address = new Address((int) $order->id_address_delivery);
-					$message = Meta::sprintf2($message, array(
-						'order' => $order_id,
-						'host' => $host
-					));
-					$phone = (trim($address->phone)=="")?$address->phone_mobile:$address->phone;
-					
-					egmultishop::SendSMS($phone, $message);
-				}
+				//if(egmultishop::isMarketingSite()>0){
+					egmultishop::SendSMS($phone_client, $message);
+				//}
 		
 				
 				// send to me in any way
 		$phone = Configuration::get('SMS_ORDER_NEW_PHONE');
-		$message = "new order ".$total." RUB in ".$host;
-		egmultishop::SendSMS($phone, $message);
-		}		
+		$message = " ".$total." RUB ";
+		egmultishop::SendSMS($phone, "new order".$message.$host);
+		}
+
+		$param = array(
+                '{phone}'    => str_replace('+','',$phone_client),
+                '{message}'    => $message,
+                '{fname}' => '',
+            	'{type}'	=> 'NewOrder',
+            	'{host}' => $host,
+            	'{shost}' => str_replace('.','-',$host)
+            );
+		$this->sendTelegramm($param, $sms_message);		
 			//}	
 		// client notify	
 	}
 	
+	private function sendTelegramm($param, $sms_message)
+	{
+		$request = Configuration::get('EGCALLME_HTTPNOT_3');
+		$text = Configuration::get('EGCALLME_HTTPNOT_3_TXT');
+		$request = $this->replaceKeywords($param, $request, $text);
+        $result = file_get_contents($request);
+	}	
+	
+    private function replaceKeywords($params, $request, $text)
+    {
+      	foreach ($params as $key => $value) {
+    		$text = str_replace($key,$value,$text);
+    	}
+    	
+    	foreach ($params as $key => $value) {
+    		$request = str_replace($key,$value,$request);
+    	}
+    	$request = str_replace('{text}',urlencode($text),$request);
+    	return $request;
+    }
+    	
 	public static function SendSMS($phone, $message)
 	{
 		$context = Context::getContext();
