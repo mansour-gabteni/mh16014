@@ -250,11 +250,11 @@ class MetaCore extends ObjectModel
 	public static function getHomeMetas($id_lang, $page_name)
 	{
 		$metas = Meta::getMetaByPage($page_name, $id_lang);
-		$ret['meta_title'] = (isset($metas['title']) && $metas['title']) ? $metas['title'].' - '.Configuration::get('PS_SHOP_NAME') : Configuration::get('PS_SHOP_NAME');
+		$ret['meta_title'] = (isset($metas['title']) && $metas['title']) ? $metas['title'].' - '.Configuration::get('PS_SHOP_NAME').' %city_name' : Configuration::get('PS_SHOP_NAME').' %city_name';
 		$ret['meta_description'] = (isset($metas['description']) && $metas['description']) ? $metas['description'] : '';
 		$ret['meta_keywords'] = (isset($metas['keywords']) && $metas['keywords']) ? $metas['keywords'] :  '';
-		
-		Meta::getEgCeoWords('HOME', null, $ret);
+		if ($page_name == 'index')
+			Meta::getEgCeoWords('HOME', null, $ret);
 		return Meta::replaceCity($ret);
 	}
 	
@@ -340,6 +340,7 @@ class MetaCore extends ObjectModel
 		{
 			if (empty($row['meta_description']))
 				$row['meta_description'] = strip_tags($row['description_short']);
+			$row['meta_title'].=' - '.Configuration::get('PS_SHOP_NAME').' %city_name';
 			Meta::getEgCeoWords('product', $id_product, $row);	
 			return Meta::completeMetaTags($row, $row['name']);
 		}
@@ -376,12 +377,12 @@ class MetaCore extends ObjectModel
 
 				// Paginate title
 				if (!empty($row['meta_title']))
-					$row['meta_title'] = $title.$row['meta_title'].(!empty($page_number) ? ' ('.$page_number.')' : '').' - '.Configuration::get('PS_SHOP_NAME');
+					$row['meta_title'] = $title.$row['meta_title'].(!empty($page_number) ? ' ('.$page_number.')' : '').' - '.Configuration::get('PS_SHOP_NAME').' %city_name';
 				else
-					$row['meta_title'] = $row['name'].(!empty($page_number) ? ' ('.$page_number.')' : '').' - '.Configuration::get('PS_SHOP_NAME');
+					$row['meta_title'] = $row['name'].(!empty($page_number) ? ' ('.$page_number.')' : '').' - '.Configuration::get('PS_SHOP_NAME').' %city_name';
 
 				if (!empty($title))
-					$row['meta_title'] = $title.(!empty($page_number) ? ' ('.$page_number.')' : '').' - '.Configuration::get('PS_SHOP_NAME');
+					$row['meta_title'] = $title.(!empty($page_number) ? ' ('.$page_number.')' : '').' - '.Configuration::get('PS_SHOP_NAME').' %city_name';
 
 				$result = Meta::completeMetaTags($row, $row['name']);
 			}
@@ -472,7 +473,7 @@ class MetaCore extends ObjectModel
 			if (!empty($row['meta_description']))
 				$row['meta_description'] = strip_tags($row['meta_description']);
 			if (!empty($row['meta_title']))
-				$row['meta_title'] = $row['meta_title'].' - '.Configuration::get('PS_SHOP_NAME');
+				$row['meta_title'] = $row['meta_title'].' - '.Configuration::get('PS_SHOP_NAME').' %city_name';
 				
 				$row = Meta::replaceCity($row);
 				
@@ -502,7 +503,7 @@ class MetaCore extends ObjectModel
 
 		if ($row = Db::getInstance(_PS_USE_SQL_SLAVE_)->getRow($sql))
 		{
-			$row['meta_title'] = $row['meta_title'].' - '.Configuration::get('PS_SHOP_NAME');
+			$row['meta_title'] = $row['meta_title'].' - '.Configuration::get('PS_SHOP_NAME').' %city_name';
 			
 			return Meta::replaceCity(Meta::completeMetaTags($row, $row['meta_title']));
 		}
@@ -529,7 +530,7 @@ class MetaCore extends ObjectModel
 						' AND id_shop = '.(int)Context::getContext()->shop->id : '');
 		if ($row = Db::getInstance(_PS_USE_SQL_SLAVE_)->getRow($sql))
 		{
-			$row['meta_title'] = $row['meta_title'].' - '.Configuration::get('PS_SHOP_NAME');
+			$row['meta_title'] = $row['meta_title'].' - '.Configuration::get('PS_SHOP_NAME').' %city_name';
 			$row = Meta::replaceCity($row);
 			return Meta::completeMetaTags($row, $row['meta_title']);
 		}
@@ -546,7 +547,7 @@ class MetaCore extends ObjectModel
 			$context = Context::getContext();
 
 		if (empty($meta_tags['meta_title']))
-			$meta_tags['meta_title'] = $default_value.' - '.Configuration::get('PS_SHOP_NAME');
+			$meta_tags['meta_title'] = $default_value.' - '.Configuration::get('PS_SHOP_NAME').' %city_name';
 		if (empty($meta_tags['meta_description']))
 			$meta_tags['meta_description'] = Configuration::get('PS_META_DESCRIPTION', $context->language->id) ? Configuration::get('PS_META_DESCRIPTION', $context->language->id) : '';
 		if (empty($meta_tags['meta_keywords']))
