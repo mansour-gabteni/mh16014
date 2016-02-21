@@ -580,7 +580,7 @@ class egmultishop extends Module
 				// send to me in any way
 		$phone = Configuration::get('SMS_ORDER_NEW_PHONE');
 		$message = " ".$total." RUB ";
-		egmultishop::SendSMS($phone, "new order".$message.$host);
+		//egmultishop::SendSMS($phone, "new order".$message.$host);
 		}
 
 		$param = array(

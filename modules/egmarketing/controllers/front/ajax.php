@@ -58,7 +58,7 @@ class egmarketingajaxModuleFrontController extends ModuleFrontController
 		$name = Tools::getValue('oname', '-');
 		$message = Tools::getValue('oprod', 'NaN');
 		
-		$this->newMessage("FastOrder", $phone, $name, $message, "smscallme_order");
+		//$this->newMessage("FastOrder", $phone, $name, $message, "smscallme_order");
 		// если города основные
 		
 		if(egmultishop::isMarketingSite())
