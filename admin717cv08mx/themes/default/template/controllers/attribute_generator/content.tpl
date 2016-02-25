@@ -134,6 +134,10 @@
 							<td>{l s='Default Reference:'}</td>
 							<td><input type="text" name="reference" value="{$product_reference|escape:'html':'UTF-8'}" /></td>
 						</tr>
+						<tr>
+							<td>{l s='prices from excel:'}</td>
+							<td><textarea name="prices_excel"></textarea><input type="button" value="update"></td>
+						</tr>						
 					</tbody>
 				</table>
 				<div class="alert alert-info">{l s='Please click on "Generate these Combinations"'}</div>
