@@ -58,7 +58,7 @@ class egmarketingajaxModuleFrontController extends ModuleFrontController
 		$name = Tools::getValue('oname', '-');
 		$message = Tools::getValue('oprod', 'NaN');
 		
-		//$this->newMessage("FastOrder", $phone, $name, $message, "smscallme_order");
+		$this->newMessage("FastOrder", $phone, $name, $message, "smscallme_order");
 		// если города основные
 		
 		if(egmultishop::isMarketingSite())
@@ -171,7 +171,7 @@ class egmarketingajaxModuleFrontController extends ModuleFrontController
 				'message' => $message
 				));		
 		
-		$this->sendSMS($sms_message,"79601652555",2);
+		//$this->sendSMS($sms_message,"79601652555",2);
 		$param = array(
                 '{phone}'    => str_replace('+','',$phone),
                 '{message}'    => $message,

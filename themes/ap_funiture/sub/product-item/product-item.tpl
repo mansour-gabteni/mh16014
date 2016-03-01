@@ -22,7 +22,7 @@
 			{/if}
 				
 		</div>
-	
+
 		{hook h="displayProductPriceBlock" product=$product type="weight"}
 		
 		<div class="content-buttons clearfix">
@@ -64,7 +64,7 @@
 				{/if} 
 			</div>
 			<div class="product-desc" itemprop="description">
-				{$product.description_short|strip_tags:'UTF-8'}
+				{$product.description_short}
 			</div>
 
 			{if isset($product.color_list) && $ENABLE_COLOR}
