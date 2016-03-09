@@ -104,6 +104,6 @@ $_MODULE['<{productcomments}ap_funiture>productcomments_b78a3223503896721cca1303
 $_MODULE['<{productcomments}ap_funiture>productcomments_0be8406951cdfda82f00f79328cf4efc'] = 'Комментарий';
 $_MODULE['<{productcomments}ap_funiture>productcomments_4494d00c901c9e22ff3b953177205cea'] = 'Вы уверены что хотите разместить комментарий?';
 $_MODULE['<{productcomments}ap_funiture>productcomments_9ec6e88ba9192880b4d976ac7f9ca59c'] = 'Ваш комментарий размещен. Он будет доступен после проверки модератором';
-$_MODULE['<{productcomments}ap_funiture>productcomments_reviews_d844ad9202d0de8442498775ba6ef819'] = 'Обзор(ы)';
+$_MODULE['<{productcomments}ap_funiture>productcomments_reviews_d844ad9202d0de8442498775ba6ef819'] = 'Отзывов:';
 $_MODULE['<{productcomments}ap_funiture>products-comparison_5d9acecbb0b55a71dea7403896356001'] = 'Посмотреть комментарии';
 $_MODULE['<{productcomments}ap_funiture>tab_34e80a799d144cfe4af46815e103f017'] = 'Отзывы';

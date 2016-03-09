@@ -14842,7 +14842,7 @@ div.verticalmenu .widget-heading {
   background: #fff;
 }
 .product-block .nb-comments {
-  display: none;
+  /*display: none;*/
 }
 .product-block .star_content {
   display: inline-block;
