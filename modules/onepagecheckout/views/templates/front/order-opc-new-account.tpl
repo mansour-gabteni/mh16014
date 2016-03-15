@@ -255,6 +255,15 @@
         </p>
 
         <p class="required text" {if $isVirtualCart && $opc_config.virtual_no_delivery}style="display: none;"{/if}>
+            <label for="city">{l s='City' mod='onepagecheckout'}<sup>*</sup></label>
+            <input type="text" class="text" name="city" id="city"
+                   value="{if isset($guestInformations) && isset($guestInformations.city) &&  $guestInformations.city}{$guestInformations.city}{else}{if $isVirtualCart && true} {/if}{/if}"/>{if isset($opc_config.validation_checkboxes) && $opc_config.validation_checkboxes}
+            <span class="validity valid_blank"></span>{/if}{if isset($opc_config.sample_values) && $opc_config.sample_values}
+                <span class="sample_text ex_blur">({l s='e.g.' mod='onepagecheckout'} {l s='Paris' mod='onepagecheckout'})</span>{/if}
+        </p>
+
+
+        <p class="required text" {if $isVirtualCart && $opc_config.virtual_no_delivery}style="display: none;"{/if}>
             <label for="address1">{l s='Address' mod='onepagecheckout'}<sup>*</sup></label>
             <input type="text" class="text" name="address1" id="address1"
                    value="{if isset($guestInformations) && isset($guestInformations.address1) &&  $guestInformations.address1}{$guestInformations.address1}{else}{if $isVirtualCart && true} {/if}{/if}"/>{if isset($opc_config.validation_checkboxes) && $opc_config.validation_checkboxes}
@@ -279,13 +288,6 @@
                 <span class="sample_text ex_blur">({l s='e.g.' mod='onepagecheckout'} {l s='90104' mod='onepagecheckout'})</span>{/if}
         </p>
 
-        <p class="required text" {if $isVirtualCart && $opc_config.virtual_no_delivery}style="display: none;"{/if}>
-            <label for="city">{l s='City' mod='onepagecheckout'}<sup>*</sup></label>
-            <input type="text" class="text" name="city" id="city"
-                   value="{if isset($guestInformations) && isset($guestInformations.city) &&  $guestInformations.city}{$guestInformations.city}{else}{if $isVirtualCart && true} {/if}{/if}"/>{if isset($opc_config.validation_checkboxes) && $opc_config.validation_checkboxes}
-            <span class="validity valid_blank"></span>{/if}{if isset($opc_config.sample_values) && $opc_config.sample_values}
-                <span class="sample_text ex_blur">({l s='e.g.' mod='onepagecheckout'} {l s='Paris' mod='onepagecheckout'})</span>{/if}
-        </p>
 
 
         {if $isVirtualCart && $opc_config.virtual_no_delivery}
