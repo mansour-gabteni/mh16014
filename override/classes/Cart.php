@@ -2784,15 +2784,24 @@ class CartCore extends ObjectModel
 		
 		$sql = 'SHOW TABLES LIKE "'._DB_PREFIX_.'egmultishop_url"';
 		if ($links = Db::getInstance()->executeS($sql)) {
-		    $sql = 'SELECT fdelivery, delivery_price FROM `'._DB_PREFIX_.'shop_url` su
+		    $sql = 'SELECT fdelivery, delivery_price, dlex FROM `'._DB_PREFIX_.'shop_url` su
 			INNER JOIN `'._DB_PREFIX_.'egmultishop_url` mu ON
 				mu.`id_url`=su.`id_shop_url`
 			WHERE su.domain =\''.Tools::getHttpHost().'\'';
 		    
 		    $links = Db::getInstance()->executeS($sql);
 		}
-        
+
+		foreach ($complete_product_list as $product){
+			$p = $product['id_product'];
+			$ar = explode(',', $links[0]['dlex']);
+			if (in_array($p,$ar)){
+				$links[0]['fdelivery'] = 1;
+			}
+		}
+		
 		$configuration['PS_SHIPPING_FREE_PRICE'] = isset($links[0]['fdelivery'])?$links[0]['fdelivery']:$configuration['PS_SHIPPING_FREE_PRICE'];
+
 		
 		if (isset($configuration['PS_SHIPPING_FREE_PRICE']))
 			$free_fees_price = Tools::convertPrice((float)$configuration['PS_SHIPPING_FREE_PRICE'], Currency::getCurrencyInstance((int)$this->id_currency));
