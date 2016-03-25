@@ -20,7 +20,9 @@
 			{if isset($product.on_sale) && $product.on_sale && isset($product.show_price) && $product.show_price && !$PS_CATALOG_MODE}
 				<span class="label label-sale">{l s='Sale!'}</span>
 			{/if}
-				
+			{if isset($product.condition) && $product.condition == 'gift'}
+			<div data-toggle="tooltip" data-html="true" title="{l s='gifts description'}" data-placement="right" style="position: absolute;top: 10px;left: 2px;width:60px;height:60px;background-image: url(../img/5.png)"></div>			
+			{/if}
 		</div>
 
 		{hook h="displayProductPriceBlock" product=$product type="weight"}

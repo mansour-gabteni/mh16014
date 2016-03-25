@@ -320,6 +320,7 @@
 						<option value="new" {if $product->condition == 'new'}selected="selected"{/if} >{l s='New'}</option>
 						<option value="used" {if $product->condition == 'used'}selected="selected"{/if} >{l s='Used'}</option>
 						<option value="refurbished" {if $product->condition == 'refurbished'}selected="selected"{/if}>{l s='Refurbished'}</option>
+						<option value="gift" {if $product->condition == 'gift'}selected="selected"{/if}>{l s='gift'}</option>
 					</select>
 				</div>
 			</div>

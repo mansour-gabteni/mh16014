@@ -65,11 +65,16 @@
 					{if $product->new}					
 						<span class="label-new label">{l s='New'}</span>					
 					{/if}
+
 					{if $product->on_sale}					
 						<span class="label-sale label">{l s='Sale!'}</span>					
 					{elseif $product->specificPrice && $product->specificPrice.reduction && $productPriceWithoutReduction > $productPrice}
 						<span class="label-discount label label-danger">{l s='Reduced price!'}</span>
 					{/if}
+					{if $product->condition == 'gift'}
+					<div data-toggle="tooltip" data-html="true" title="{l s='gifts description'}" data-placement="right" style="position: absolute;top: 2px;left: 2px;width:60px;height:60px;background-image: url(../img/5.png)"></div>
+
+					{/if}					
 				</div>
 				{if $have_image}
 					<span id="view_full_size">

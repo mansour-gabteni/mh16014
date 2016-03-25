@@ -34,7 +34,11 @@ $(document).ready(function() {
 			id_region = (this.id).split("-")[1];
 		if (id_region > 0)	
 			setRegion(id_region);
-	});	
+	});
+	
+	  $(function () { 
+		    $("[data-toggle='tooltip']").tooltip(); 
+	});
 });
 
 function setRegion(region)

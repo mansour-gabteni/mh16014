@@ -36,6 +36,11 @@
 					<span class="new-label product-label">{l s='New'}</span>
 				</span>
 			{/if}
+			{if isset($product.condition) && $product.condition == 'gift'}
+			<span class="new-box">
+					<span class="new-label product-label">{l s='present'}</span>
+				</span>				
+			{/if}
 			{if isset($product.on_sale) && $product.on_sale && isset($product.show_price) && $product.show_price && !$PS_CATALOG_MODE}
 				<span class="sale-box">
 					<span class="sale-label product-label">{l s='Sale!'}</span>
