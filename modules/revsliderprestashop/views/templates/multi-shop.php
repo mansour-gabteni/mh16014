@@ -1,1 +1,0 @@
-<input type="hidden" name="id_shop" id="sds_rev_id_shop" value="<?php echo Context::getcontext()->shop->id; ?>">

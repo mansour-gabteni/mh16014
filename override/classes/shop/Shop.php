@@ -369,7 +369,7 @@ class ShopCore extends ObjectModel
 		}
 
 		$http_host = Tools::getHttpHost();
-		$all_media = array_merge(Configuration::getMultiShopValues('PS_MEDIA_SERVER_1'), Configuration::getMultiShopValues('PS_MEDIA_SERVER_2'), Configuration::getMultiShopValues('PS_MEDIA_SERVER_3'));
+		//$all_media = array_merge(Configuration::getMultiShopValues('PS_MEDIA_SERVER_1'), Configuration::getMultiShopValues('PS_MEDIA_SERVER_2'), Configuration::getMultiShopValues('PS_MEDIA_SERVER_3'));
 
 		if ((!$id_shop && defined('_PS_ADMIN_DIR_')) || Tools::isPHPCLI() || in_array($http_host, $all_media))
 		{
@@ -1017,10 +1017,11 @@ class ShopCore extends ObjectModel
 	{
 		static $feature_active = null;
 
-		if ($feature_active === null)
+		/*if ($feature_active === null)
 			$feature_active = (bool)Db::getInstance()->getValue('SELECT value FROM `'._DB_PREFIX_.'configuration` WHERE `name` LIKE "PS_MULTISHOP_FEATURE_ACTIVE"')
 				&& (Db::getInstance()->getValue('SELECT COUNT(*) FROM '._DB_PREFIX_.'shop') > 1);
-
+		*/
+		$feature_active = true;
 		return $feature_active;
 	}
 
