@@ -10,6 +10,8 @@ set_time_limit(0);
 
 class YaMarket extends Module
 {
+	private $data;
+	
     public function __construct()
     {
         $this->name = 'yamarket';
@@ -20,7 +22,7 @@ class YaMarket extends Module
         $this->display = 'view';
         $this->bootstrap = true;
         //$this->ps_versions_compliancy = array('min' => '1.5.0.0', 'max' => '1.6');
-        $this->module_key = '2149d8638f786d69c1a762f1fbfb8124';
+        //$this->module_key = '2149d8638f786d69c1a762f1fbfb8124';
 
         $this->custom_attributes = array('YAMARKET_COMPANY_NAME', 'YAMARKET_DELIVERY_PRICE', 'YAMARKET_SALES_NOTES',
             'YAMARKET_COUNTRY_OF_ORIGIN', 'YAMARKET_EXPORT_TYPE', 'YAMARKET_MODEL_NAME', 'YAMARKET_DESC_TYPE',
@@ -57,7 +59,7 @@ class YaMarket extends Module
         $this->all_cats = array();
         foreach ($all_cats as $cat){
             $this->all_cats[] = $cat['id_category'];
-            if (!in_array($cat['id_category'], $this->excluded_cats))
+            if (in_array($cat['id_category'], $this->excluded_cats))
                 $this->selected_cats[] = $cat['id_category'];
         }
 
@@ -102,7 +104,7 @@ class YaMarket extends Module
                 $selected_cats[] = $row;
             $this->excluded_cats = array();
             foreach ($this->all_cats as $cat)
-                if (!in_array($cat, $selected_cats))
+                if (in_array($cat, $selected_cats))
                     $this->excluded_cats[] = $cat;
             Configuration::updateValue('YAMARKET_EXCLUDED_CATS', implode(',', $this->excluded_cats));
             $output .= $this->displayConfirmation($this->l('Settings updated'));
@@ -388,6 +390,7 @@ class YaMarket extends Module
     {
         $features = Product::getFeaturesStatic((int)$prod_id);
         $params = array();
+        $key = 0;
         foreach ($features as $feature) {
             $feature_name = Feature::getFeature($this->id_lang, $feature['id_feature']);
             $feature_name = $feature_name['name'];
@@ -400,21 +403,32 @@ class YaMarket extends Module
                 }
             }
             if ($feature_value != null)
-                $params[$feature_name] = $feature_value;
+            {
+                $params[$key] = array('name' => $feature_name, 
+            						'value' => $feature_value, 
+            						'unit' => '');;
+                $key = $key + 1;
+            }
         }
         return $params;
     }
 
     function getParams($combination) {
         $params = array();
-        foreach($combination['attributes'] as $attribute) {
-            $params[$attribute[0]] = $attribute[1];
+        foreach($combination['attributes'] as $key => $attribute) {
+            $params[$key] = array('name' => $attribute[0], 
+            						'value' => $attribute[1], 
+            						'unit' => Configuration::get('YAMARKET_UNIT'));
         }
         return $params;
     }
 
     function getPriceList()
     {
+    	$this->data = $this->getYamarketShopData();
+        if ($this->data['yam_name']=="")
+        	return '';   
+    	
         $currency = new Currency(Configuration::get('PS_CURRENCY_DEFAULT'));
         if ($currency->iso_code == 'RUB')
             $currency->iso_code = 'RUR';
@@ -424,33 +438,24 @@ class YaMarket extends Module
         $link = $this->context->link;
         $this->ensureHttpPrefix($link);
 
-        // Get products
-        $products = Product::getProducts($this->id_lang, 0, 0, 'name', 'asc');
-
         $xml = $this->getDocBody();
 
         // Offers
         $offers = $xml->createElement("offers");
 
-
+        // Get products
+        
+        $categorys = $this->excluded_cats;
+        
+        foreach ($categorys AS $category)
+        {
+        
+        $products = Product::getProducts($this->id_lang, 0, 0, 'name', 'asc', $category);
+        
+        
         foreach ($products AS $product)
         {
-            // Get home category
-            $category = $product['id_category_default'];
-
-            if ($category == 1)
-            {
-                $temp_categories = Product::getProductCategories($product['id_product']);
-                foreach ($temp_categories as $category)
-                {
-                    if ($category != 1)
-                        break;
-                }
-                if ($category == 1)
-                    continue;
-            }
-            if (in_array($category, $this->excluded_cats))
-                continue;
+        	$id_category_default = $product['id_category_default'];
 
             $prod_obj = new Product($product['id_product']);
             $crewrite = Category::getLinkRewrite($product['id_category_default'], $this->id_lang);
@@ -462,7 +467,7 @@ class YaMarket extends Module
             // template array
             $product_item = array('name' => html_entity_decode($product['name']),
                                   'description' => html_entity_decode($product['description']),
-                                  'id_category_default' => $category,
+                                  'id_category_default' => $id_category_default,
                                   'ean13' => $product['ean13'],
                                   'accessories' => implode(',', $accessories),
                                   'vendor' => $product['manufacturer_name']);
@@ -490,20 +495,31 @@ class YaMarket extends Module
                         continue;
                     }
                     $params = $this->getParams($combination);
-
+					$size = $params[0]['value'];
+					
+					$sizes = $this->sizeConvert($size);
+					
                     $pictures = array();
+                    $pictures = $this->getPictures($product['id_product'], $product['link_rewrite']);
+                    
                     foreach($combination['id_images'] as $id_image){
                         $pictures[] = $link->getImageLink($product['link_rewrite'], $product['id_product'].'-'.$id_image, $this->image_type);
                     }
                     $url = $link->getProductLink($prod_obj, $product['link_rewrite'], $crewrite, null, null, null, $combination['id_product_attribute']);
                     $extra_product_item = array('id_product' => $product['id_product'].'c'.$combination['id_product_attribute'],
                                                 'available_for_order' => $available_for_order,
-                                                'price' => $prod_obj->getPrice(true, $combination['id_product_attribute']),
+                    							'group_id' => $product['id_product'],
+                                                'price' => round($prod_obj->getPrice(true, $combination['id_product_attribute']), -1),
+                    							'oldprice' => round($prod_obj->getPriceWithoutReduct(true, $combination['id_product_attribute']), -1),
                                                 'pictures' => $pictures,
-                                                'params' => array_merge($params, $features),
+                    							'manufacturer_warranty' => 'true',
+                    							'market_category' => Configuration::get('YAMARKET_CATEGORY'),
+                                                'params' => array_merge($sizes, $features),
                                                 'url' => $url
                     );
+                    
                     $offer = array_merge($product_item, $extra_product_item);
+                    $offer['name'] = $offer['name']. ' ' . $size;
                     $offers->appendChild($this->getOfferElem($offer, $xml, $currency));
                 }
 
@@ -529,17 +545,50 @@ class YaMarket extends Module
             }
             $prod_obj->clearCache(true);
         }
+        }
 
         $shop = $xml->getElementsByTagName("shop")->item(0);
         $shop->appendChild($offers);
 
         return $xml->saveXML();
     }
+    
+    public function sizeConvert($size)
+    {
+    	
+    	$prts = explode(' ', $size);
+    	
+    	$dim = explode(Configuration::get('YAMARKET_DIMSEP'), $prts[0]);
+    	
+    	$sizes = array();
+    	
+    	$sizes[0] = array('name' => Configuration::get('YAMARKET_WIDTH'), 
+            						'value' => $dim[0], 
+            						'unit' => Configuration::get('YAMARKET_UNIT'));
+		$sizes[1] = array('name' => Configuration::get('YAMARKET_LENGTH'), 
+            						'value' => $dim[1], 
+            						'unit' => Configuration::get('YAMARKET_UNIT'));    	
+    	return $sizes;
+    }
+    
+	public static function getYamarketShopData()
+	{
+		$sql = 'SELECT  yam_name, yam_company
+				FROM `'._DB_PREFIX_.'shop_url` su
+				INNER JOIN `'._DB_PREFIX_.'egmultishop_url` mu ON
+					mu.`id_url`=su.`id_shop_url`
+				WHERE su.`domain` = \''.Tools::getHttpHost().'\'';
+
+		if (!$ret = Db::getInstance()->executeS($sql))
+			return false;
+		return $ret[0];
+	}    
 
     function getDocBody() {
+    		
         // Get currencies
         $currencies = Currency::getCurrencies();
-
+        
         // Get categories
         $categories = Category::getCategories($this->id_lang, true, false);
 
@@ -549,13 +598,13 @@ class YaMarket extends Module
         $catalog = $xml->createElement("yml_catalog");
         $catalog->setAttribute("date", date('Y-m-d H:i'));
         $shop = $xml->createElement("shop");
-
-        $elem = $xml->createElement("name");
-        $elem->appendChild($xml->createCDATASection(html_entity_decode(Configuration::get('PS_SHOP_NAME'))));
+		
+        $elem = $xml->createElement("name", $this->data['yam_name']);
+        //$elem->appendChild($xml->createCDATASection(html_entity_decode($this->data['yam_name'])));
         $shop->appendChild($elem);
 
-        $elem = $xml->createElement("company");
-        $elem->appendChild($xml->createCDATASection(Configuration::get('YAMARKET_COMPANY_NAME')));
+        $elem = $xml->createElement("company", $this->data['yam_company']);
+        //$elem->appendChild($xml->createCDATASection($this->data['yam_company']));
         $shop->appendChild($elem);
 
         $shop->appendChild($xml->createElement("url", $this->proto_prefix . __PS_BASE_URI__));
@@ -573,7 +622,13 @@ class YaMarket extends Module
             }
         }
         $shop->appendChild($elem);
-
+        
+        $deliveryOptions = $xml->createElement("delivery-options");
+        $option = $xml->createElement("option");
+        	$option->setAttribute("cost", 0);
+        	$option->setAttribute("days", "3-5");
+        	$deliveryOptions->appendChild($option);
+        $shop->appendChild($deliveryOptions);
 
         $elem = $xml->createElement("categories");
         foreach ($categories as $category) {
@@ -586,12 +641,13 @@ class YaMarket extends Module
             $elem->appendChild($subelem);
         }
         $shop->appendChild($elem);
-
+		/*
         $local_delivery_price = Configuration::get('YAMARKET_DELIVERY_PRICE');
         if ($local_delivery_price or $local_delivery_price === "0") {
-            $shop->appendChild($xml->createElement("local_delivery_cost", $local_delivery_price));
+            $shop->appendChild($xml->createElement("delivery-options", $local_delivery_price));
         }
-
+		*/
+        
         $catalog->appendChild($shop);
         $xml->appendChild($catalog);
 
@@ -606,13 +662,19 @@ class YaMarket extends Module
             $subelem->setAttribute("available", 'false');
 
         $subelem->setAttribute("id", $offer['id_product']);
+        $subelem->setAttribute("group_id", $offer['group_id']);        
         $subelem->appendChild($xml->createElement("url", $offer['url']));
         $subelem->appendChild($xml->createElement("price", $offer['price']));
+        $subelem->appendChild($xml->createElement("oldprice", $offer['oldprice']));
         $subelem->appendChild($xml->createElement("currencyId", $currency->iso_code));
         $subelem->appendChild($xml->createElement("categoryId", $offer['id_category_default']));
+        $subelem->appendChild($xml->createElement("market_category", $offer['market_category']));
         foreach ($offer['pictures'] as $pic) {
             $subelem->appendChild($xml->createElement("picture", $pic));
         }
+        $subelem->appendChild($xml->createElement("manufacturer_warranty", $offer['manufacturer_warranty']));
+        
+
         if (Configuration::get('YAMARKET_DELIVERY_STORE'))
             $subelem->appendChild($xml->createElement("store", "true"));
         if (Configuration::get('YAMARKET_DELIVERY_PICKUP'))
@@ -632,15 +694,15 @@ class YaMarket extends Module
 
     function appendSimpleOffer($subelem, $offer, $xml)
     {
-        $elem = $xml->createElement("name");
-        $elem->appendChild($xml->createCDATASection($offer['name']));
+        $elem = $xml->createElement("name",$offer['name']);
+        //$elem->appendChild($xml->createCDATASection($offer['name']));
         $subelem->appendChild($elem);
 
         if (array_key_exists('vendor', $offer))
             $subelem->appendChild($xml->createElement("vendor", $offer['vendor']));
 
-        $elem = $xml->createElement("description");
-        $elem->appendChild($xml->createCDATASection(strip_tags($offer['description'])));
+        $elem = $xml->createElement("description", strip_tags($offer['description']));
+        //$elem->appendChild($xml->createCDATASection(strip_tags($offer['description'])));
         $subelem->appendChild($elem);
         if (Configuration::get('YAMARKET_SALES_NOTES'))
             $subelem->appendChild($xml->createElement("sales_notes", Configuration::get('YAMARKET_SALES_NOTES')));
@@ -648,9 +710,11 @@ class YaMarket extends Module
         if (array_key_exists('country_of_origin', $offer))
             $subelem->appendChild($xml->createElement("country_of_origin", $offer['country_of_origin']));
 
-        foreach ($offer['params'] as $param_name => $value) {
-            $elem = $xml->createElement("param", $value);
-            $elem->setAttribute("name", $param_name);
+        foreach ($offer['params'] as $param) {
+            $elem = $xml->createElement("param", $param['value']);
+            $elem->setAttribute("name", $param['name']);
+            if ($param['unit']!='')
+            	$elem->setAttribute("unit", $param['unit']);
             $subelem->appendChild($elem);
         }
     }
@@ -675,12 +739,13 @@ class YaMarket extends Module
 
         if (array_key_exists('accessories', $offer) && $offer['accessories'])
             $subelem->appendChild($xml->createElement("rec", $offer['accessories']));
-
+		/*
         foreach ($offer['params'] as $param_name => $value) {
             $elem = $xml->createElement("param", $value);
             $elem->setAttribute("name", $param_name);
             $subelem->appendChild($elem);
         }
+        */
     }
 
 }
