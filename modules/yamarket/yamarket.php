@@ -455,6 +455,7 @@ class YaMarket extends Module
         
         foreach ($products AS $product)
         {
+        //	if ($product['id_product'] == 228 ){
         	$id_category_default = $product['id_category_default'];
 
             $prod_obj = new Product($product['id_product']);
@@ -505,12 +506,13 @@ class YaMarket extends Module
                     foreach($combination['id_images'] as $id_image){
                         $pictures[] = $link->getImageLink($product['link_rewrite'], $product['id_product'].'-'.$id_image, $this->image_type);
                     }
-                    $url = $link->getProductLink($prod_obj, $product['link_rewrite'], $crewrite, null, null, null, $combination['id_product_attribute']);
+                    $url = $link->getProductLink($prod_obj, $product['link_rewrite'], $crewrite, null, null, null, $combination['id_product_attribute'], Configuration::get('PS_REWRITING_SETTINGS'), false, true);
+                    //$url = $link->getProductLink($product['link_rewrite'], null, null, null, null, null, $combination['id_product_attribute'], Configuration::get('PS_REWRITING_SETTINGS'), false, true);
                     $extra_product_item = array('id_product' => $product['id_product'].'c'.$combination['id_product_attribute'],
                                                 'available_for_order' => $available_for_order,
                     							'group_id' => $product['id_product'],
-                                                'price' => round($prod_obj->getPrice(true, $combination['id_product_attribute']), -1),
-                    							'oldprice' => round($prod_obj->getPriceWithoutReduct(true, $combination['id_product_attribute']), -1),
+                                                'price' => $prod_obj->getPrice(true, $combination['id_product_attribute']),
+                    							'oldprice' => $prod_obj->getPriceWithoutReduct(true, $combination['id_product_attribute']),
                                                 'pictures' => $pictures,
                     							'manufacturer_warranty' => 'true',
                     							'market_category' => Configuration::get('YAMARKET_CATEGORY'),
@@ -522,7 +524,7 @@ class YaMarket extends Module
                     $offer['name'] = $offer['name']. ' ' . $size;
                     $offers->appendChild($this->getOfferElem($offer, $xml, $currency));
                 }
-
+            
             } else {
                 $pictures = $this->getPictures($product['id_product'], $product['link_rewrite']);
                 $available_for_order = 1 <= StockAvailable::getQuantityAvailableByProduct($product['id_product'], 0);
@@ -546,6 +548,7 @@ class YaMarket extends Module
             $prod_obj->clearCache(true);
         }
         }
+        //}
 
         $shop = $xml->getElementsByTagName("shop")->item(0);
         $shop->appendChild($offers);
@@ -555,10 +558,10 @@ class YaMarket extends Module
     
     public function sizeConvert($size)
     {
-    	
+    	 
     	$prts = explode(' ', $size);
     	
-    	$dim = explode(Configuration::get('YAMARKET_DIMSEP'), $prts[0]);
+    	$dim = explode('×', $prts[0]);
     	
     	$sizes = array();
     	
@@ -665,7 +668,8 @@ class YaMarket extends Module
         $subelem->setAttribute("group_id", $offer['group_id']);        
         $subelem->appendChild($xml->createElement("url", $offer['url']));
         $subelem->appendChild($xml->createElement("price", $offer['price']));
-        $subelem->appendChild($xml->createElement("oldprice", $offer['oldprice']));
+        if ($offer['price'] != $offer['oldprice'])
+        	$subelem->appendChild($xml->createElement("oldprice", $offer['oldprice']));
         $subelem->appendChild($xml->createElement("currencyId", $currency->iso_code));
         $subelem->appendChild($xml->createElement("categoryId", $offer['id_category_default']));
         $subelem->appendChild($xml->createElement("market_category", $offer['market_category']));

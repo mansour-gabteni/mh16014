@@ -516,7 +516,7 @@ class ToolsCore
 		$ret = 0;
 		if (($is_negative = ($price < 0)))
 			$price *= -1;
-		$price = Tools::ps_round($price, -1);//$price = Tools::ps_round($price, $c_decimals);
+		$price = Tools::ps_round($price, $c_decimals); //$price = Tools::ps_round($price, -1);// eg for round price
 
 		/*
 		* If the language is RTL and the selected currency format contains spaces as thousands separator
