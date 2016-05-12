@@ -473,7 +473,7 @@ class YaMarket extends Module
                                   'accessories' => implode(',', $accessories),
                                   'vendor' => $product['manufacturer_name']);
             if ($desc_type == 1)
-                $product_item['description'] = html_entity_decode($product['description_short']);
+                $product_item['description'] = html_entity_decode(strip_tags(str_replace("®", '', $product['description_short'])));
             if ($this->country_of_origin_attr !='' && array_key_exists($this->country_of_origin_attr, $features)){
                 $product_item['country_of_origin'] = $features[$this->country_of_origin_attr];
                 unset($features[$this->country_of_origin_attr]);
@@ -515,7 +515,7 @@ class YaMarket extends Module
                     							'oldprice' => $prod_obj->getPriceWithoutReduct(true, $combination['id_product_attribute']),
                                                 'pictures' => $pictures,
                     							'manufacturer_warranty' => 'true',
-                    							'market_category' => Configuration::get('YAMARKET_CATEGORY'),
+                    							'market_category' => ($product['id_category_default']==102)?Configuration::get('YAMARKET_CATEGORY'):Configuration::get('YAMARKET_CATEGORY2'),
                                                 'params' => array_merge($sizes, $features),
                                                 'url' => $url
                     );
@@ -626,13 +626,14 @@ class YaMarket extends Module
         }
         $shop->appendChild($elem);
         
+        /*
         $deliveryOptions = $xml->createElement("delivery-options");
         $option = $xml->createElement("option");
         	$option->setAttribute("cost", 0);
         	$option->setAttribute("days", "3-5");
         	$deliveryOptions->appendChild($option);
         $shop->appendChild($deliveryOptions);
-
+*/
         $elem = $xml->createElement("categories");
         foreach ($categories as $category) {
             if ($category['id_category']==1)
@@ -705,8 +706,8 @@ class YaMarket extends Module
         if (array_key_exists('vendor', $offer))
             $subelem->appendChild($xml->createElement("vendor", $offer['vendor']));
 
-        $elem = $xml->createElement("description", strip_tags($offer['description']));
-        //$elem->appendChild($xml->createCDATASection(strip_tags($offer['description'])));
+        $elem = $xml->createElement("description");
+        $elem->appendChild($xml->createCDATASection(strip_tags($offer['description'])));
         $subelem->appendChild($elem);
         if (Configuration::get('YAMARKET_SALES_NOTES'))
             $subelem->appendChild($xml->createElement("sales_notes", Configuration::get('YAMARKET_SALES_NOTES')));

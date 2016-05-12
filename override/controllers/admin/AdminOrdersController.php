@@ -82,10 +82,11 @@ class AdminOrdersControllerCore extends AdminController
 				'title' => $this->l('ID'),
 				'align' => 'text-center',
 				'class' => 'fixed-width-xs'
-			),
+			),/*
 			'reference' => array(
 				'title' => $this->l('Reference')
 			),
+			
 			'new' => array(
 				'title' => $this->l('New client'),
 				'align' => 'text-center',
@@ -98,8 +99,17 @@ class AdminOrdersControllerCore extends AdminController
 				'title' => $this->l('Customer'),
 				'havingFilter' => true,
 			),
+			*/
+			'shipping_number' => array(
+				'title' => $this->l('shipping_number'),
+				'havingFilter' => true,
+			),			
+			'city' => array(
+				'title' => $this->l('city'),
+				'havingFilter' => true,
+			),			
 		);
-
+		/*
 		if (Configuration::get('PS_B2B_ENABLE'))
 		{
 			$this->fields_list = array_merge($this->fields_list, array(
@@ -109,7 +119,7 @@ class AdminOrdersControllerCore extends AdminController
 				),
 			));
 		}
-
+*/
 		$this->fields_list = array_merge($this->fields_list, array(
 			'total_paid_tax_incl' => array(
 				'title' => $this->l('Total'),
@@ -119,6 +129,7 @@ class AdminOrdersControllerCore extends AdminController
 				'callback' => 'setOrderCurrency',
 				'badge_success' => true
 			),
+			
 			'payment' => array(
 				'title' => $this->l('Payment')
 			),
@@ -137,6 +148,12 @@ class AdminOrdersControllerCore extends AdminController
 				'type' => 'datetime',
 				'filter_key' => 'a!date_add'
 			),
+			'delivery_date' => array(
+				'title' => $this->l('Date delivery'),
+				'align' => 'text-right',
+				'type' => 'datetime',
+				'filter_key' => 'a!delivery_date'
+			),			
 			'id_pdf' => array(
 				'title' => $this->l('PDF'),
 				'align' => 'text-center',
@@ -164,6 +181,7 @@ class AdminOrdersControllerCore extends AdminController
 
 			$part1 = array_slice($this->fields_list, 0, 3);
 			$part2 = array_slice($this->fields_list, 3);
+			/*
 			$part1['cname'] = array(
 				'title' => $this->l('Delivery'),
 				'type' => 'select',
@@ -172,6 +190,7 @@ class AdminOrdersControllerCore extends AdminController
 				'filter_type' => 'int',
 				'order_key' => 'cname'
 			);
+			*/
 			$this->fields_list = array_merge($part1, $part2);
 		}
 

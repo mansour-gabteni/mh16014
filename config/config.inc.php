@@ -52,6 +52,8 @@ if (!file_exists(_PS_ROOT_DIR_.'/config/settings.inc.php'))
 }
 
 /* include settings file only if we are not in multi-tenancy mode */
+if (substr_count($_SERVER['DOCUMENT_ROOT'], "test"))
+	require_once(_PS_ROOT_DIR_.'/config/settings.inc.test.php');
 if (!substr_count($_SERVER['DOCUMENT_ROOT'], "home/matras-house.ru/www"))
 	require_once(_PS_ROOT_DIR_.'/config/settings.inc.php');
 else
