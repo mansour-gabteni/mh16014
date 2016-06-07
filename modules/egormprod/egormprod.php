@@ -56,7 +56,7 @@ if (!defined('_PS_VERSION_'))
   		$file = dirname(__FILE__).'/content/'.$product->id.'_c.html';
   		$fileu = dirname(__FILE__).'/content/'.$product->id.'_u.html';
   		$content = '';
-		
+		  		
 		if (Tools::getValue("u",false)!==false) {
 
 		  	$url = Tools::getValue('url');
@@ -89,52 +89,113 @@ if (!defined('_PS_VERSION_'))
 			$xpath = new DomXPath($dom);
 	   		$nodes = $xpath->query($query);
 	   		
-		    if ($nodes->length==0)
-		    	return null;
-		    $tab[0] = array();
-		    $combinations = 0;
-
-		    foreach( $nodes as $key => $node ) 
-		    {
-		    	$product_data = json_decode($node->getAttribute('data-price'));
-		    	if ($key == 0){
-		    		$this->basePrice = $product_data->VALUE;
-		    	}
-		    	$f1 = json_decode($node->getAttribute('data-cases'));
-		    	
-		    	$size = str_replace(' ', '', $node->getAttribute('value'));
-		    	$id_attr = egormprod::getAttributeId($size);
-		    	if ($id_attr)
-		    	{
-		    		$tab[0][]= $id_attr;
-		    		$prices[] = ($product_data->VALUE - $this->basePrice);
-		    	}else{
-		    		$messages[] = "Error: size ".$size." not found ";
-		    	}
-		    	
+		    if ($nodes->length==0){
+		    	// update only base price
+		    	$query = "string(//div[@id='price-container']/span/text())";
+				$price = $xpath->evaluate($query);
+				$query = "string(//div[@id='price-container']/del/text())";
+				$oldprice = $xpath->evaluate($query);
+				$price = preg_replace("/[^0-9]/", '', $price);
+				$oldprice = preg_replace("/[^0-9]/", '', $oldprice);
+				if ($price == "" && $oldprice == "")
+				{
+					$tab[0] = array();
+			    	$combinations = 0;
+			    	
+					$query = "string(//div[@id='complectData']/text())";
+					$node = $xpath->evaluate($query);
+					$product_data = json_decode($node);
+					$offers = $product_data->items[0]->OFFERS;
+					//array_multisort($offers['BASE_PRICE'], SORT_ASC);
+					foreach ($offers as $offer){
+				    	$size = $offer->SHIRINA.'Г—'.$offer->DLINA; 
+				    	$id_attr = egormprod::getAttributeId($size);
+				    	if ($id_attr)
+				    	{
+				    		$tab[0][]= $id_attr;
+				    		$prices[] = $offer->BASE_PRICE;
+				    	}else{
+				    		$messages[] = "Error: size ".$size." not found ";
+				    	}
+					}
+					
+				    array_multisort($prices, SORT_ASC,SORT_NUMERIC, $tab[0]);
+				    $this->basePrice = $prices[0];
+				    foreach ($prices as $key => $price_tmp){
+				    	$prices[$key] = ($price_tmp - $this->basePrice);
+				    }
+				    
+				    
+			    $this->updateProductBasePrice($product->id);
+			    
+			    egormprod::setAttributesImpacts($product->id, $tab);//AdminAttributeGeneratorController::setAttributesImpacts($product->id, $tab);
+				$combinations = $this->getCombination($tab);
+				
+				$values = $this->getMap($product->id, $combinations, $prices);//array_values(array_map(array($this, 'addAttribute'), $this->combinations));
+				
+				SpecificPriceRule::disableAnyApplication();
+			
+				$product->deleteProductAttributes();
+				$product->generateMultipleCombinations($values, $combinations);
+							
+				SpecificPriceRule::enableAnyApplication();
+				SpecificPriceRule::applyAllRules(array((int)$product->id));
+				
+				$messageTextErr = "";
+				foreach ($messages as $message)
+					$messageTextErr.=$message."\\r\\n";				    
+					
+				}else{
+					// pillows
+					$this->basePrice = ($oldprice>0)?$oldprice:$price; 
+					$this->updateProductBasePrice($product->id);
+				}					
+		    }else{
+			    $tab[0] = array();
+			    $combinations = 0;
+	
+			    foreach( $nodes as $key => $node ) 
+			    {
+			    	$product_data = json_decode($node->getAttribute('data-price'));
+			    	if ($key == 0){
+			    		$this->basePrice = $product_data->VALUE;
+			    	}
+			    	$f1 = json_decode($node->getAttribute('data-cases'));
+			    	
+			    	$size = str_replace(' ', '', $node->getAttribute('value'));
+			    	$id_attr = egormprod::getAttributeId($size);
+			    	if ($id_attr)
+			    	{
+			    		$tab[0][]= $id_attr;
+			    		$prices[] = ($product_data->VALUE - $this->basePrice);
+			    	}else{
+			    		$messages[] = "Error: size ".$size." not found ";
+			    	}
+			    	
+			    }
+			    $this->updateProductBasePrice($product->id);
+			    
+			    egormprod::setAttributesImpacts($product->id, $tab);//AdminAttributeGeneratorController::setAttributesImpacts($product->id, $tab);
+				$combinations = $this->getCombination($tab);
+				
+				$values = $this->getMap($product->id, $combinations, $prices);//array_values(array_map(array($this, 'addAttribute'), $this->combinations));
+				
+				SpecificPriceRule::disableAnyApplication();
+			
+				$product->deleteProductAttributes();
+				$product->generateMultipleCombinations($values, $combinations);
+							
+				SpecificPriceRule::enableAnyApplication();
+				SpecificPriceRule::applyAllRules(array((int)$product->id));
+				
+				$messageTextErr = "";
+				foreach ($messages as $message)
+					$messageTextErr.=$message."\\r\\n";
 		    }
-		    $this->updateProductBasePrice($product->id);
-		    
-		    egormprod::setAttributesImpacts($product->id, $tab);//AdminAttributeGeneratorController::setAttributesImpacts($product->id, $tab);
-			$combinations = $this->getCombination($tab);
-			
-			$values = $this->getMap($product->id, $combinations, $prices);//array_values(array_map(array($this, 'addAttribute'), $this->combinations));
-			
-			SpecificPriceRule::disableAnyApplication();
-		
-			$product->deleteProductAttributes();
-			$product->generateMultipleCombinations($values, $combinations);
-						
-			SpecificPriceRule::enableAnyApplication();
-			SpecificPriceRule::applyAllRules(array((int)$product->id));
-			
-			$messageTextErr = "";
-			foreach ($messages as $message)
-				$messageTextErr.=$message."\\r\\n";
 			
 		}
 		
-		if (Tools::getValue("admin",false)!==false)
+  	  	if (Tools::getValue("admin",false)!==false)
 		{
 			$f=1;
 			$this->context->cookie->__set('a', 1);
@@ -143,7 +204,8 @@ if (!defined('_PS_VERSION_'))
 		{
 			$f = 1;
 			$this->context->cookie->__unset('a');
-		}
+		}		
+
 		if ($this->context->cookie->__isset('a'))
 		{
 			$url = file_get_contents($fileu);
@@ -698,7 +760,7 @@ if (!defined('_PS_VERSION_'))
 		 {
 		 	if(count($attributes)==1)
 		 	{
-		 		//обновляем цену товара
+		 		//РѕР±РЅРѕРІР»СЏРµРј С†РµРЅСѓ С‚РѕРІР°СЂР°
 		 		//$err_text .= "\r\n update price";
 		 		$id_product_attribute = $dbAttributes[0]['id_product_attribute'];
 		 		$this->updateProductAttributePriceDb(
@@ -752,7 +814,7 @@ if (!defined('_PS_VERSION_'))
 			 	}
 			 	else
 			 	{
-			 		// атрибут не найден в БД
+			 		// Р°С‚СЂРёР±СѓС‚ РЅРµ РЅР°Р№РґРµРЅ РІ Р‘Р”
 			 		$err_text .= "\r\not in db ".$attribute['name'];
 			 	}
 			 }
@@ -760,7 +822,7 @@ if (!defined('_PS_VERSION_'))
 			 {
 			 	if ($pattribute['ff']!="l")
 			 	{
-				 	// атрибута небыло на сайте
+				 	// Р°С‚СЂРёР±СѓС‚Р° РЅРµР±С‹Р»Рѕ РЅР° СЃР°Р№С‚Рµ
 			 		$err_text .= "\r\not on site ".$pattribute['name'];
 			 	}
 			 }
@@ -977,10 +1039,10 @@ if (!defined('_PS_VERSION_'))
 		
 		$ch = curl_init( $url );
 		 
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);   // возвращает веб-страницу
-		curl_setopt($ch, CURLOPT_HEADER, 0);           // не возвращает заголовки
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);   // переходит по редиректам
-		curl_setopt($ch, CURLOPT_ENCODING, "");        // обрабатывает все кодировки
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);   // РІРѕР·РІСЂР°С‰Р°РµС‚ РІРµР±-СЃС‚СЂР°РЅРёС†Сѓ
+		curl_setopt($ch, CURLOPT_HEADER, 0);           // РЅРµ РІРѕР·РІСЂР°С‰Р°РµС‚ Р·Р°РіРѕР»РѕРІРєРё
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);   // РїРµСЂРµС…РѕРґРёС‚ РїРѕ СЂРµРґРёСЂРµРєС‚Р°Рј
+		curl_setopt($ch, CURLOPT_ENCODING, "");        // РѕР±СЂР°Р±Р°С‚С‹РІР°РµС‚ РІСЃРµ РєРѕРґРёСЂРѕРІРєРё
 		curl_setopt($ch, CURLOPT_POST,1);
   		curl_setopt($ch, CURLOPT_COOKIEJAR, dirname(__FILE__).'/cookies/cookie.txt');
   		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
@@ -1081,10 +1143,10 @@ if (!defined('_PS_VERSION_'))
 	{
 		$ch = curl_init( $url );
 		 
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);   // возвращает веб-страницу
-		curl_setopt($ch, CURLOPT_HEADER, 0);           // не возвращает заголовки
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);   // переходит по редиректам
-		curl_setopt($ch, CURLOPT_ENCODING, "");        // обрабатывает все кодировки
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);   // РІРѕР·РІСЂР°С‰Р°РµС‚ РІРµР±-СЃС‚СЂР°РЅРёС†Сѓ
+		curl_setopt($ch, CURLOPT_HEADER, 0);           // РЅРµ РІРѕР·РІСЂР°С‰Р°РµС‚ Р·Р°РіРѕР»РѕРІРєРё
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);   // РїРµСЂРµС…РѕРґРёС‚ РїРѕ СЂРµРґРёСЂРµРєС‚Р°Рј
+		curl_setopt($ch, CURLOPT_ENCODING, "");        // РѕР±СЂР°Р±Р°С‚С‹РІР°РµС‚ РІСЃРµ РєРѕРґРёСЂРѕРІРєРё
 		if ($cookie_use)
 		{		  
 			curl_setopt($ch, CURLOPT_COOKIEFILE, dirname(__FILE__).'/cookies/cookie.txt');
@@ -1144,7 +1206,7 @@ if (!defined('_PS_VERSION_'))
     
     private function dateCorrect($date)
     {
-    	$r_from = array('(',')','СЏРЅРІР°СЂСЏ','С„РµРІСЂР°Р»СЏ','РјР°СЂС‚Р°','Р°РїСЂРµР»СЏ','РјР°СЏ','РёСЋРЅСЏ','РёСЋР»СЏ','Р°РІРіСѓСЃС‚Р°','СЃРµРЅС‚СЏР±СЂСЏ','РѕРєС‚СЏР±СЂСЏ','РЅРѕСЏР±СЂСЏ','РґРµРєР°Р±СЂСЏ');
+    	$r_from = array('(',')','РЎРЏР Р…Р Р†Р В°РЎР‚РЎРЏ','РЎвЂћР ВµР Р†РЎР‚Р В°Р В»РЎРЏ','Р СР В°РЎР‚РЎвЂљР В°','Р В°Р С—РЎР‚Р ВµР В»РЎРЏ','Р СР В°РЎРЏ','Р С‘РЎР‹Р Р…РЎРЏ','Р С‘РЎР‹Р В»РЎРЏ','Р В°Р Р†Р С–РЎС“РЎРѓРЎвЂљР В°','РЎРѓР ВµР Р…РЎвЂљРЎРЏР В±РЎР‚РЎРЏ','Р С•Р С”РЎвЂљРЎРЏР В±РЎР‚РЎРЏ','Р Р…Р С•РЎРЏР В±РЎР‚РЎРЏ','Р Т‘Р ВµР С”Р В°Р В±РЎР‚РЎРЏ');
     	
     	$r_to = array('','','January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
     	
