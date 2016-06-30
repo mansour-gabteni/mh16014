@@ -1,8 +1,8 @@
 <?php
-define('_DB_SERVER_', 'mysql91.1gb.ru'); // define('_DB_SERVER_', 'localhost');
-define('_DB_NAME_', 'gb_mh_live'); //define('_DB_NAME_', 'gb_live'); 
-define('_DB_USER_', 'gb_mh_live'); //define('_DB_USER_', 'root'); 
-define('_DB_PASSWD_', '6fd582febsgh'); //define('_DB_PASSWD_', '');
+define('_DB_SERVER_', 'mysql81.1gb.ru'); // define('_DB_SERVER_', 'localhost');
+define('_DB_NAME_', 'gb_mh_livessd'); //define('_DB_NAME_', 'gb_live'); 
+define('_DB_USER_', 'gb_mh_livessd'); //define('_DB_USER_', 'root'); 
+define('_DB_PASSWD_', 'd458b58e45');//'6fd582febsgh'); //define('_DB_PASSWD_', '');
 define('_DB_PREFIX_', 'ps_');
 define('_MYSQL_ENGINE_', 'InnoDB');
 define('_PS_CACHING_SYSTEM_', 'CacheMemcache');

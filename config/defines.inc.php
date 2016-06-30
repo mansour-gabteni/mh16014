@@ -25,6 +25,9 @@
 */
 
 /* Debug only */
+if (isset($_GET['my_debug']))	
+	define('_PS_MODE_DEV_', true);
+	
 if (!defined('_PS_MODE_DEV_'))
 define('_PS_MODE_DEV_', false);
 /* Compatibility warning */
@@ -33,15 +36,17 @@ if (_PS_MODE_DEV_ === false)
 {
 	@ini_set('display_errors', 'off');
 	@error_reporting(E_ALL | E_STRICT);
-	define('_PS_DEBUG_SQL_', true);
+	define('_PS_DEBUG_SQL_', false);
+	define('_PS_DEBUG_PROFILING_', false);
 }
 else
 {
 	@ini_set('display_errors', 'off');
 	define('_PS_DEBUG_SQL_', false);
+	define('_PS_DEBUG_PROFILING_', true);
 }
 
-define('_PS_DEBUG_PROFILING_', false);
+
 define('_PS_MODE_DEMO_', false);
 
 $currentDir = dirname(__FILE__);
