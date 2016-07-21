@@ -54,13 +54,13 @@ $_MODULE['<{onepagecheckout}prestashop>order-opc-new-account_20db0bfeecd8fe60533
 $_MODULE['<{onepagecheckout}prestashop>order-opc-new-account_40687c8206d15373954d8b27c6724f62'] = 'Анна';
 $_MODULE['<{onepagecheckout}prestashop>order-opc-new-account_8d3f5eff9c40ee315d452392bed5309b'] = 'Фамилия';
 $_MODULE['<{onepagecheckout}prestashop>order-opc-new-account_e6892602a984c21896885135147205c6'] = 'Иванова';
+$_MODULE['<{onepagecheckout}prestashop>order-opc-new-account_57d056ed0984166336b7879c2af3657f'] = 'Город';
+$_MODULE['<{onepagecheckout}prestashop>order-opc-new-account_e20d37a5d7fcc4c35be6fc18a8e71bfa'] = 'Москва';
 $_MODULE['<{onepagecheckout}prestashop>order-opc-new-account_dd7bf230fde8d4836917806aff6a6b27'] = 'Адрес';
 $_MODULE['<{onepagecheckout}prestashop>order-opc-new-account_1b80d0ca796a668608123af5f8d5723f'] = 'ул. Горького 22';
 $_MODULE['<{onepagecheckout}prestashop>order-opc-new-account_846a54955f32846032981f8fe48c35ff'] = 'Адрес (продолжение)';
 $_MODULE['<{onepagecheckout}prestashop>order-opc-new-account_bd9014fe70f4f8bb1beed74e3b708483'] = 'Почтовый индекс';
 $_MODULE['<{onepagecheckout}prestashop>order-opc-new-account_587b11d4d193d217aa603d0b4d34d95f'] = '90104';
-$_MODULE['<{onepagecheckout}prestashop>order-opc-new-account_57d056ed0984166336b7879c2af3657f'] = 'Город';
-$_MODULE['<{onepagecheckout}prestashop>order-opc-new-account_e20d37a5d7fcc4c35be6fc18a8e71bfa'] = 'Москва';
 $_MODULE['<{onepagecheckout}prestashop>order-opc-new-account_59716c97497eb9694541f7c3d37b1a4d'] = 'Страна';
 $_MODULE['<{onepagecheckout}prestashop>order-opc-new-account_46a2a41cc6e552044816a2d04634545d'] = 'Регион';
 $_MODULE['<{onepagecheckout}prestashop>order-opc-new-account_fe66abce284ec8589e7d791185b5c442'] = 'Домашний телефон';
