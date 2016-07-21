@@ -81,7 +81,7 @@ class Iqitpopup extends Module
 	{
 		if (parent::install() &&
 			$this->registerHook('header') &&
-			$this->registerHook('freeFblock'))
+			$this->registerHook('displayFooter'))
 		{
 
 			$this->setDefaults();
@@ -461,6 +461,7 @@ class Iqitpopup extends Module
 		height: '.((int)Configuration::get($this->config_name.'_height')).'px;
 		}
 		';
+		$my_file = "";
 		if (Shop::getContext() == Shop::CONTEXT_GROUP)
 			$my_file = $this->local_path.'css/iqitpopup_g_'.(int)$this->context->shop->getContextShopGroupID().'.css';
 		elseif (Shop::getContext() == Shop::CONTEXT_SHOP)
@@ -505,7 +506,7 @@ class Iqitpopup extends Module
 		$this->context->controller->addCSS(($this->_path).'css/iqitpopup_s_'.(int)$this->context->shop->getContextShopID().'.css', 'all');
 	}
 
-	public function hookfreeFblock()
+	public function hookDisplayFooter($params)
 	{
 		if (Configuration::get($this->config_name.'_pages') && $this->context->controller->php_self != 'index')
 			return;
