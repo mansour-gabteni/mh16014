@@ -118,14 +118,14 @@ $_MODULE['<{onepagecheckout}prestashop>shopping-cart_853ae90f0351324bd73ea615e64
 $_MODULE['<{onepagecheckout}prestashop>shopping-cart_ec211f7c20af43e742bf2570c3cb84f9'] = 'Добавить';
 $_MODULE['<{onepagecheckout}prestashop>shopping-cart_1d9baf077ee87921f57a8fe42d510b65'] = 'Уменьшить';
 $_MODULE['<{onepagecheckout}prestashop>shopping-cart_f2a6c498fb90ee345d997f888fce3b18'] = 'Удалить';
-$_MODULE['<{onepagecheckout}prestashop>shopping-cart_a82868319826fb092b73968e661b5b38'] = 'Купоны';
+$_MODULE['<{onepagecheckout}prestashop>shopping-cart_a82868319826fb092b73968e661b5b38'] = 'Промо код';
 $_MODULE['<{onepagecheckout}prestashop>shopping-cart_e0aa021e21dddbd6d8cecec71e9cf564'] = 'ОК';
 $_MODULE['<{onepagecheckout}prestashop>shopping-cart_30efeba472c0bc4d0747d0109948a714'] = 'Выслать товары в наличии в первую очередь';
 $_MODULE['<{onepagecheckout}prestashop>shopping-cart_3a5199ec2407f4b2f90496072ea8f006'] = 'Итого товаров (без НДС):';
 $_MODULE['<{onepagecheckout}prestashop>shopping-cart_543ae6adeb524f98cc7d3c816a1ec1e3'] = 'Итого товаров:';
 $_MODULE['<{onepagecheckout}prestashop>shopping-cart_29cfbfc41066134782f966beefd63a4e'] = 'Итого товаров (с НДС.):';
-$_MODULE['<{onepagecheckout}prestashop>shopping-cart_4e59b98d7fa1d964bfd9841ad5c34980'] = 'Итого купоны (без НДС):';
-$_MODULE['<{onepagecheckout}prestashop>shopping-cart_2633d6725607d13e80f5e30514b91fbe'] = 'Итого купоны:';
+$_MODULE['<{onepagecheckout}prestashop>shopping-cart_4e59b98d7fa1d964bfd9841ad5c34980'] = 'Итого промо код(без НДС):';
+$_MODULE['<{onepagecheckout}prestashop>shopping-cart_2633d6725607d13e80f5e30514b91fbe'] = 'Итого промо код:';
 $_MODULE['<{onepagecheckout}prestashop>shopping-cart_b935a8c55ff8c1c967d6f848b375db81'] = 'Итого упаковка (без НДС):';
 $_MODULE['<{onepagecheckout}prestashop>shopping-cart_a12925b3d2beb085f9a024d8098b41dd'] = 'Итого упаковка:';
 $_MODULE['<{onepagecheckout}prestashop>shopping-cart_66f51e43606e2baebb8e9c3bfe965da4'] = 'Доставка:';
