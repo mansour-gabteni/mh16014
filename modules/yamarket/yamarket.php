@@ -506,7 +506,7 @@ class YaMarket extends Module
                     foreach($combination['id_images'] as $id_image){
                         $pictures[] = $link->getImageLink($product['link_rewrite'], $product['id_product'].'-'.$id_image, $this->image_type);
                     }
-                    $url = $link->getProductLink($prod_obj, $product['link_rewrite'], $crewrite, null, null, null, $combination['id_product_attribute'], Configuration::get('PS_REWRITING_SETTINGS'), false, true);
+                    $url = $link->getProductLink($prod_obj, $product['link_rewrite'], $crewrite, '?utm_source=rsy', null, null, $combination['id_product_attribute'], Configuration::get('PS_REWRITING_SETTINGS'), false, true);
                     //$url = $link->getProductLink($product['link_rewrite'], null, null, null, null, null, $combination['id_product_attribute'], Configuration::get('PS_REWRITING_SETTINGS'), false, true);
                     $extra_product_item = array('id_product' => $product['id_product'].'c'.$combination['id_product_attribute'],
                                                 'available_for_order' => $available_for_order,
