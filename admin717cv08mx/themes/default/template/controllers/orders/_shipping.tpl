@@ -35,9 +35,9 @@
 				<th>
 					<span class="title_box ">{l s='Carrier'}</span>
 				</th>
-				<th>
+				<!-- th>
 					<span class="title_box ">{l s='Weight'}</span>
-				</th>
+				</th -->
 				<th>
 					<span class="title_box ">{l s='Shipping cost'}</span>
 				</th>
@@ -53,7 +53,7 @@
 				<td>{dateFormat date=$line.date_add full=true}</td>
 				<td>{$line.type}</td>
 				<td>{$line.carrier_name}</td>
-				<td class="weight">{$line.weight|string_format:"%.3f"} {Configuration::get('PS_WEIGHT_UNIT')}</td>
+				<!-- td class="weight">{$line.weight|string_format:"%.3f"} {Configuration::get('PS_WEIGHT_UNIT')}</td -->
 				<td class="center">
 					{if $order->getTaxCalculationMethod() == $smarty.const.PS_TAX_INC}
 						{displayPrice price=$line.shipping_cost_tax_incl currency=$currency->id}
