@@ -256,6 +256,7 @@ if (!defined('_PS_VERSION_'))
 			$sql = 'select i.*
 				from `'._DB_PREFIX_.'eginvate` i
 				where i.id_shop='.(int)$id_shop.'
+				and i.deleted = 0
 				and \''.$_SERVER['REQUEST_URI'].'\' like rules';
 			
 			if(Tools::getValue('id_product', false)!==false)
