@@ -95,19 +95,20 @@ class AdminOrdersControllerCore extends AdminController
 				'orderby' => false,
 				'callback' => 'printNewCustomer'
 			),
-			'customer' => array(
-				'title' => $this->l('Customer'),
-				'havingFilter' => true,
-			),
 			*/
 			'shipping_number' => array(
 				'title' => $this->l('shipping_number'),
 				'havingFilter' => true,
-			),			
+			),
 			'city' => array(
 				'title' => $this->l('city'),
 				'havingFilter' => true,
-			),			
+			),						
+			'customer' => array(
+				'title' => $this->l('Customer'),
+				'havingFilter' => true,
+			),
+						
 		);
 		/*
 		if (Configuration::get('PS_B2B_ENABLE'))
@@ -129,10 +130,11 @@ class AdminOrdersControllerCore extends AdminController
 				'callback' => 'setOrderCurrency',
 				'badge_success' => true
 			),
-			
+			/*
 			'payment' => array(
 				'title' => $this->l('Payment')
 			),
+			*/
 			'osname' => array(
 				'title' => $this->l('Status'),
 				'type' => 'select',
@@ -475,6 +477,7 @@ class AdminOrdersControllerCore extends AdminController
 					// update shipping number
 					// Keep these two following lines for backward compatibility, remove on 1.6 version
 					$order->shipping_number = Tools::getValue('tracking_number');
+					$order->delivery_date = '2016-01-01 00:00:00';// shipping date
 					$order->update();
 
 					// Update order_carrier
