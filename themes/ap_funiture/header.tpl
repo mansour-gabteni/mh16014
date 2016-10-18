@@ -30,6 +30,7 @@
 <html lang="{$language_code|escape:'html':'UTF-8'}" {if isset($IS_RTL) && $IS_RTL} dir="rtl" class="rtl{if isset($LEO_DEFAULT_SKIN)} {$LEO_DEFAULT_SKIN}{/if}" {else} class="{if isset($LEO_DEFAULT_SKIN)}{$LEO_DEFAULT_SKIN}{/if}" {/if}>
 {include file="$tpl_dir./layout/setting.tpl"}
 <head>
+{hook h='displayStartHeader'}
 <meta charset="utf-8" />
 <title>{$meta_title|escape:'html':'UTF-8'}</title>
 {if isset($meta_description) AND $meta_description}
@@ -86,6 +87,7 @@
 {/if}
 </head>
 <body{if isset($page_name)} id="{$page_name|escape:'html':'UTF-8'}"{/if} class="{if isset($page_name)}{$page_name|escape:'html':'UTF-8'}{/if}{if isset($body_classes) && $body_classes|@count} {implode value=$body_classes separator=' '}{/if}{if $hide_left_column} hide-left-column{/if}{if $hide_right_column} hide-right-column{/if}{if isset($content_only) &&  $content_only} content_only{/if} lang_{$lang_iso} {if isset($LEO_LAYOUT_MODE)}{$LEO_LAYOUT_MODE}{/if}{if isset($USE_FHEADER) && $USE_FHEADER} keep-header{/if}{if isset($LEO_HEADER_STYLE)} {$LEO_HEADER_STYLE}{/if}{if $LEO_HEADER_STYLE!="header-hide-topmenu" && $LEO_SIDEBAR_MENU!="sidebar-hide"} double-menu{/if}">
+{hook h='displayAfterBody'}
 		{if !isset($content_only) || !$content_only}
 		{if isset($restricted_country_mode) && $restricted_country_mode}
 			<section id="restricted-country">
