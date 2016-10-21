@@ -292,7 +292,7 @@ $("#ophone").mask("+7 (999) 999-99-99");
 								<!--  <div class="clearfix"></div> -->
 								{foreach from=$groups key=id_attribute_group item=group}
 									{if $group.attributes|@count}
-										<fieldset class="attribute_fieldset">
+										<fieldset class="attribute_fieldset col-sm-6">
 											<label class="attribute_label" {if $group.group_type != 'color' && $group.group_type != 'radio'}for="group_{$id_attribute_group|intval}"{/if}>{$group.name|escape:'html':'UTF-8'}&nbsp;</label>
 											{assign var="groupName" value="group_$id_attribute_group"}
 											<div class="attribute_list">
