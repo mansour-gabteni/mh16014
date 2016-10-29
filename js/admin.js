@@ -415,11 +415,20 @@ function orderOverwriteMessage(sl, text)
 {
 	var $zone = $('#txt_msg');
 	var sl_value = sl.options[sl.selectedIndex].value;
-
+	
+	var date_delivery = $("#shipping_table").find('td').eq(3).text().trim();
+	var delivery = $("#shipping_table").find('td').eq(4).text().trim();
+	var track_num = $("#shipping_table").find('td').eq(5).text().trim();
+	
+	sl_value = sl_value.replace(/\[date\]/g,date_delivery);
+	sl_value = sl_value.replace(/\[del_price\]/g,delivery);
+	sl_value = sl_value.replace(/\[num\]/g,track_num);
+	
 	if (sl_value != '0')
 	{
 		if ($zone.val().length > 0 && !confirm(text))
 			return ;
+		 
 		$zone.val(sl_value);
 	}
 

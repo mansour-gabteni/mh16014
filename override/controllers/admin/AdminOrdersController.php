@@ -478,15 +478,18 @@ class AdminOrdersControllerCore extends AdminController
 					// Keep these two following lines for backward compatibility, remove on 1.6 version
 					$order->shipping_number = Tools::getValue('tracking_number');
 					$order->delivery_date = Tools::getValue('delivery_date'); // shipping date
+					
 					$order->update();
 
 					// Update order_carrier
 					$order_carrier->tracking_number = pSQL(Tools::getValue('tracking_number'));
+					$order_carrier->shipping_cost_tax_incl = Tools::getValue('shipping_cost_tax_incl');					
 					if ($order_carrier->update())
 					{
 						// Send mail to customer
 						$customer = new Customer((int)$order->id_customer);
 						$carrier = new Carrier((int)$order->id_carrier, $order->id_lang);
+						
 						if (!Validate::isLoadedObject($customer))
 							throw new PrestaShopException('Can\'t load Customer object');
 						if (!Validate::isLoadedObject($carrier))

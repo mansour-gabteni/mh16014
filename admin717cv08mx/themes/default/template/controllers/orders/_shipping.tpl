@@ -53,7 +53,7 @@
 				<td>{dateFormat date=$line.date_add full=true}</td>
 				<td>{$line.type}</td>
 				<td>{$line.carrier_name}</td>
-				<td>{$line.delivery_date}</td>
+				<td>{dateFormat|date_format:"%d.%m.%Y" date=$line.delivery_date full=false}</td>
 				<td class="center">
 					{if $order->getTaxCalculationMethod() == $smarty.const.PS_TAX_INC}
 						{displayPrice price=$line.shipping_cost_tax_incl currency=$currency->id}
@@ -71,6 +71,7 @@
 								<input type="hidden" name="id_order_carrier" value="{$line.id_order_carrier|htmlentities}" />
 								<input type="text" name="tracking_number" value="{$line.tracking_number|htmlentities}" />
 								<input type="text" name="delivery_date" class="filter datepicker date-input form-control" value="{$line.date_add}" />
+								<input type="text" name="shipping_cost_tax_incl" value="{$line.shipping_cost_tax_incl}" >								
 								<button type="submit" class="btn btn-default" name="submitShippingNumber">
 									<i class="icon-ok"></i>
 									{l s='Update'}
