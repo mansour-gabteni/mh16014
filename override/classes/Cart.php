@@ -2313,6 +2313,7 @@ class CartCore extends ObjectModel
 				$img = ''; // No images if multiple carriers
 				$delay = '';
 			}
+			
 			$carriers[] = array(
 				'name' => $name,
 				'img' => $img,

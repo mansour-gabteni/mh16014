@@ -35,9 +35,9 @@
 				<th>
 					<span class="title_box ">{l s='Carrier'}</span>
 				</th>
-				<!-- th>
-					<span class="title_box ">{l s='Weight'}</span>
-				</th -->
+				<th>
+					<span class="title_box ">{l s='Date ship'}</span>
+				</th>
 				<th>
 					<span class="title_box ">{l s='Shipping cost'}</span>
 				</th>
@@ -53,7 +53,7 @@
 				<td>{dateFormat date=$line.date_add full=true}</td>
 				<td>{$line.type}</td>
 				<td>{$line.carrier_name}</td>
-				<!-- td class="weight">{$line.weight|string_format:"%.3f"} {Configuration::get('PS_WEIGHT_UNIT')}</td -->
+				<td>{$line.delivery_date}</td>
 				<td class="center">
 					{if $order->getTaxCalculationMethod() == $smarty.const.PS_TAX_INC}
 						{displayPrice price=$line.shipping_cost_tax_incl currency=$currency->id}
@@ -70,6 +70,7 @@
 							<span class="shipping_number_edit" style="display:none;">
 								<input type="hidden" name="id_order_carrier" value="{$line.id_order_carrier|htmlentities}" />
 								<input type="text" name="tracking_number" value="{$line.tracking_number|htmlentities}" />
+								<input type="text" name="delivery_date" class="filter datepicker date-input form-control" value="{$line.date_add}" />
 								<button type="submit" class="btn btn-default" name="submitShippingNumber">
 									<i class="icon-ok"></i>
 									{l s='Update'}

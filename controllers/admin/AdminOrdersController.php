@@ -86,7 +86,6 @@ class AdminOrdersControllerCore extends AdminController
 			'reference' => array(
 				'title' => $this->l('Reference')
 			),
-			
 			'new' => array(
 				'title' => $this->l('New client'),
 				'align' => 'text-center',
@@ -99,7 +98,6 @@ class AdminOrdersControllerCore extends AdminController
 				'title' => $this->l('Customer'),
 				'havingFilter' => true,
 			),
-			
 		);
 
 		if (Configuration::get('PS_B2B_ENABLE'))

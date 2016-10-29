@@ -477,7 +477,7 @@ class AdminOrdersControllerCore extends AdminController
 					// update shipping number
 					// Keep these two following lines for backward compatibility, remove on 1.6 version
 					$order->shipping_number = Tools::getValue('tracking_number');
-					$order->delivery_date = '2016-01-01 00:00:00';// shipping date
+					$order->delivery_date = Tools::getValue('delivery_date'); // shipping date
 					$order->update();
 
 					// Update order_carrier
