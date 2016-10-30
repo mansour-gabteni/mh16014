@@ -322,6 +322,8 @@
 						<option value="refurbished" {if $product->condition == 'refurbished'}selected="selected"{/if}>{l s='Refurbished'}</option>
 						<option value="gift" {if $product->condition == 'gift'}selected="selected"{/if}>{l s='gift'}</option>
 						<option value="sale" {if $product->condition == 'sale'}selected="selected"{/if}>{l s='sale'}</option>
+						<option value="best" {if $product->condition == 'best'}selected="selected"{/if}>{l s='best'}</option>
+						<option value="garaty" {if $product->condition == 'garaty'}selected="selected"{/if}>{l s='garaty'}</option>
 					</select>
 				</div>
 			</div>

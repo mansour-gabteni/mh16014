@@ -420,9 +420,13 @@ function orderOverwriteMessage(sl, text)
 	var delivery = $("#shipping_table").find('td').eq(4).text().trim();
 	var track_num = $("#shipping_table").find('td').eq(5).text().trim();
 	
+	var item = $(".product-line-row").find('td').eq(1).text().trim() + ' ' +$(".product-line-row").find('td').eq(2).text().trim();
+	
+	
 	sl_value = sl_value.replace(/\[date\]/g,date_delivery);
 	sl_value = sl_value.replace(/\[del_price\]/g,delivery);
 	sl_value = sl_value.replace(/\[num\]/g,track_num);
+	sl_value = sl_value.replace(/\[item\]/g,item);
 	
 	if (sl_value != '0')
 	{

@@ -73,7 +73,12 @@
 					{/if}
 					{if $product->condition == 'gift'}
 					<div data-toggle="tooltip" data-html="true" title="{l s='gifts description'}" data-placement="right" style="position: absolute;top: 2px;left: 2px;width:60px;height:60px;background-image: url(../img/5.png)"></div>
-
+					{/if}
+					{if $product->condition == 'best'}
+					<div data-placement="right" style="position: absolute;top: 2px;left: 2px;width:90px;height:90px;background-image: url(../img/best.png)"></div>	
+					{/if}
+					{if $product->condition == 'garaty'}
+					<div data-placement="right" style="position: absolute;top: 2px;left: 2px;width:90px;height:90px;background-image: url(../img/garanty.png)"></div>						
 					{/if}					
 				</div>
 				{if $have_image}
