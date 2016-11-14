@@ -834,7 +834,7 @@ if (!class_exists("LeoFrameworkHelper"))
 				foreach ($keys as $key)
 				{
 					// get value multi language from $_POST
-					foreach (Language::getIDs(false) as $id_lang)
+					foreach (Language::getLanguages() as $id_lang)
 						$post[$key.'_'.(int)$id_lang] = Tools::getValue($key.'_'.(int)$id_lang);
 				}
 			}
