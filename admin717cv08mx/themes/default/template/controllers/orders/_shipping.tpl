@@ -70,7 +70,7 @@
 							<span class="shipping_number_edit" style="display:none;">
 								<input type="hidden" name="id_order_carrier" value="{$line.id_order_carrier|htmlentities}" />
 								<input type="text" name="tracking_number" value="{$line.tracking_number|htmlentities}" />
-								<input type="text" name="delivery_date" class="filter datepicker date-input form-control" value="{$line.date_add}" />
+								<input type="text" name="delivery_date" class="filter datepicker date-input form-control" value="{dateFormat|date_format:"%d.%m.%Y" date=$line.delivery_date full=false}" />
 								<input type="text" name="shipping_cost_tax_incl" value="{$line.shipping_cost_tax_incl}" >								
 								<button type="submit" class="btn btn-default" name="submitShippingNumber">
 									<i class="icon-ok"></i>
