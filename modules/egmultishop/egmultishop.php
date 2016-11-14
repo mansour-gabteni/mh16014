@@ -448,6 +448,11 @@ class egmultishop extends Module
 
 	}
 	
+	public function hookLeftColumn($params)
+	{
+		//return $this->getMultishopPage('social', null, true);	
+	}	
+	
 	public function hookDisplayFooter($params)
 	{
 			$page = $this->getMultishopPage("home_futer");
@@ -466,7 +471,8 @@ class egmultishop extends Module
 	}
 	
 	public function hookDisplayLeftColumn($params)
-	{		
+	{	
+		return $this->getMultishopPage('social', null, false);	
 		/*
 		$this->getMultishopDateById();
 		
