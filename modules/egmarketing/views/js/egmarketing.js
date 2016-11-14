@@ -75,7 +75,7 @@ function dataPurchaseFast(order, id_product, name, price_in, brand, category)
 	        }
 	    }
 	});
-	
+	/*
 	ga('ec:setAction', 'purchase', {
 		  'id': order,
 		  'affiliation': location.host,
@@ -83,7 +83,8 @@ function dataPurchaseFast(order, id_product, name, price_in, brand, category)
 		  'shipping': shipping
 		});
 
-	ga('send', 'pageview');  
+	ga('send', 'pageview');
+	*/  
 }	
 
 function dataDisplay(currency,host,id_product,name,price_in,brand,category)
@@ -108,7 +109,25 @@ function dataDisplay(currency,host,id_product,name,price_in,brand,category)
 		        }
 		    }
 	});
-	ga('ec:addProduct', {
+	window.dataLayer.push([{
+		   "ecommerce": {
+		   	"currencyCode": currency,
+		       "detail": {
+		           "actionField": {
+		               "affiliation": host
+		           },
+		           "products": [{
+			                    "id": id_product,
+			                    "name": name,
+			                    "price": price,
+			                    "brand": brand,
+			                    "category": category,
+			                    "variant": variant
+			                }]
+			        }
+			    }
+		}]);	
+/*	ga('ec:addProduct', {
 		  'id': id_product,
 		  'name': name, 
 		  'category': category,   
@@ -117,7 +136,7 @@ function dataDisplay(currency,host,id_product,name,price_in,brand,category)
 		});
 		 
 	ga('ec:setAction', 'detail');
-	ga('send', 'pageview');
+	ga('send', 'pageview');*/
 }
 
 function dataAdd(id_product,name,price_in,brand,category,quantity)
@@ -140,8 +159,26 @@ function dataAdd(id_product,name,price_in,brand,category,quantity)
 	            ]
 	        }
 	    }
-	});		
+	});	
 	
+	window.dataLayer.push([{
+	    "ecommerce": {
+	        "add": {
+	            "products": [
+	                {
+	                    "id": id_product,
+	                    "name": name,
+	                    "price": price,
+	                    "brand": brand,
+	                    "category": category,
+	                    "variant": variant,
+	                    "quantity": quantity
+	                }
+	            ]
+	        }
+	    }
+	}]);			
+/*	
 	ga('ec:addProduct', {
 		  'id': id_product,
 		  'name': name,
@@ -152,7 +189,8 @@ function dataAdd(id_product,name,price_in,brand,category,quantity)
 		  'quantity': quantity
 		});
 	ga('ec:setAction', 'add');
-	ga('send', 'event', 'UX', 'click', 'add to cart'); 
+	ga('send', 'event', 'UX', 'click', 'add to cart');
+	*/ 
 }
 
 function dataRemove(id, name, variant, quantity)

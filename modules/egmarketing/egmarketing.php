@@ -94,7 +94,7 @@ if (!defined('_PS_VERSION_'))
 	        	$brand = ManufacturerCore::getNameById($product['id_manufacturer']);
 	        	$variant = $this->getAttributeName($product['product_attribute_id']);
 	        	
-				$dl.='ga("ec:addProduct", {
+				$dl.='/* ga("ec:addProduct", {
 				  "id": "'.$product['product_id'].'",
 				  "name": "'.$name.'",
 				  "category": "'.$category[0]['link_rewrite'].'",
@@ -113,7 +113,7 @@ if (!defined('_PS_VERSION_'))
 		});
 
 		ga("send", "pageview");
-   		}); 
+   		})*/; 
    		</script>';
    		
    		return $dl;
@@ -239,7 +239,11 @@ if (!defined('_PS_VERSION_'))
 		return $this->display(__FILE__, 'top.tpl');  	
     }	
     
-	public function hookDisplayTop($params)
+//	public function hookLeftColumn($params)
+//	{
+//		return "hello111";	
+//	}
+    public function hookDisplayTop($params)
 	{
 		$this->context->controller->addJS($this->_path.'views/js/egmarketing.js', 'all');
 		if(egmarketing::isMarketingSite()>0)
