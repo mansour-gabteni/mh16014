@@ -17,8 +17,8 @@ if (!defined('_PS_VERSION_'))
 		 
 	    parent::__construct();
 	 
-	    $this->displayName = $this->l('Get content products of ormatek');
-	    $this->description = $this->l('Addon for copy ormatek product information.');
+	    $this->displayName = $this->l('searche product module');
+	    $this->description = $this->l('searche product module.');
 	 
 	    $this->confirmUninstall = $this->l('Are you sure you want to uninstall?');
 	 
@@ -28,10 +28,22 @@ if (!defined('_PS_VERSION_'))
 		
 	}
 	
+	public function hookDisplayTopColumn($params)
+	{
+		
+		$host = Tools::getHttpHost();
+			
+		$this->smarty->assign(array(
+			'host' => 	$host
+		));	
+		
+		return $this->display(__FILE__, 'displaytop.tpl');
+	}
+	
 	public function hookDisplayFooter($params)
 	{
 		
-		return $this->display(__FILE__, 'iqitpopup.tpl', $this->getCacheId());
+		//return $this->display(__FILE__, 'iqitpopup.tpl', $this->getCacheId());
 		
 		//return false;
 	}
@@ -42,6 +54,7 @@ if (!defined('_PS_VERSION_'))
 			
 	  if (!parent::install()|| 
 		!Configuration::updateValue('EGORMATEKPROD_MANUF', 0)||
+		!$this->registerHook('displayTopColumn') ||
 		!$this->registerHook('displayBackOfficeHeader')
 		)
 	    return false;
@@ -57,11 +70,16 @@ if (!defined('_PS_VERSION_'))
 		return true;
 	}	
 	
+	public function deleteTables()
+	{
+	
+	}		
 	
 	public function uninstall($keep = true)
 	{
 	  if (!parent::uninstall() || 
 	  		!Configuration::deleteByName('EGORMATEKPROD_MANUF') ||
+	  		!$this->unregisterHook('displayTopColumn') ||
 	  		($keep && !$this->deleteTables())
 			)
 	    return false;

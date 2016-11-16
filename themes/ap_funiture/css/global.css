@@ -14062,11 +14062,11 @@ body.layout-boxed-lg #page .container {
 }
 .leo-megamenu .navbar-nav > li > a {
   padding: 17px 24px;
-  font-size: 12px;
+  font-size: 14px;
   text-transform: uppercase;
   color: white;
   background-color: transparent;
-  font-weight: normal;
+  font-weight: bold;
   -webkit-transition: all 350ms ease-out;
   transition: all 350ms ease-out;
 }

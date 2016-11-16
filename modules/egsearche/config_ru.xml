@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <module>
 	<name>egsearche</name>
-	<displayName><![CDATA[Get content products of ormatek]]></displayName>
+	<displayName><![CDATA[searche product module]]></displayName>
 	<version><![CDATA[0.1.1]]></version>
-	<description><![CDATA[Addon for copy ormatek product information.]]></description>
+	<description><![CDATA[searche product module.]]></description>
 	<author><![CDATA[Evgeny Grishin]]></author>
 	<tab><![CDATA[front_office_features]]></tab>
 	<confirmUninstall><![CDATA[Are you sure you want to uninstall?]]></confirmUninstall>
