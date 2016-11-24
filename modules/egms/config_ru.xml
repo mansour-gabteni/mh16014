@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <module>
 	<name>egms</name>
-	<displayName><![CDATA[Super multishop]]></displayName>
+	<displayName><![CDATA[Super multishop module]]></displayName>
 	<version><![CDATA[0.1.1]]></version>
 	<description><![CDATA[Super multishop module.]]></description>
 	<author><![CDATA[Evgeny Grishin]]></author>
