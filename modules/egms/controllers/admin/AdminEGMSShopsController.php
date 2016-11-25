@@ -6,6 +6,7 @@ class AdminEGMSShopsController extends ModuleAdminControllerCore
 {
 
 	protected $position_identifier = 'id_egms_cu';
+	protected $manufacturers;
 	
 	public function __construct()
 	{
@@ -42,7 +43,10 @@ class AdminEGMSShopsController extends ModuleAdminControllerCore
 		$this->_orderBy = 'c.cityname1';
 	
 		$this->_theme_dir = Context::getContext()->shop->getTheme();
-				parent::__construct();
+		
+		$this->getAllManufacturers();
+		
+		parent::__construct();
 	}
 	
 	public function renderList()
@@ -56,6 +60,21 @@ class AdminEGMSShopsController extends ModuleAdminControllerCore
 	public function postProcess()
 	{
 		parent::postProcess(true);
+	}
+	
+	public function getAllManufacturers()
+	{
+		$manufacturers = ManufacturerCore::getManufacturers();
+		$items = array();
+		foreach ($manufacturers as $manufacturer)
+		{
+			$items[]= array(
+						'id' => $manufacturer['id_manufacturer'], 
+						'name' => $manufacturer['name'], 
+			);
+		}
+		
+         $this->manufacturers = $items;
 	}
 
 	public function renderForm()
@@ -84,6 +103,8 @@ class AdminEGMSShopsController extends ModuleAdminControllerCore
 				'label' => $this->l('Disabled')
 			)
 		);
+		
+		
 		
 		$this->fields_form[0]['form'] = array(
 			'tinymce' => true,
@@ -141,7 +162,20 @@ class AdminEGMSShopsController extends ModuleAdminControllerCore
 					'name' => 'active',
 					'values' => $soption,
 					'default' => '1',
-				),																	
+				),				
+                array(
+                    'type' => 'checkbox',
+                    'label' => $this->l('Manufacturers'),
+                	'multiple' => true,
+                    'name' => 'manufacturer',
+                	'hint' => $this->l('Manufacturers hint'),
+                    'desc' => $this->l('Manufacturers'),
+                    'values' => array(
+		                            'query' => $this->manufacturers,
+		                    		'id' => 'id',
+		                    		'name' => 'name'
+                					),
+             		 ),																				
 			),
 			'submit' => array(
 				'title' => $this->l('Save'),
@@ -159,9 +193,10 @@ class AdminEGMSShopsController extends ModuleAdminControllerCore
 	
     public function getFieldsValues()
     {
+    	$id_egms_cu = Tools::getValue('id_egms_cu');
     	$row = $this->getCityUrl(Tools::getValue('id_egms_cu'));
-        return array(
-            'id_egms_cu' => Tools::getValue('id_egms_cu'),
+        $vals = array(
+            'id_egms_cu' => $id_egms_cu,
         	'id_city' => $row[0]['id_city'],
         	'id_shop_url' => $row[0]['id_shop_url'],
 			'veryf_yandex' => $row[0]['veryf_yandex'],
@@ -170,7 +205,24 @@ class AdminEGMSShopsController extends ModuleAdminControllerCore
         	'phone' => $row[0]['phone'],
         	'active' => $row[0]['active']
         );
+  
+        foreach ($this->manufacturers as $i => $manufacturer)
+        {
+        	$vals['manufacturer_'.$manufacturer['id']]+= $this->getManufacturerByShop($id_egms_cu, $manufacturer['id']);
+        }
+        
+        return $vals;
     }
+    
+    public function getManufacturerByShop($id_shop, $id_manufacturer)
+    {
+    	$sql = 'SELECT * FROM '._DB_PREFIX_.'egms_city_manuf WHERE id_egms_city='.(int)$id_shop.' AND id_manufacturer='.$id_manufacturer;
+    	if (Db::getInstance()->getRow($sql))
+    		return true;
+    	else
+    		return false;
+    }
+    
 	public function getCityUrl($id_city_url)
 	{
 		$sql = 'SELECT * FROM '._DB_PREFIX_.'egms_city_url WHERE id_egms_cu='.(int)$id_city_url;

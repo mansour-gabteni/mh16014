@@ -2,11 +2,11 @@ CREATE TABLE IF NOT EXISTS `PREFIX_DB1NAME` (
 	`id_egms_cu` int(11) NOT NULL AUTO_INCREMENT,
 	`id_city` int(11) NOT NULL,
 	`id_shop_url` int(11) NOT NULL,
-	`veryf_yandex` varchar(20) NOT NULL DEFAULT '',
-	`veryf_google` varchar(50) NOT NULL DEFAULT '',
-	`veryf_mail` varchar(40) NOT NULL DEFAULT '',
-	`phone` varchar(15) NOT NULL DEFAULT '',
-	`active` tinyint(1) NOT NULL DEFAULT '0',
+	`veryf_yandex` varchar(20) NOT NULL,
+	`veryf_google` varchar(50) NOT NULL,
+	`veryf_mail` varchar(40) NOT NULL,
+	`phone` varchar(15) NOT NULL,
+	`active` tinyint(1) NOT NULL,
 	PRIMARY KEY (`id_egms_cu`),
 	UNIQUE KEY `id_shop_url` (`id_shop_url`)
 ) ENGINE=ENGINE_TYPE  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
