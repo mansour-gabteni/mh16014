@@ -61,45 +61,45 @@
 	<div class="srow"><span class="searchelabe">{l s='size' mod='egsearche'}</span> 
 	<select class="select form-control" id="ssize">
 		<option value="">{l s='umsize' mod='egsearche'}</option>
-		<option value="matrassize-70_186">70x186 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-70_190">70x190 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-70_195">70x195 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-70_200">70x200 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-80_186">80x186 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-80_190">80x190 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-80_195">80x195 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-80_200">80x200 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-90_186">90x186 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-90_190">90x190 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-90_195">90x195 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-90_200">90x200 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-100_186">100x186 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-100_190">100x190 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-100_195">100x195 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-100_200">100x200 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-120_186">120x186 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-120_190">120x190 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-120_195">120x195 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-120_200">120x200 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-140_186">140x186 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-140_190">140x190 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-140_195">140x195 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-140_200">140x200 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-160_186">160x186 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-160_190">160x190 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-160_195">160x195 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-160_200">160x200 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-180_186">180x186 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-180_190">180x190 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-180_195">180x195 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-180_200">180x200 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-200_186">200x186 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-200_190">200x190 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-200_195">200x195 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-200_200">200x200 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-200">Ø 200 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-210">Ø 210 {l s='sm' mod='egsearche'}.</option>
-		<option value="matrassize-220">Ø 220 {l s='sm' mod='egsearche'}.</option>
+		<option value="matrassize-70_186">70x186 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-70_190">70x190 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-70_195">70x195 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-70_200">70x200 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-80_186">80x186 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-80_190">80x190 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-80_195">80x195 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-80_200">80x200 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-90_186">90x186 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-90_190">90x190 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-90_195">90x195 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-90_200">90x200 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-100_186">100x186 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-100_190">100x190 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-100_195">100x195 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-100_200">100x200 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-120_186">120x186 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-120_190">120x190 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-120_195">120x195 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-120_200">120x200 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-140_186">140x186 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-140_190">140x190 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-140_195">140x195 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-140_200">140x200 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-160_186">160x186 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-160_190">160x190 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-160_195">160x195 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-160_200">160x200 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-180_186">180x186 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-180_190">180x190 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-180_195">180x195 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-180_200">180x200 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-200_186">200x186 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-200_190">200x190 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-200_195">200x195 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-200_200">200x200 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-200">Ø 200 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-210">Ø 210 {l s='sm' mod='egsearche'}</option>
+		<option value="matrassize-220">Ø 220 {l s='sm' mod='egsearche'}</option>
 
 	</select>
 	</div>
