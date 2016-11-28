@@ -44,4 +44,13 @@ class city extends ObjectModel
 		//return false;
 	}
 	
+	public static function getCity($id_city=null)
+	{
+		$sql = 'SELECT * FROM '._DB_PREFIX_.'egms_city';
+		if ($id_city != null)
+			$sql.= ' WHERE id_egms_city='.(int)$id_city;
+			
+		return (Db::getInstance()->executeS($sql));
+	}    	
+	
 }

@@ -1,12 +1,15 @@
 <?php
 
 require_once(_PS_MODULE_DIR_.'egms/classes/egms_shop.php');
+require_once(_PS_MODULE_DIR_.'egms/classes/city.php');
 
 class AdminEGMSShopsController extends ModuleAdminControllerCore
 {
 
 	protected $position_identifier = 'id_egms_cu';
 	protected $manufacturers;
+	protected $citys;
+	protected $urls;
 	
 	public function __construct()
 	{
@@ -27,24 +30,28 @@ class AdminEGMSShopsController extends ModuleAdminControllerCore
 			'name' => array('title' => $this->l('Shopname'), 'filter_key' => 's!name'),	
 			'cityname1' => array('title' => $this->l('Cityname'), 'filter_key' => 'c!cityname1'),
 			'domain' => array('title' => $this->l('domain'), 'filter_key' => 'su!domain'),
+			'activeurl' => array('title' => $this->l('Displayed url'), 'filter_key' => 'su!activeurl', 'align' => 'center', 'active' => 'status', 'class' => 'fixed-width-sm', 'type' => 'bool'),
 			'manufacturer' => array('title' => $this->l('manufact'), 'orderby' => false),
 			'phone' => array('title' => $this->l('Phone'), 'filter_key' => 'a!phone'),
-			'active' => array('title' => $this->l('Displayed'), 'filter_key' => 'su!active', 'align' => 'center', 'active' => 'status', 'class' => 'fixed-width-sm', 'type' => 'bool', 'orderby' => false)
+			'active' => array('title' => $this->l('Displayed shop'), 'filter_key' => 'a!active', 'align' => 'center', 'active' => 'status', 'class' => 'fixed-width-sm', 'type' => 'bool')
 		);	
 		
-		$this->_select .= 'a.id_egms_cu, s.name, c.cityname1, a.phone, su.domain, su.active, count(cm.id_manufacturer) manufacturer';
+		$this->_select .= 'a.id_egms_cu, s.name, c.cityname1, a.phone, su.domain, a.active, su.active activeurl, count(cm.id_manufacturer) manufacturer';
 		$this->_join .= ' INNER JOIN '._DB_PREFIX_.'shop_url su ON a.id_shop_url = su.id_shop_url ';
 		$this->_join .= ' INNER JOIN '._DB_PREFIX_.'egms_city c ON a.id_city = c.id_egms_city';
 		$this->_join .= ' INNER JOIN '._DB_PREFIX_.'shop s ON su.id_shop = s.id_shop ';
 		$this->_join .= ' LEFT JOIN '._DB_PREFIX_.'egms_city_manuf cm ON cm.id_egms_city = a.id_egms_cu ';
-		if (Shop::getContext() == Shop::CONTEXT_SHOP)
-			$this->_where .= ' and s.id_shop in ('.(int)Context::getContext()->shop->id.')';
+		//if (Shop::getContext() == Shop::CONTEXT_SHOP)
+		//	$this->_where .= ' and s.id_shop in ('.(int)Context::getContext()->shop->id.')';
+		$this->_where .= ' and su.id_shop IN ('.implode(', ', Shop::getContextListShopID()).')';
 		$this->_group = ' GROUP BY (id_egms_cu) ';
 		$this->_orderBy = 'c.cityname1';
 	
 		$this->_theme_dir = Context::getContext()->shop->getTheme();
-		
+		$s = Shop::getContextListShopID();
 		$this->getAllManufacturers();
+		$this->getCitys();
+		$this->getUrls();
 		
 		parent::__construct();
 	}
@@ -75,6 +82,31 @@ class AdminEGMSShopsController extends ModuleAdminControllerCore
 		}
 		
          $this->manufacturers = $items;
+	}
+	
+	public function getCitys()
+	{
+		$citys = city::getCity(Tools::getValue());
+		foreach ($citys as $city)
+		{
+			$this->citys[] = array('id' => $city['id_egms_city'], 'name' => $city['cityname1']);
+		}
+	}
+	
+	public function getUrls()
+	{
+		$id_shop = null;
+		//if (Shop::getContext() == Shop::CONTEXT_SHOP)
+		//	$id_shop = $this->context->shop->id;//Context::getContext()->shop->id;
+			
+		$shops = egms_shop::getShopUrls($id_shop);
+		foreach ($shops as $shop)
+		{
+			$this->urls[] = array(
+	                'id' => $shop['id_shop_url'], 
+	                'name' => $shop['domain']      
+	        );
+		}		
 	}
 
 	public function renderForm()
@@ -119,19 +151,23 @@ class AdminEGMSShopsController extends ModuleAdminControllerCore
 					'name' => 'id_egms_cu',
 				),			
 				array(
-					'type' => 'text',
-					'label' => $this->l('id_city'),
+					'type' => 'select',
+					'label' => $this->l('Citys'),
 					'name' => 'id_city',
-					'required' => true,
-					'hint' => $this->l('id_city')
+					'required' => true,  
+					'options' => array('query' => $this->citys,
+						'id' => 'id',
+						'name' => 'name')
 				),
 				array(
-					'type' => 'text',
-					'label' => $this->l('id_shop_url'),
+					'type' => 'select',
+					'label' => $this->l('Shop URL'),
 					'name' => 'id_shop_url',
-					'required' => true,
-					'hint' => $this->l('id_shop_url')
-				),
+					'required' => true,  
+					'options' => array('query' => $this->urls,
+						'id' => 'id',
+						'name' => 'name'),
+				),				
 				array(
 					'type' => 'text',
 					'label' => $this->l('veryf_yandex'),

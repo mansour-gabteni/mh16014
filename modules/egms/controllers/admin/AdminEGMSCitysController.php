@@ -27,7 +27,7 @@ class AdminEGMSCitysController extends ModuleAdminControllerCore
 			'cityname1' => array('title' => $this->l('Cityname'), 'filter_key' => 'cityname1'),
 			'cityname2' => array('title' => $this->l('Cityname'), 'filter_key' => 'cityname2'),
 			'cityname3' => array('title' => $this->l('Cityname'), 'filter_key' => 'cityname3'),
-			'alias' => array('title' => $this->l('alias'), 'filter_key' => 'alias'),
+			'alias' => array('title' => $this->l('alias'), 'filter_key' => 'a!alias'),
 		);	
 		
 		$this->_orderBy = 'a.cityname1';
@@ -149,9 +149,11 @@ class AdminEGMSCitysController extends ModuleAdminControllerCore
 	
     public function getFieldsValues()
     {
-    	$row = $this->getCity(Tools::getValue('id_egms_city'));
+    	$id_egms_city = Tools::getValue('id_egms_city');
+    	if ($id_egms_city!=false)
+    		$row = city::getCity($id_egms_city);
         return array(
-            'id_egms_city' => Tools::getValue('id_egms_city'),
+            'id_egms_city' => $id_egms_city,
         	'cityname1' => $row[0]['cityname1'],
         	'cityname2' => $row[0]['cityname2'],
 			'cityname3' => $row[0]['cityname3'],
@@ -159,11 +161,7 @@ class AdminEGMSCitysController extends ModuleAdminControllerCore
         	'alias' => $row[0]['alias']
         );
     }
-	public function getCity($id_city)
-	{
-		$sql = 'SELECT * FROM '._DB_PREFIX_.'egms_city WHERE id_egms_city='.(int)$id_city;
-		return (Db::getInstance()->executeS($sql));
-	}    
+   
 /*******************************************************************/
 /*
 	public function ajaxProcessInsertProductInfo()

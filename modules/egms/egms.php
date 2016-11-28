@@ -12,11 +12,12 @@ if (!defined('_PS_VERSION_'))
     const INSTALL_SQL_BD3NAME = 'egms_city';
     const INSTALL_SQL_BD2NAME = 'egms_city_manuf';
     const INSTALL_SQL_BD1NAME = 'egms_city_url';
+	const INSTALL_SQL_BD4NAME = 'egms_delivery';    
 
     protected $tabs = array(
     		array('name' => 'Citys', 'class_name' => 'AdminEGMSCitys'),
     		array('name' => 'Shops by Citys', 'class_name' => 'AdminEGMSShops'),
-    		array('name' => 'Manyfactirer by shop', 'class_name' => 'AdminEGMSManuf'),
+    		array('name' => 'Delivery by Manufacturer', 'class_name' => 'AdminEGMSDelivery'),
     );  	
   	
     public function __construct()
@@ -35,7 +36,9 @@ if (!defined('_PS_VERSION_'))
 	    $this->description = $this->l('Super multishop module.');
 	 
 	    $this->confirmUninstall = $this->l('Are you sure you want to uninstall?');
-  	}	
+  	}
+  	
+  		
   	
 	public function hookHeader($params)
 	{		
@@ -104,7 +107,9 @@ if (!defined('_PS_VERSION_'))
             $sql = str_replace(array('PREFIX_', 'ENGINE_TYPE', 'DB2NAME'),
                 array(_DB_PREFIX_, _MYSQL_ENGINE_, self::INSTALL_SQL_BD2NAME), $sql);
             $sql = str_replace(array('PREFIX_', 'ENGINE_TYPE', 'DB3NAME'),
-                array(_DB_PREFIX_, _MYSQL_ENGINE_, self::INSTALL_SQL_BD3NAME), $sql);                                
+                array(_DB_PREFIX_, _MYSQL_ENGINE_, self::INSTALL_SQL_BD3NAME), $sql);  
+			$sql = str_replace(array('PREFIX_', 'ENGINE_TYPE', 'DB4NAME'),
+                array(_DB_PREFIX_, _MYSQL_ENGINE_, self::INSTALL_SQL_BD4NAME), $sql);                                               
             $sql = preg_split("/;\s*[\r\n]+/", trim($sql));
 
             foreach ($sql as $query) {
@@ -140,6 +145,7 @@ if (!defined('_PS_VERSION_'))
     	$sql = 'DROP TABLE IF EXISTS `'._DB_PREFIX_.self::INSTALL_SQL_BD1NAME.'`;';
     	$sql .= 'DROP TABLE IF EXISTS `'._DB_PREFIX_.self::INSTALL_SQL_BD2NAME.'`;';
     	$sql .= 'DROP TABLE IF EXISTS `'._DB_PREFIX_.self::INSTALL_SQL_BD3NAME.'`;';
+    	$sql .= 'DROP TABLE IF EXISTS `'._DB_PREFIX_.self::INSTALL_SQL_BD4NAME.'`;';
     	
         return Db::getInstance()->execute($sql);
     }

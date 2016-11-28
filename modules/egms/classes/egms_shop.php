@@ -47,9 +47,21 @@ class egms_shop extends ObjectModel
 	public function add($autodate = true, $null_values = false)
 	{
 		$this->getFieldsValues();
-		parent::add($autodate, $null_values);
+		$result = parent::add($autodate, $null_values);
 		$this->updateShopManuf();
-		return ;
+		$this->addDeliveryConditions();
+		return $result;
+	}
+	
+	public function addDeliveryConditions()
+	{
+		$items = ManufacturerCore::getManufacturers();
+		
+		foreach ($items as $item)
+		{
+			//if (Tools::getValue('manufacturer_'.(int)$item['id_manufacturer']))
+			//	$this->manufacturer[] = $item['id_manufacturer'];
+		}		
 	}
 	
 	public function getFieldsValues()
@@ -74,6 +86,17 @@ class egms_shop extends ObjectModel
                             VALUES('.(int)$this->id.', '.(int)$manufacturer.')';
 			$res = Db::getInstance()->execute($sql);
 		}
+	}
+	public static function getShopUrls($id_shop=null)
+	{
+		$sql = 'SELECT * FROM '._DB_PREFIX_.'shop_url';
+		if ($id_shop != null)
+			$sql.= ' WHERE id_shop='.(int)$id_shop;
+			
+		$sql.= ' order by id_shop';
+			
+		return (Db::getInstance()->executeS($sql));		
+		
 	}
 		
 }
