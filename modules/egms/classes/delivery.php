@@ -17,7 +17,8 @@ class delivery extends ObjectModel
 	public $carriers;
 	public $payments;
 	public $address;
-	public $chema;	
+	public $chema;
+	public $active;	
 	
 	/**
 	 * @see ObjectModel::$definition
@@ -37,6 +38,7 @@ class delivery extends ObjectModel
 			'payments' => array('type' => self::TYPE_STRING),	
 			'address' => array('type' => self::TYPE_STRING),
 			'chema' => array('type' => self::TYPE_STRING),
+			'active' => array('type' => self::TYPE_BOOL),
 		),
 	);
 
@@ -50,5 +52,24 @@ class delivery extends ObjectModel
 			
 		return (Db::getInstance()->executeS($sql));
 	}	
+	
+	public function delete()
+	{
+		$sql = 'UPDATE '._DB_PREFIX_.'egms_delivery
+				SET
+				deleted = 1
+				WHERE id_egms_delivery = '.(int)$this->id_egms_delivery;
+		return (Db::getInstance()->executeS($sql));
+	}
+	
+	public static function getDelivery($id_egms_delivery=null)
+	{
+		$sql = 'SELECT * FROM '._DB_PREFIX_.'egms_delivery';
+		if ($id_egms_delivery != null)
+			$sql.= ' WHERE id_egms_delivery='.(int)$id_egms_delivery;
+		$sql .= ' ORDER BY 1';
+			
+		return (Db::getInstance()->executeS($sql));
+	}  	
 	
 }

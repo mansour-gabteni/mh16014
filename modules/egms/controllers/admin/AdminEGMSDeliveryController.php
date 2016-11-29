@@ -8,6 +8,7 @@ class AdminEGMSDeliveryController extends ModuleAdminController
 	protected $position_identifier = 'id_egms_delivery';
 	protected $manufacturers;
 	protected $shops;
+	protected $id_egms_delivery;
 	
 	public function __construct()
 	{
@@ -25,13 +26,23 @@ class AdminEGMSDeliveryController extends ModuleAdminController
 				'align' => 'center',
 				'class' => 'fixed-width-xs'
 			),
-			'id_egms_delivery' => array('title' => $this->l('id'), 'filter_key' => 'id_egms_delivery'),	
-			//'cityname1' => array('title' => $this->l('Cityname'), 'filter_key' => 'cityname1'),
-			//'cityname2' => array('title' => $this->l('Cityname'), 'filter_key' => 'cityname2'),
-			//'cityname3' => array('title' => $this->l('Cityname'), 'filter_key' => 'cityname3'),
-			//'alias' => array('title' => $this->l('alias'), 'filter_key' => 'a!alias'),
+			'id_egms_delivery' => array('title' => $this->l('id'), 'filter_key' => 'id_egms_delivery'),
+			'shopname' => array('title' => $this->l('Shop name'), 'filter_key' => 's!shopname'),				
+			'cityname1' => array('title' => $this->l('Cityname'), 'filter_key' => 'c!cityname1'),
+			'name' => array('title' => $this->l('Manufacturer'), 'filter_key' => 'm!name'),
+			'domain' => array('title' => $this->l('Domain'), 'filter_key' => 'su!domain'),
+			'urlstatus' => array('title' => $this->l('url status'), 'filter_key' => 's!urlstatus', 'align' => 'center', 'active' => 'status', 'class' => 'fixed-width-sm', 'type' => 'bool'),
+			'custatus' => array('title' => $this->l('shop url status'), 'filter_key' => 'cu!custatus', 'align' => 'center', 'active' => 'status', 'class' => 'fixed-width-sm', 'type' => 'bool'),
+			'deliverystatus' => array('title' => $this->l('Manufacturer status'), 'filter_key' => 'a!deliverystatus', 'align' => 'center', 'active' => 'status', 'class' => 'fixed-width-sm', 'type' => 'bool')			
+
 		);	
-		
+		$this->_select .= 'a.id_egms_delivery, s.name shopname, c.cityname1, m.name, su.domain, su.active urlstatus, cu.active custatus, a.active deliverystatus';
+		$this->_join .= ' INNER JOIN '._DB_PREFIX_.'egms_city_url cu ON a.id_egms_cu = cu.id_egms_cu ';
+		$this->_join .= ' INNER JOIN '._DB_PREFIX_.'egms_city c ON c.id_egms_city = cu.id_city ';
+		$this->_join .= ' INNER JOIN '._DB_PREFIX_.'shop_url su ON cu.id_shop_url = su.id_shop_url ';
+		$this->_join .= ' INNER JOIN '._DB_PREFIX_.'shop s ON su.id_shop = s.id_shop ';
+		$this->_join .= ' INNER JOIN '._DB_PREFIX_.'manufacturer m ON m.id_manufacturer = a.id_manufacturer ';
+		$this->_where .= ' and a.deleted = 0';		
 		$this->_orderBy = 'a.id_egms_delivery';
 	
 		$this->_theme_dir = Context::getContext()->shop->getTheme();
@@ -91,6 +102,18 @@ class AdminEGMSDeliveryController extends ModuleAdminController
 		$this->initPageHeaderToolbar();
 
 		$this->multiple_fieldsets = true;
+		$soption = array(
+			array(
+				'id' => 'active_on',
+				'value' => 1,
+				'label' => $this->l('Enabled')
+			),
+			array(
+				'id' => 'active_off',
+				'value' => 0,
+				'label' => $this->l('Disabled')
+			)
+		);		
 		
 		$this->fields_form[0]['form'] = array(
 			'tinymce' => true,
@@ -151,7 +174,14 @@ class AdminEGMSDeliveryController extends ModuleAdminController
 					'label' => $this->l('chema'),
 					'name' => 'chema',
 					'hint' => $this->l('chema')
-				),																		
+				),	
+				array(
+					'type' => 'switch',
+					'label' => $this->l('Is Active'),
+					'name' => 'active',
+					'values' => $soption,
+					'default' => '1',
+				),																					
 			),
 			'submit' => array(
 				'title' => $this->l('Save'),
@@ -169,19 +199,24 @@ class AdminEGMSDeliveryController extends ModuleAdminController
 	
     public function getFieldsValues()
     {
-    	/*
-    	$id_egms_city = Tools::getValue('id_egms_city');
-    	if ($id_egms_city!=false)
-    		$row = city::getCity($id_egms_city);
+    	
+    	$id_egms_delivery = Tools::getValue('id_egms_delivery');
+    	if ($id_egms_delivery!=false)
+    		$row = delivery::getDelivery($id_egms_delivery);
         return array(
-            'id_egms_city' => $id_egms_city,
-        	'cityname1' => $row[0]['cityname1'],
-        	'cityname2' => $row[0]['cityname2'],
-			'cityname3' => $row[0]['cityname3'],
-        	'psyname' => $row[0]['psyname'],
-        	'alias' => $row[0]['alias']
+            'id_egms_delivery' => $id_egms_delivery,
+        	'id_egms_cu' => $row[0]['id_egms_cu'],
+        	'id_manufacturer' => $row[0]['id_manufacturer'],
+			'del_pay' => $row[0]['del_pay'],
+        	'free_pay' => $row[0]['free_pay'],
+        	'dlex' => $row[0]['dlex'],
+        	'carriers' => $row[0]['carriers'],
+        	'payments' => $row[0]['payments'],
+        	'address' => $row[0]['address'],
+        	'chema' => $row[0]['chema'],
+        	'active' => $row[0]['active'],
         );
-        */
+        
     }
  	
 	

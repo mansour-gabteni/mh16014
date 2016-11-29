@@ -40,8 +40,13 @@ class city extends ObjectModel
 */
 	public function delete()
 	{
-		//TODO: add restriction deletting if  city linked in any
-		//return false;
+		$sql = 'SELECT * FROM '._DB_PREFIX_.'egms_city_url
+		WHERE id_city ='.(int)$this->id_egms_city;
+		
+		if (!Db::getInstance()->executeS($sql))
+			return(parent::delete());
+		
+		return false;
 	}
 	
 	public static function getCity($id_city=null)
@@ -49,6 +54,7 @@ class city extends ObjectModel
 		$sql = 'SELECT * FROM '._DB_PREFIX_.'egms_city';
 		if ($id_city != null)
 			$sql.= ' WHERE id_egms_city='.(int)$id_city;
+		$sql .= ' ORDER BY cityname1';
 			
 		return (Db::getInstance()->executeS($sql));
 	}    	

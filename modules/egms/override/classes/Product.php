@@ -9,7 +9,9 @@ class Product extends ProductCore
 	{
 		if(!egms_shop::getEgmsAccess($id_product))
 			return false;
-		
+			
+		return parent::checkAccessStatic($id_product, $id_customer);
+		/*
 		if (!Group::isFeatureActive())
 			return true;
 
@@ -33,6 +35,7 @@ class Product extends ProductCore
 			Cache::store($cache_id, $result);
 		}
 		return Cache::retrieve($cache_id);
+		*/
 	}	
 }
 
