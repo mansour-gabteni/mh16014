@@ -23,9 +23,15 @@ if (!defined('_PS_VERSION_'))
 	    $this->confirmUninstall = $this->l('Are you sure you want to uninstall?');
 	 
   	}	
+  	
+	public function hookHeader($params)
+	{		
+		$this->context->controller->addCSS($this->_path.'views/css/egmultishop.css', 'all');
+	}
+		  	
   	public function hookDisplayTop($params)
 	{
-
+		return $this->display(__FILE__, 'mess.tpl', $this->getCacheId());
 	}
 
   	public function hookDisplayFooter($params)
@@ -42,6 +48,7 @@ if (!defined('_PS_VERSION_'))
 	  if (!parent::install()|| 
 		//!Configuration::updateValue('EGAMERICA_', 0)||
 		!$this->registerHook('displayBackOfficeHeader')||
+		!$this->registerHook('displayTop')||
 		!$this->registerHook('displayFooter')
 		)
 	    return false;
@@ -66,7 +73,7 @@ if (!defined('_PS_VERSION_'))
 	{
 	  if (!parent::uninstall() || 
 	  		//!Configuration::deleteByName('EGAMERICA_') ||
-	  		!$this->registerHook('displayFooter')||
+	  		!$this->unregisterHook('displayFooter')||
 	  		($keep && !$this->deleteTables())
 			)
 	    return false;
