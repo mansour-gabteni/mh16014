@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS `PREFIX_DB4NAME` (
   `payments` varchar(15) NOT NULL,
   `address` varchar(20) NOT NULL,
   `chema` varchar(500) NOT NULL,
+  `active` tinyint(1) NOT NULL,
   PRIMARY KEY (`id_egms_delivery`),
   UNIQUE KEY `id_egms_cu` (`id_egms_cu`,`id_manufacturer`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

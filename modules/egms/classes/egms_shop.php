@@ -16,7 +16,6 @@ class egms_shop extends ObjectModel
 	public $phone;
 	public $active;
 	public $manufacturer = array();
-	//public $manufacturer_1;
 	
 	/**
 	 * @see ObjectModel::$definition
@@ -35,6 +34,39 @@ class egms_shop extends ObjectModel
 			'active' => array('type' => self::TYPE_BOOL),
 		),
 	);
+	
+	public static function getEgmsAccess($id_product)
+	{	
+		$product = new Product($id_product, true);
+		$host = Tools::getHttpHost();
+		$sql = 'SELECT * FROM '._DB_PREFIX_.'shop_url su
+				INNER JOIN '._DB_PREFIX_.'egms_city_url c ON c.id_shop_url = su.id_shop_url
+				INNER JOIN '._DB_PREFIX_.'egms_delivery d ON d.id_egms_cu = c.id_egms_cu
+				WHERE su.domain=\''.$host.'\'
+				AND d.id_manufacturer = '.$product->id_manufacturer.' 
+				AND su.active = 1
+				AND c.active = 1
+				AND d.active = 1
+				';
+		$row = Db::getInstance()->getRow($sql);
+			
+		//return isset($row['id_shop_url']);
+		return true;
+	}
+	
+  	public static function getManufacturerByShop()
+	{
+		/*
+		$sql = 'SELECT * FROM '._DB_PREFIX_.'shop_url';
+		if ($id_shop != null)
+			$sql.= ' WHERE id_shop='.(int)$id_shop;
+			
+		$sql.= ' order by id_shop';
+			
+		return (Db::getInstance()->executeS($sql));		
+		*/
+		return array(1, 2,7);
+	}  		
 	
 	public function update($null_values = false)
 	{

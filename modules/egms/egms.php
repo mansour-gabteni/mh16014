@@ -38,7 +38,7 @@ if (!defined('_PS_VERSION_'))
 	    $this->confirmUninstall = $this->l('Are you sure you want to uninstall?');
   	}
   	
-  		
+
   	
 	public function hookHeader($params)
 	{		

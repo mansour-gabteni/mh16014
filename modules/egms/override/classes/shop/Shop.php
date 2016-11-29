@@ -1,60 +1,5 @@
 <?php
 
-/*
-
-* 2007-2015 PrestaShop
-
-*
-
-* NOTICE OF LICENSE
-
-*
-
-* This source file is subject to the Open Software License (OSL 3.0)
-
-* that is bundled with this package in the file LICENSE.txt.
-
-* It is also available through the world-wide-web at this URL:
-
-* http://opensource.org/licenses/osl-3.0.php
-
-* If you did not receive a copy of the license and are unable to
-
-* obtain it through the world-wide-web, please send an email
-
-* to license@prestashop.com so we can send you a copy immediately.
-
-*
-
-* DISCLAIMER
-
-*
-
-* Do not edit or add to this file if you wish to upgrade PrestaShop to newer
-
-* versions in the future. If you wish to customize PrestaShop for your
-
-* needs please refer to http://www.prestashop.com for more information.
-
-*
-
-*  @author PrestaShop SA <contact@prestashop.com>
-
-*  @copyright  2007-2015 PrestaShop SA
-
-*  @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
-
-*  International Registered Trademark & Property of PrestaShop SA
-
-*/
-
-
-
-/**
-
- * @since 1.5.0
-
- */
 
 class Shop extends ShopCore
 
@@ -139,11 +84,11 @@ class Shop extends ShopCore
 					if ($row['id_shop'] == $id_shop && $row['main'])
 					{
 						$request_uri = substr($request_uri, strlen($found_uri));
-						$url = str_replace('//', '/', $row['domain'].$row['uri'].$request_uri);
+						$url = str_replace('/'.'/', '/', $row['domain'].$row['uri'].$request_uri);
 						$redirect_type = Configuration::get('PS_CANONICAL_REDIRECT') == 2 ? '301' : '302';
 						header('HTTP/1.0 '.$redirect_type.' Moved');
 						header('Cache-Control: no-cache');
-						header('location: http://'.$url);
+						header('location: '.Tools::getShopProtocol().$url);
 						exit;
 					}
 				}
@@ -207,7 +152,7 @@ class Shop extends ShopCore
 				}
 				$redirect_type = Configuration::get('PS_CANONICAL_REDIRECT') == 2 ? '301' : '302';
 				header('HTTP/1.0 '.$redirect_type.' Moved');
-				header('location: http://'.$url);
+				header('location: '.Tools::getShopProtocol().$url);
 				exit;
 			}
 			elseif (defined('_PS_ADMIN_DIR_') && empty($shop->physical_uri))
