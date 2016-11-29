@@ -133,7 +133,8 @@
 <module name="ActiveTrail" position="2"/>
 <module name="reforestaction" position="3"/>
 <module name="followup" position="4"/>
-<module name="cartabandonmentpro" position="5"/>
+<module name="ps_followup" position="5"/>
+<module name="cartabandonmentpro" position="6"/>
 </tab>
 <tab class_name="AdminCustomerThreads" display_type="slider_list">
 <module name="sendinblue" position="1"/>
@@ -233,8 +234,9 @@
 <module name="qiwi" position="34"/>
 <module name="worldpay" position="35"/>
 <module name="cashondelivery" position="36"/>
-<module name="bankwire" position="37"/>
-<module name="cheque" position="38"/>
+<module name="ps_cashondelivery" position="37"/>
+<module name="bankwire" position="38"/>
+<module name="cheque" position="39"/>
 </tab>
 <tab class_name="AdminCarriers" display_type="slider_list">
 <module name="bpostshm" position="1"/>
@@ -278,6 +280,7 @@
 <module name="upstracking" position="19"/>
 <module name="dateofdelivery" position="20"/>
 <module name="carriercompare" position="21"/>
+<module name="ps_carriercompare" position="22"/>
 </tab>
 <tab class_name="AdminLocalization" display_type="slider_list">
 <module name="avalaratax" position="1"/>
@@ -309,6 +312,7 @@
 <tab class_name="AdminPreferences" display_type="slider_list">
 <module name="mailalerts" position="1"/>
 <module name="feeder" position="2"/>
+<module name="ps_feeder" position="3"/>
 </tab>
 <tab class_name="AdminOrderPreferences" display_type="slider_list">
 <module name="mailalerts" position="1"/>
@@ -316,6 +320,7 @@
 <tab class_name="AdminPPreferences" display_type="slider_list">
 <module name="mailalerts" position="1"/>
 <module name="feeder" position="2"/>
+<module name="ps_feeder" position="3"/>
 </tab>
 <tab class_name="AdminCustomerPreferences" display_type="slider_list">
 <module name="fianetsceau" position="1"/>
@@ -368,6 +373,7 @@
 <module name="liveperson" position="6"/>
 <module name="etranslation" position="7"/>
 <module name="smartsupp" position="8"/>
+<module name="ps_emailalerts" position="9"/>
 </tab>
 <tab class_name="AdminImport" display_type="slider_list">
 </tab>
