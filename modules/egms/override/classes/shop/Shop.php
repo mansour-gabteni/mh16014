@@ -4,6 +4,8 @@
 class Shop extends ShopCore
 
 {
+	public $id_shop_url;
+		
 	public static function isFeatureActive()
 	{
 		static $feature_active = null;
@@ -24,8 +26,7 @@ class Shop extends ShopCore
 		$query = new DbQuery();
 		$query->select('domain');
 		$query->from('shop_url');
-		//$query->where('main = 1');
-		$query->where('active = 1');
+				$query->where('active = 1');
 		$query .= $this->addSqlRestriction(Shop::SHARE_ORDER);
 		$domains = array();
 		foreach (Db::getInstance()->executeS($query) as $row)
@@ -40,10 +41,10 @@ class Shop extends ShopCore
 	 *
 	 * @return Shop
 	 */
+
 	public static function initialize()
 	{
-		// Find current shop from URL
-		if (!($id_shop = Tools::getValue('id_shop')) || defined('_PS_ADMIN_DIR_'))
+				if (!($id_shop = Tools::getValue('id_shop')) || defined('_PS_ADMIN_DIR_'))
 		{
 			$found_uri = '';
 			$is_main_uri = false;
@@ -63,8 +64,7 @@ class Shop extends ShopCore
 			$through = false;
 			foreach ($result as $row)
 			{
-				// An URL matching current shop was found
-				if (preg_match('#^'.preg_quote($row['uri'], '#').'#i', $request_uri))
+								if (preg_match('#^'.preg_quote($row['uri'], '#').'#i', $request_uri))
 				{
 					$through = true;
 					$id_shop = $row['id_shop'];
@@ -75,8 +75,7 @@ class Shop extends ShopCore
 				}
 			}
 
-			// If an URL was found but is not the main URL, redirect to main URL
-			if ($through && $id_shop && !$is_main_uri)
+						if ($through && $id_shop && !$is_main_uri)
 			{
 
 				foreach ($result as $row)
@@ -96,13 +95,11 @@ class Shop extends ShopCore
 		}
 
 		$http_host = Tools::getHttpHost();
-		//$all_media = array_merge(Configuration::getMultiShopValues('PS_MEDIA_SERVER_1'), Configuration::getMultiShopValues('PS_MEDIA_SERVER_2'), Configuration::getMultiShopValues('PS_MEDIA_SERVER_3'));
-		$all_media = array();
+				$all_media = array();
 
 		if ((!$id_shop && defined('_PS_ADMIN_DIR_')) || Tools::isPHPCLI() || in_array($http_host, $all_media))
 		{
-			// If in admin, we can access to the shop without right URL
-			if ((!$id_shop && Tools::isPHPCLI()) || defined('_PS_ADMIN_DIR_'))
+						if ((!$id_shop && Tools::isPHPCLI()) || defined('_PS_ADMIN_DIR_'))
 				$id_shop = (int)Configuration::get('PS_SHOP_DEFAULT');
 
 			$shop = new Shop((int)$id_shop);
@@ -111,8 +108,7 @@ class Shop extends ShopCore
 
 			$shop->virtual_uri = '';
 
-			// Define some $_SERVER variables like HTTP_HOST if PHP is launched with php-cli
-			if (Tools::isPHPCLI())
+						if (Tools::isPHPCLI())
 			{
 				if (!isset($_SERVER['HTTP_HOST']) || empty($_SERVER['HTTP_HOST']))
 					$_SERVER['HTTP_HOST'] = $shop->domain;
@@ -127,11 +123,9 @@ class Shop extends ShopCore
 			$shop = new Shop($id_shop);
 			if (!Validate::isLoadedObject($shop) || !$shop->active)
 			{
-				// No shop found ... too bad, let's redirect to default shop
-				$default_shop = new Shop(Configuration::get('PS_SHOP_DEFAULT'));
+								$default_shop = new Shop(Configuration::get('PS_SHOP_DEFAULT'));
 
-				// Hmm there is something really bad in your Prestashop !
-				if (!Validate::isLoadedObject($default_shop))
+								if (!Validate::isLoadedObject($default_shop))
 					throw new PrestaShopException('Shop not found');
 
 				$params = $_GET;
@@ -141,8 +135,7 @@ class Shop extends ShopCore
 					$url .= $default_shop->getBaseURI().'index.php?'.http_build_query($params);
 				else
 				{
-					// Catch url with subdomain "www"
-					if (strpos($url, 'www.') === 0 && 'www.'.$_SERVER['HTTP_HOST'] === $url || $_SERVER['HTTP_HOST'] === 'www.'.$url)
+										if (strpos($url, 'www.') === 0 && 'www.'.$_SERVER['HTTP_HOST'] === $url || $_SERVER['HTTP_HOST'] === 'www.'.$url)
 						$url .= $_SERVER['REQUEST_URI'];
 					else
 						$url .= $default_shop->getBaseURI();
@@ -168,6 +161,37 @@ class Shop extends ShopCore
 		self::$context = self::CONTEXT_SHOP;
 
 		return $shop;
+	}	
+	
+	public function setUrl()
+	{
+		$cache_id = 'Shop::setUrl_'.(int)$this->id;
+		if (!Cache::isStored($cache_id))
+		{
+			$host = Tools::getHttpHost();
+			$row = Db::getInstance()->getRow('
+			SELECT su.physical_uri, su.virtual_uri, su.domain, su.domain_ssl, t.id_theme, t.name, t.directory, su.id_shop_url
+			FROM '._DB_PREFIX_.'shop s
+			LEFT JOIN '._DB_PREFIX_.'shop_url su ON (s.id_shop = su.id_shop)
+			LEFT JOIN '._DB_PREFIX_.'theme t ON (t.id_theme = s.id_theme)
+			WHERE s.id_shop = '.(int)$this->id.'
+			AND s.active = 1 AND s.deleted = 0 AND su.domain = "'.$host.'"');// AND su.main = 1 GrishinEV
+			Cache::store($cache_id, $row);
+		}
+		$row = Cache::retrieve($cache_id);
+		if (!$row)
+			return false;
+
+		$this->theme_id = $row['id_theme'];
+		$this->theme_name = $row['name'];
+		$this->theme_directory = $row['directory'];
+		$this->physical_uri = $row['physical_uri'];
+		$this->virtual_uri = $row['virtual_uri'];
+		$this->domain = $row['domain'];
+		$this->domain_ssl = $row['domain_ssl'];
+		$this->id_shop_url = $row['id_shop_url'];
+
+		return true;
 	}	
 		
 }

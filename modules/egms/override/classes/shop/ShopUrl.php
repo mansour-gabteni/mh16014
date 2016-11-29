@@ -1,11 +1,8 @@
 <?php
 
-
 class ShopUrl extends ShopUrlCore
 
 {
-
-
 
 	public static function cacheMainDomainForShop($id_shop)
 
