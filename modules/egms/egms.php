@@ -15,9 +15,10 @@ if (!defined('_PS_VERSION_'))
 	const INSTALL_SQL_BD4NAME = 'egms_delivery';    
 
     protected $tabs = array(
-    		array('name' => 'Citys', 'class_name' => 'AdminEGMSCitys'),
+    		array('name' => 'Multishop config', 'class_name' => 'AdminEGMSShops'),
     		array('name' => 'Shops by Citys', 'class_name' => 'AdminEGMSShops'),
     		array('name' => 'Delivery by Manufacturer', 'class_name' => 'AdminEGMSDelivery'),
+    		array('name' => 'Citys', 'class_name' => 'AdminEGMSCitys'),
     );  	
   	
     public function __construct()
@@ -61,7 +62,8 @@ if (!defined('_PS_VERSION_'))
   	public function installAdminTab()
 	{
 		$retval = true;
-		foreach ($this->tabs as $ctab)
+		$id_parent = 0;
+		foreach ($this->tabs as $key => $ctab)
 		{
 			$tab = new Tab();
 			$tab->active = 1;
@@ -71,8 +73,10 @@ if (!defined('_PS_VERSION_'))
 					$tab->name[$language['id_lang']] = $ctab['name'];
 			$tab->class_name = $ctab['class_name'];
 			$tab->module = $this->name;
-			$tab->id_parent = 10;
+			$tab->id_parent = $id_parent;
 			$retval = (bool)$tab->add();
+			if ($key==0)
+				$id_parent = $tab->id;
 		}
 		return $retval;
 	}  
