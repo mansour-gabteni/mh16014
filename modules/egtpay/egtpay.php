@@ -33,8 +33,8 @@ class egtpay extends PaymentModule
 	{
 		$this->name = 'egtpay';
 		$this->tab = 'payments_gateways';
-		$this->version = '0.7.5';
-		$this->author = 'PrestaShop';
+		$this->version = '0.0.1';
+		$this->author = 'evgeny grishin';
 		$this->need_instance = 1;
 		$this->controllers = array('validation');
 		$this->is_eu_compatible = 1;
@@ -43,15 +43,17 @@ class egtpay extends PaymentModule
 
 		parent::__construct();
 
-		$this->displayName = $this->l('Cash on delivery (COD)');
-		$this->description = $this->l('Accept cash on delivery payments');
+		$this->displayName = $this->l('Tinkoff payment');
+		$this->description = $this->l('Tinkoff payment module!');
 
 		/* For 1.4.3 and less compatibility */
+		/*
 		$updateConfig = array('PS_OS_CHEQUE', 'PS_OS_PAYMENT', 'PS_OS_PREPARATION', 'PS_OS_SHIPPING', 'PS_OS_CANCELED', 'PS_OS_REFUND', 'PS_OS_ERROR', 'PS_OS_OUTOFSTOCK', 'PS_OS_BANKWIRE', 'PS_OS_PAYPAL', 'PS_OS_WS_PAYMENT');
 		if (!Configuration::get('PS_OS_PAYMENT'))
 			foreach ($updateConfig as $u)
 				if (!Configuration::get($u) && defined('_'.$u.'_'))
 					Configuration::updateValue($u, constant('_'.$u.'_'));
+					*/
 	}
 
 	public function install()
@@ -77,14 +79,7 @@ class egtpay extends PaymentModule
 		if (!$this->active)
 			return ;
 
-		global $smarty;
-
-		// Check if cart has product download
-		if ($this->hasProductDownload($params['cart']))
-			return false;
-
-
-		$smarty->assign(array(
+		$this->smarty->assign(array(
 			'this_path' => $this->_path, //keep for retro compat
 			'this_path_cod' => $this->_path,
 			'this_path_ssl' => Tools::getShopDomainSsl(true, true).__PS_BASE_URI__.'modules/'.$this->name.'/'
@@ -97,12 +92,8 @@ class egtpay extends PaymentModule
 		if (!$this->active)
 			return ;
 
-		// Check if cart has product download
-		if ($this->hasProductDownload($params['cart']))
-			return false;
-
 		return array(
-			'cta_text' => $this->l('Pay with cash on delivery (COD)'),
+			'cta_text' => $this->l('online payment'),
 			'logo' => Media::getMediaPath(dirname(__FILE__).'/egtpay.png'),
 			'action' => $this->context->link->getModuleLink($this->name, 'validation', array('confirm' => true), true)
 		);

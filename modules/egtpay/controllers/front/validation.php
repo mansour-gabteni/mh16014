@@ -27,7 +27,7 @@
 /**
  * @since 1.5.0
  */
-class CashondeliveryValidationModuleFrontController extends ModuleFrontController
+class egtpayValidationModuleFrontController extends ModuleFrontController
 {
 	public $ssl = true;
 	public $display_column_left = false;
