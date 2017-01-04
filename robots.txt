@@ -91,3 +91,4 @@ Disallow: /password-recovery
 Disallow: /password-recovery
 Disallow: /search
 Disallow: /search
+Disallow: /parseopml
