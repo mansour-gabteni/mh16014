@@ -38,7 +38,7 @@ class AdminEGMSShopsController extends ModuleAdminControllerCore
 		);	
 		
 		$this->_select .= 'a.id_egms_cu, s.name, c.cityname1, a.phone, su.domain, a.active, su.active activeurl, 
-				(select count(d.id_egms_delivery) from '._DB_PREFIX_.'egms_delivery d where d.id_egms_cu = a.id_egms_cu and deleted=0 and active=1) manufacturer';
+				(select count(d.id_egms_delivery) from '._DB_PREFIX_.'egms_delivery d where d.id_egms_cu = a.id_egms_cu and deleted=0) manufacturer';
 		$this->_join .= ' INNER JOIN '._DB_PREFIX_.'shop_url su ON a.id_shop_url = su.id_shop_url ';
 		$this->_join .= ' INNER JOIN '._DB_PREFIX_.'egms_city c ON a.id_city = c.id_egms_city';
 		$this->_join .= ' INNER JOIN '._DB_PREFIX_.'shop s ON su.id_shop = s.id_shop ';
@@ -269,7 +269,6 @@ class AdminEGMSShopsController extends ModuleAdminControllerCore
     	$sql = 'SELECT * FROM '._DB_PREFIX_.'egms_delivery 
     			WHERE id_egms_cu='.(int)$id_shop.' 
     			AND id_manufacturer='.$id_manufacturer.' 
-    			AND active = 1
     			AND deleted = 0';
     	if (Db::getInstance()->getRow($sql))
     		return true;

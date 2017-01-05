@@ -67,7 +67,7 @@ if (!defined('_PS_VERSION_'))
 		{
 			$tab = new Tab();
 			$tab->active = 1;
-			$languages = Language::getLanguages(false);
+			$languages = Language::getLanguages(true);
 			if (is_array($languages))
 				foreach ($languages as $language)
 					$tab->name[$language['id_lang']] = $ctab['name'];

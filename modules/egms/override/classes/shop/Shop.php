@@ -57,6 +57,7 @@ class Shop extends ShopCore
 					WHERE (su.domain = \''. pSQL($host).'\' OR su.domain_ssl = \''. pSQL($host).'\')
 						AND s.active = 1
 						AND s.deleted = 0
+						AND su.active = 1
 					ORDER BY LENGTH(CONCAT(su.physical_uri, su.virtual_uri)) DESC';
 
 			$result = Db::getInstance()->executeS($sql);
@@ -74,8 +75,9 @@ class Shop extends ShopCore
 					break;
 				}
 			}
+			//$id_shop = 1;
 
-						if ($through && $id_shop && !$is_main_uri)
+			if ($through && $id_shop && !$is_main_uri)
 			{
 
 				foreach ($result as $row)
@@ -161,16 +163,73 @@ class Shop extends ShopCore
 		self::$context = self::CONTEXT_SHOP;
 
 		return $shop;
-	}	
+	}
+
+	public static function getIdUrl()
+	{
+		$host = Tools::getHttpHost();
+		$request_uri = rawurldecode($_SERVER['REQUEST_URI']);	
+		$main_domain = Tools::getMaindomain();
+		
+		if ($main_domain == $host){ 
+			$parts = explode('/',$request_uri);
+			if(is_array($parts) && $parts[1]){
+				$part = $parts[1];
+				$host_test = $part.'.'.$host;
+				
+			$row = Db::getInstance()->getRow('
+					SELECT su.physical_uri, su.virtual_uri, su.domain, su.domain_ssl, su.id_shop_url+10000 as id_shop_url, 
+					true as isVirtual, \''.$part.'\' as part, \''.$part.'.'.$host.'\'  as host,
+					\''.$main_domain.'\' as main_domain
+					FROM '._DB_PREFIX_.'shop s
+					LEFT JOIN '._DB_PREFIX_.'shop_url su ON (s.id_shop = su.id_shop)
+					WHERE s.active = 1 AND su.active = 1 AND s.deleted = 0 AND su.main = 0 AND su.domain = "'.$host_test.'"');
+			if($row){
+				return $row;
+				}
+			}
+		}	
+	}
 	
 	public function setUrl()
 	{
+		$host = Tools::getHttpHost();
+		/*
+		$host = Tools::getHttpHost();
+		$request_uri = rawurldecode($_SERVER['REQUEST_URI']);	
+		$main_domain = Tools::getMaindomain();
+		$isVirtual = false;
+
+		
+		if ($main_domain == $host){ 
+			$parts = explode('/',$request_uri);
+			if(is_array($parts) && $parts[1]){
+				$part = $parts[1];
+				$host_test = $part.'.'.$host;
+				
+				$row = Db::getInstance()->getRow('
+				SELECT su.physical_uri, su.virtual_uri, su.domain, su.domain_ssl, su.id_shop_url
+				FROM '._DB_PREFIX_.'shop s
+				LEFT JOIN '._DB_PREFIX_.'shop_url su ON (s.id_shop = su.id_shop)
+				WHERE s.id_shop = '.(int)$this->id.'
+				AND s.active = 1 AND s.deleted = 0 AND su.main = 0 AND su.domain = "'.$host_test.'"');	
+				if($row){
+					$host = $part.'.'.$host;
+					$isVirtual = true;
+				}
+			}
+		}
+		*/
+		$main_domain = Tools::getMaindomain();
+		$r = Shop::getIdUrl();
+		if($r)
+			$host = $r['host'];
+		
 		$cache_id = 'Shop::setUrl_'.(int)$this->id;
 		if (!Cache::isStored($cache_id))
 		{
-			$host = Tools::getHttpHost();
 			$row = Db::getInstance()->getRow('
-			SELECT su.physical_uri, su.virtual_uri, su.domain, su.domain_ssl, t.id_theme, t.name, t.directory, su.id_shop_url
+			SELECT su.physical_uri, su.virtual_uri, su.domain, su.domain_ssl, t.id_theme, t.name, t.directory, su.id_shop_url, su.active
 			FROM '._DB_PREFIX_.'shop s
 			LEFT JOIN '._DB_PREFIX_.'shop_url su ON (s.id_shop = su.id_shop)
 			LEFT JOIN '._DB_PREFIX_.'theme t ON (t.id_theme = s.id_theme)
@@ -181,6 +240,13 @@ class Shop extends ShopCore
 		$row = Cache::retrieve($cache_id);
 		if (!$row)
 			return false;
+		
+		if($r){
+			$row['domain'] = $r['main_domain'];
+			$row['domain_ssl'] = $row['domain'];
+			$row['virtual_uri'] = $r['part'].'/';
+			$row['id_shop_url'] = $r['id_shop_url'];	
+		}
 
 		$this->theme_id = $row['id_theme'];
 		$this->theme_name = $row['name'];
@@ -190,8 +256,46 @@ class Shop extends ShopCore
 		$this->domain = $row['domain'];
 		$this->domain_ssl = $row['domain_ssl'];
 		$this->id_shop_url = $row['id_shop_url'];
+		
+		if (!$row['active'])
+			$this->SiteNotFound();
+	
+		//if (!$this->shopIsActive())
+		//	$this->SiteNotFound();		
 
 		return true;
+	}	
+	
+	public function SiteNotFound()
+	{
+		header('HTTP/1.0 404 Not Found');
+        echo '<h1>URL not exist</h1>';
+        exit;
+	}
+	
+	public function shopIsActive()
+	{
+		return(Db::getInstance()->getValue('
+			SELECT cu.active
+			FROM '._DB_PREFIX_.'egms_city_url cu
+			WHERE cu.id_shop_url = '.(int)$this->id_shop_url));
+	}
+	
+	
+	public static function getCEOData()
+	{
+		$domain = Tools::getHttpHost();
+		$subdomain = implode('.', array_slice(explode('.',$_SERVER['HTTP_HOST']), -2));
+		$sql = 'SELECT mu.`city_name`, mu.`city1_name`, mu.`city2_name`, 
+		mu.phone, \''.$domain.'\' host, concat(engname,\'@'.$subdomain.'\') email 
+				FROM `'._DB_PREFIX_.'shop_url` su
+				INNER JOIN `'._DB_PREFIX_.'egmultishop_url` mu ON
+					mu.`id_url`=su.`id_shop_url`
+				WHERE su.`domain` = \''.$domain.'\'';
+		//TODO: add to get default city
+		if (!$ret = Db::getInstance()->executeS($sql))
+			return false;
+		return $ret[0];
 	}	
 		
 }

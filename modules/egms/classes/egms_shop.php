@@ -37,43 +37,42 @@ class egms_shop extends ObjectModel
 	
 	public function delete()
 	{
+		Tools::generateHtaccess();
 		return false;
 	}	
 	
-	public static function getEgmsAccess($id_product)
+	public static function getEgmsAccess($id_manufacturer = null)
 	{	
-		$product = new Product($id_product, true);
 		$host = Tools::getHttpHost();
 		$sql = 'SELECT * FROM '._DB_PREFIX_.'shop_url su
 				INNER JOIN '._DB_PREFIX_.'egms_city_url c ON c.id_shop_url = su.id_shop_url
 				INNER JOIN '._DB_PREFIX_.'egms_delivery d ON d.id_egms_cu = c.id_egms_cu
 				WHERE su.domain=\''.$host.'\'
-				AND d.id_manufacturer = '.$product->id_manufacturer.' 
+				AND d.deleted = 0  
 				AND su.active = 1
 				AND c.active = 1
-				AND d.active = 1
-				';
-		$row = Db::getInstance()->getRow($sql);
+				AND d.active = 1';
+		if ($id_manufacturer!=null)
+			$sql.=' AND d.id_manufacturer = '.(int)$id_manufacturer;
 			
-		return isset($row['id_shop_url']);
+		return(Db::getInstance()->executeS($sql));
+			
+		//return isset($row['id_shop_url']);
 	}
 	
-  	public static function getManufacturerByShop()
+  	public static function getManufacturerByShop($type_result='array')
 	{
-		$result = array();
-		$sql = 'SELECT id_manufacturer FROM '._DB_PREFIX_.'egms_delivery d
-				INNER JOIN '._DB_PREFIX_.'egms_city_url c ON d.id_egms_cu = c.id_egms_cu
-				INNER JOIN '._DB_PREFIX_.'shop_url su ON c.id_shop_url = su.id_shop_url
-				WHERE	d.deleted = 0 
-				AND d.active = 1
-				AND c.active = 1
-				AND su.active = 1';
-
-		$rows = Db::getInstance()->executeS($sql);
+		$result = egms_shop::getEgmsAccess();
 		foreach ($rows as $row)
 		{
 			$result[] = $row['id_manufacturer'];
 		}
+		
+		if ($type_result == 'in')
+			if (count($result))
+				return ' IN ('.implode(', ', $result).')';
+			else 
+				return '';
 		
 		return $result;				
 		//return array(1, 2,7);//for testing
@@ -84,6 +83,7 @@ class egms_shop extends ObjectModel
 		
 		$this->getFieldsValues();
 		$this->updateShopManuf();
+		Tools::generateHtaccess();
 		return parent::update($null_values);	
 	}
 	
@@ -92,6 +92,7 @@ class egms_shop extends ObjectModel
 		$this->getFieldsValues();
 		$result = parent::add($autodate, $null_values);
 		$this->updateShopManuf();
+		Tools::generateHtaccess();
 		return $result;
 	}
 	
@@ -110,24 +111,24 @@ class egms_shop extends ObjectModel
 	{	
 		$sql = 'UPDATE '._DB_PREFIX_.'egms_delivery
 				SET
-				active = 0
+				deleted = 1
 				WHERE id_egms_cu='.(int)$this->id;
 		$res = Db::getInstance()->execute($sql);
 		
 		foreach($this->manufacturer as $manufacturer)
 		{
 			$sql = '';
-			if($this->deliveryExist($this->id, $manufacturer))			
-				$sql='	UPDATE '._DB_PREFIX_.'egms_delivery
-						SET
-						deleted = 0,
-						active = 1
-						WHERE id_egms_cu='.(int)$this->id.'
-						AND id_manufacturer='.(int)$manufacturer;
-			else
+			if(!$this->deliveryExist($this->id, $manufacturer)){
 				$sql = 'INSERT INTO `'._DB_PREFIX_.'egms_delivery` (`id_egms_cu`, `id_manufacturer`,active)
-                            VALUES('.(int)$this->id.', '.(int)$manufacturer.', 1)';
+                            VALUES('.(int)$this->id.', '.(int)$manufacturer.', 0)';
+			} else {	
 				
+					$sql='	UPDATE '._DB_PREFIX_.'egms_delivery
+							SET
+							deleted = 0
+							WHERE id_egms_cu='.(int)$this->id.'
+							AND id_manufacturer='.(int)$manufacturer;
+			}
 			$res = Db::getInstance()->execute($sql);
 		}
 	}

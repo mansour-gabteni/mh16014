@@ -58,8 +58,9 @@ class delivery extends ObjectModel
 		$sql = 'UPDATE '._DB_PREFIX_.'egms_delivery
 				SET
 				deleted = 1
-				WHERE id_egms_delivery = '.(int)$this->id_egms_delivery;
-		return (Db::getInstance()->executeS($sql));
+				WHERE id_egms_delivery = '.(int)$this->id_egms_delivery.'
+				AND active = 0';
+		return (Db::getInstance()->execute($sql));
 	}
 	
 	public static function getDelivery($id_egms_delivery=null)
