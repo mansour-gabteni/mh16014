@@ -62,7 +62,7 @@ class egms_shop extends ObjectModel
 	
   	public static function getManufacturerByShop($type_result='array')
 	{
-		$result = egms_shop::getEgmsAccess();
+		$rows = egms_shop::getEgmsAccess();
 		foreach ($rows as $row)
 		{
 			$result[] = $row['id_manufacturer'];

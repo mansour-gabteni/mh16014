@@ -165,7 +165,7 @@ class Shop extends ShopCore
 		return $shop;
 	}
 
-	public static function getIdUrl()
+	public static function UrlExist()
 	{
 		$host = Tools::getHttpHost();
 		$request_uri = rawurldecode($_SERVER['REQUEST_URI']);	
@@ -178,9 +178,9 @@ class Shop extends ShopCore
 				$host_test = $part.'.'.$host;
 				
 			$row = Db::getInstance()->getRow('
-					SELECT su.physical_uri, su.virtual_uri, su.domain, su.domain_ssl, su.id_shop_url+10000 as id_shop_url, 
+					SELECT su.physical_uri, su.virtual_uri, su.domain, su.domain_ssl, su.id_shop_url+10000 as id_shop_url_10000, su.id_shop_url, 
 					true as isVirtual, \''.$part.'\' as part, \''.$part.'.'.$host.'\'  as host,
-					\''.$main_domain.'\' as main_domain
+					\''.$main_domain.'\' as main_domain, su.active
 					FROM '._DB_PREFIX_.'shop s
 					LEFT JOIN '._DB_PREFIX_.'shop_url su ON (s.id_shop = su.id_shop)
 					WHERE s.active = 1 AND su.active = 1 AND s.deleted = 0 AND su.main = 0 AND su.domain = "'.$host_test.'"');
@@ -194,34 +194,9 @@ class Shop extends ShopCore
 	public function setUrl()
 	{
 		$host = Tools::getHttpHost();
-		/*
-		$host = Tools::getHttpHost();
-		$request_uri = rawurldecode($_SERVER['REQUEST_URI']);	
-		$main_domain = Tools::getMaindomain();
-		$isVirtual = false;
 
-		
-		if ($main_domain == $host){ 
-			$parts = explode('/',$request_uri);
-			if(is_array($parts) && $parts[1]){
-				$part = $parts[1];
-				$host_test = $part.'.'.$host;
-				
-				$row = Db::getInstance()->getRow('
-				SELECT su.physical_uri, su.virtual_uri, su.domain, su.domain_ssl, su.id_shop_url
-				FROM '._DB_PREFIX_.'shop s
-				LEFT JOIN '._DB_PREFIX_.'shop_url su ON (s.id_shop = su.id_shop)
-				WHERE s.id_shop = '.(int)$this->id.'
-				AND s.active = 1 AND s.deleted = 0 AND su.main = 0 AND su.domain = "'.$host_test.'"');	
-				if($row){
-					$host = $part.'.'.$host;
-					$isVirtual = true;
-				}
-			}
-		}
-		*/
 		$main_domain = Tools::getMaindomain();
-		$r = Shop::getIdUrl();
+		$r = Shop::UrlExist();
 		if($r)
 			$host = $r['host'];
 		
@@ -229,7 +204,8 @@ class Shop extends ShopCore
 		if (!Cache::isStored($cache_id))
 		{
 			$row = Db::getInstance()->getRow('
-			SELECT su.physical_uri, su.virtual_uri, su.domain, su.domain_ssl, t.id_theme, t.name, t.directory, su.id_shop_url, su.active
+			SELECT su.physical_uri, su.virtual_uri, su.domain, su.domain_ssl, t.id_theme, t.name, t.directory
+			, su.id_shop_url, su.active
 			FROM '._DB_PREFIX_.'shop s
 			LEFT JOIN '._DB_PREFIX_.'shop_url su ON (s.id_shop = su.id_shop)
 			LEFT JOIN '._DB_PREFIX_.'theme t ON (t.id_theme = s.id_theme)
@@ -239,14 +215,24 @@ class Shop extends ShopCore
 		}
 		$row = Cache::retrieve($cache_id);
 		if (!$row)
-			return false;
+			return false;	
+
+		$this->id_shop_url = $row['id_shop_url'];
+
+		if (!$row['active'])
+			$this->SiteNotFound();
+	
+		if (!$this->shopIsActive())
+			$this->SiteNotFound();			
 		
-		if($r){
+			
+		if($r){		
 			$row['domain'] = $r['main_domain'];
 			$row['domain_ssl'] = $row['domain'];
 			$row['virtual_uri'] = $r['part'].'/';
-			$row['id_shop_url'] = $r['id_shop_url'];	
+			$this->id_shop_url = $row['id_shop_url']+10000;	
 		}
+	
 
 		$this->theme_id = $row['id_theme'];
 		$this->theme_name = $row['name'];
@@ -254,14 +240,7 @@ class Shop extends ShopCore
 		$this->physical_uri = $row['physical_uri'];
 		$this->virtual_uri = $row['virtual_uri'];
 		$this->domain = $row['domain'];
-		$this->domain_ssl = $row['domain_ssl'];
-		$this->id_shop_url = $row['id_shop_url'];
-		
-		if (!$row['active'])
-			$this->SiteNotFound();
-	
-		//if (!$this->shopIsActive())
-		//	$this->SiteNotFound();		
+		$this->domain_ssl = $row['domain_ssl'];	
 
 		return true;
 	}	
@@ -280,23 +259,77 @@ class Shop extends ShopCore
 			FROM '._DB_PREFIX_.'egms_city_url cu
 			WHERE cu.id_shop_url = '.(int)$this->id_shop_url));
 	}
-	
-	
-	public static function getCEOData()
+
+	public function getIdUrl($host = null)
 	{
-		$domain = Tools::getHttpHost();
-		$subdomain = implode('.', array_slice(explode('.',$_SERVER['HTTP_HOST']), -2));
-		$sql = 'SELECT mu.`city_name`, mu.`city1_name`, mu.`city2_name`, 
-		mu.phone, \''.$domain.'\' host, concat(engname,\'@'.$subdomain.'\') email 
-				FROM `'._DB_PREFIX_.'shop_url` su
-				INNER JOIN `'._DB_PREFIX_.'egmultishop_url` mu ON
-					mu.`id_url`=su.`id_shop_url`
-				WHERE su.`domain` = \''.$domain.'\'';
-		//TODO: add to get default city
-		if (!$ret = Db::getInstance()->executeS($sql))
-			return false;
-		return $ret[0];
+		if(!$host)
+			$host = Tools::getHttpHost();
+		return(Db::getInstance()->getValue('
+			SELECT su.id_shop_url
+			FROM '._DB_PREFIX_.'shop_url su
+			WHERE su.domain = '.$host));
 	}	
+	
+	public static function getCEOData($id_product = null)
+	{
+		$id_url = Shop::getUtlId();
+		
+		// domain data
+		$sql = 'SELECT su.domain host
+				FROM `'._DB_PREFIX_.'shop_url` su
+				WHERE su.`id_shop_url` = '.(int)$id_url;
+		$rets[] = Db::getInstance()->getRow($sql);
+		
+		// shop data
+		$sql = 'SELECT cu.id_egms_cu, cu.phone, cu.id_city 
+				FROM `'._DB_PREFIX_.'egms_city_url` cu
+				WHERE cu.`id_shop_url` = '.(int)$id_url;
+		$rets[] = Db::getInstance()->getRow($sql);
+		// , concat(engname,\'@'.$subdomain.'\') email
+		
+		//city data
+		$sql = 'SELECT c.`cityname1` as city_name, c.`cityname2` as city1_name, c.`cityname3` as city2_name, c.psyname, c.alias
+				FROM `'._DB_PREFIX_.'egms_city` c
+				WHERE c.`id_egms_city` = '.(int)$rets[1]['id_city'];
+		$rets[] = Db::getInstance()->getRow($sql);		
+		
+		// delivery 
+		// and delivery by id
+		/*
+		$sql = 'SELECT 
+				FROM `'._DB_PREFIX_.'egms_delivery` c
+				WHERE d.`id_egms_cu` = '.(int)$rets[1]['id_egms_cu'].' 
+				AND d.`id_manufacturer` = '.(int)$rets[1]['id_egms_cu'];
+		$ret[] = Db::getInstance()->getRow($sql);		
+		*/
+		foreach ($rets as $ret)
+		{
+			foreach ($ret as $key => $val)
+				$result[$key] = $val;
+		}
+		
+		return $result;
+	}	
+	
+	public static function getUtlId()
+	{
+		// if maindomain
+			//if region
+				//id region
+			//else
+				// if isset region
+						//id from coockies
+					//else
+						// id main domain
+		//else
+			// regional id
+		return 1;
+	}
+	
+	public function setUtlId($id_url)
+	{
+		// set coockies id domain
+	}
 		
 }
 

@@ -10,8 +10,9 @@ class Product extends ProductCore
 
 	public static function checkAccessStatic($id_product, $id_customer)
 	{
-		if(!egms_shop::getEgmsAccess($id_product))
-
+		$product = new Product($id_product);
+		
+		if (!egms_shop::getEgmsAccess($product->id_manufacturer))
 			return false;
 
 		return parent::checkAccessStatic($id_product, $id_customer);

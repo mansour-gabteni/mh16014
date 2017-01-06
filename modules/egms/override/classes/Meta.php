@@ -71,6 +71,18 @@ class Meta extends MetaCore
 		return $ress;
 
 	}
+	
+	public static function replaceForCEOWord($ress)
+
+	{
+
+		$ceo_word = Shop::getCEOData();
+
+		$ress = Meta::sprintf2($ress,$ceo_word);
+
+		return $ress;
+
+	}	
 
 	
 

@@ -10,7 +10,6 @@ if (!defined('_PS_VERSION_'))
   {
     const INSTALL_SQL_FILE = 'install.sql';
     const INSTALL_SQL_BD3NAME = 'egms_city';
-    const INSTALL_SQL_BD2NAME = 'egms_city_manuf';
     const INSTALL_SQL_BD1NAME = 'egms_city_url';
 	const INSTALL_SQL_BD4NAME = 'egms_delivery';    
 
@@ -151,7 +150,7 @@ if (!defined('_PS_VERSION_'))
     	$sql .= 'DROP TABLE IF EXISTS `'._DB_PREFIX_.self::INSTALL_SQL_BD3NAME.'`;';
     	$sql .= 'DROP TABLE IF EXISTS `'._DB_PREFIX_.self::INSTALL_SQL_BD4NAME.'`;';
     	
-        return Db::getInstance()->execute($sql);
+        //return Db::getInstance()->execute($sql);
     }
 	
 	public function uninstall($keep = true)
