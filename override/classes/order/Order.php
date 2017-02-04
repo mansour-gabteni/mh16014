@@ -43,5 +43,16 @@ class Order extends OrderCore
 			WHERE o.`id_order` = '.(int)$this->id.'
 			GROUP BY c.id_carrier');
 	}
+	
+	public function getUniqReference()
+	{
+		return $this->id;
+	}
+
+
+	public static function getUniqReferenceOf($id_order)
+	{
+		return $id_order;
+	}	
 
 }
