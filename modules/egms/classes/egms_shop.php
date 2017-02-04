@@ -72,7 +72,7 @@ class egms_shop extends ObjectModel
 			if (count($result))
 				return ' IN ('.implode(', ', $result).')';
 			else 
-				return '';
+				return '0';
 		
 		return $result;				
 		//return array(1, 2,7);//for testing
