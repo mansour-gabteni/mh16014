@@ -502,15 +502,15 @@ class AdminOrdersControllerCore extends AdminController
 							'{shipping_number}' => $order->shipping_number,
 							'{order_name}' => $order->getUniqReference()
 						);
-						if (@Mail::Send((int)$order->id_lang, 'in_transit', Mail::l('Package in transit', (int)$order->id_lang), $templateVars,
-							$customer->email, $customer->firstname.' '.$customer->lastname, null, null, null, null,
-							_PS_MAIL_DIR_, true, (int)$order->id_shop))
-						{
+						//if (@Mail::Send((int)$order->id_lang, 'in_transit', Mail::l('Package in transit', (int)$order->id_lang), $templateVars,
+						//	$customer->email, $customer->firstname.' '.$customer->lastname, null, null, null, null,
+						//	_PS_MAIL_DIR_, true, (int)$order->id_shop))
+						//{
 							Hook::exec('actionAdminOrdersTrackingNumberUpdate', array('order' => $order, 'customer' => $customer, 'carrier' => $carrier), null, false, true, false, $order->id_shop);
 							Tools::redirectAdmin(self::$currentIndex.'&id_order='.$order->id.'&vieworder&conf=4&token='.$this->token);
-						}
-						else
-							$this->errors[] = Tools::displayError('An error occurred while sending an email to the customer.');
+						//}
+						//else
+						//	$this->errors[] = Tools::displayError('An error occurred while sending an email to the customer.');
 					}
 					else
 						$this->errors[] = Tools::displayError('The order carrier cannot be updated.');
