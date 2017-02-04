@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `PREFIX_DB1NAME` (
+﻿CREATE TABLE IF NOT EXISTS `PREFIX_DB1NAME` (
 	`id_egms_cu` int(11) NOT NULL AUTO_INCREMENT,
 	`id_city` int(11) NOT NULL,
 	`id_shop_url` int(11) NOT NULL,
@@ -6,6 +6,10 @@ CREATE TABLE IF NOT EXISTS `PREFIX_DB1NAME` (
 	`veryf_google` varchar(50) NOT NULL,
 	`veryf_mail` varchar(40) NOT NULL,
 	`phone` varchar(15) NOT NULL,
+	`page_index` int(11) DEFAULT NULL,
+	`page_contact` int(11) DEFAULT NULL,
+	`page_delivery` int(11) DEFAULT NULL,
+	`page_shipself` int(11) DEFAULT NULL,
 	`active` tinyint(1) NOT NULL,
 	PRIMARY KEY (`id_egms_cu`),
 	UNIQUE KEY `id_shop_url` (`id_shop_url`)
@@ -47,6 +51,8 @@ CREATE TABLE IF NOT EXISTS `PREFIX_DB4NAME` (
   `payments` varchar(15) NOT NULL,
   `address` varchar(20) NOT NULL,
   `chema` varchar(500) NOT NULL,
+  `shipselfinfo` varchar(120) NOT NULL,
+  `comment` varchar(80) NOT NULL,
   `active` tinyint(1) NOT NULL,
   `deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id_egms_delivery`),
