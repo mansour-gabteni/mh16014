@@ -12,12 +12,6 @@ CREATE TABLE IF NOT EXISTS `PREFIX_DB1NAME` (
 ) ENGINE=ENGINE_TYPE  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 
-CREATE TABLE IF NOT EXISTS `PREFIX_DB2NAME` (
-	`id_egms_city` int(11) NOT NULL,
-	`id_manufacturer` int(1) NOT NULL,
-	UNIQUE KEY `id_egms_city` (`id_egms_city`,`id_manufacturer`)
-) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;
-
 
 
 CREATE TABLE IF NOT EXISTS `PREFIX_DB3NAME` (
@@ -29,6 +23,18 @@ CREATE TABLE IF NOT EXISTS `PREFIX_DB3NAME` (
 	`alias` varchar(20) NOT NULL,
 	PRIMARY KEY (`id_egms_city`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+CREATE TABLE IF NOT EXISTS `PREFIX_DB5NAME` (
+  `id_page` int(11) NOT NULL AUTO_INCREMENT,
+  `page_name` varchar(20) NOT NULL,
+  `page_type` varchar(20) NOT NULL,
+  `title` varchar(200) NOT NULL,
+  `meta` varchar(200) NOT NULL,
+  `keywords` varchar(200) NOT NULL,
+  `body` text NOT NULL,
+  PRIMARY KEY (`id_page`),
+  KEY `page_type` (`page_type`)
+) ENGINE=ENGINE_TYPE  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS `PREFIX_DB4NAME` (
   `id_egms_delivery` int(11) NOT NULL AUTO_INCREMENT,

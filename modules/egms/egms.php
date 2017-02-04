@@ -12,12 +12,14 @@ if (!defined('_PS_VERSION_'))
     const INSTALL_SQL_BD3NAME = 'egms_city';
     const INSTALL_SQL_BD1NAME = 'egms_city_url';
 	const INSTALL_SQL_BD4NAME = 'egms_delivery';    
+	const INSTALL_SQL_BD5NAME = 'egms_pages';
 
     protected $tabs = array(
     		array('name' => 'Multishop config', 'class_name' => 'AdminEGMSShops'),
     		array('name' => 'Shops by Citys', 'class_name' => 'AdminEGMSShops'),
     		array('name' => 'Delivery by Manufacturer', 'class_name' => 'AdminEGMSDelivery'),
     		array('name' => 'Citys', 'class_name' => 'AdminEGMSCitys'),
+    		array('name' => 'Pages', 'class_name' => 'AdminEGMSPages'),
     );  	
   	
     public function __construct()
@@ -99,6 +101,7 @@ if (!defined('_PS_VERSION_'))
 
 	public function install($keep = true)
 	{
+	/*	
 	   if ($keep) {
             if (!file_exists(dirname(__FILE__).'/'.self::INSTALL_SQL_FILE)) {
                 return false;
@@ -107,8 +110,8 @@ if (!defined('_PS_VERSION_'))
             }
             $sql = str_replace(array('PREFIX_', 'ENGINE_TYPE', 'DB1NAME'),
                 array(_DB_PREFIX_, _MYSQL_ENGINE_, self::INSTALL_SQL_BD1NAME), $sql);
-            $sql = str_replace(array('PREFIX_', 'ENGINE_TYPE', 'DB2NAME'),
-                array(_DB_PREFIX_, _MYSQL_ENGINE_, self::INSTALL_SQL_BD2NAME), $sql);
+            $sql = str_replace(array('PREFIX_', 'ENGINE_TYPE', 'DB5NAME'),
+                array(_DB_PREFIX_, _MYSQL_ENGINE_, self::INSTALL_SQL_BD5NAME), $sql);
             $sql = str_replace(array('PREFIX_', 'ENGINE_TYPE', 'DB3NAME'),
                 array(_DB_PREFIX_, _MYSQL_ENGINE_, self::INSTALL_SQL_BD3NAME), $sql);  
 			$sql = str_replace(array('PREFIX_', 'ENGINE_TYPE', 'DB4NAME'),
@@ -122,11 +125,12 @@ if (!defined('_PS_VERSION_'))
             }
 
         }		
-			
+		*/	
 	  if (!parent::install()|| 
-		//!Configuration::updateValue('EGAMERICA_', 0)||
-		//!$this->registerHook('displayBackOfficeHeader')||
-		//!$this->registerHook('displayTop')||
+		!Configuration::updateValue('EGMS_PAGE_INDEX', '')||
+		!Configuration::updateValue('EGMS_PAGE_CONTACT', '')||
+		!Configuration::updateValue('EGMS_PAGE_SHIPSELF', '')||
+		!Configuration::updateValue('EGMS_PAGE_DELIVERY', '')||
 		!$this->installAdminTab()||
 		!$this->registerHook('displayFooter')
 		)
@@ -149,6 +153,7 @@ if (!defined('_PS_VERSION_'))
     	$sql .= 'DROP TABLE IF EXISTS `'._DB_PREFIX_.self::INSTALL_SQL_BD2NAME.'`;';
     	$sql .= 'DROP TABLE IF EXISTS `'._DB_PREFIX_.self::INSTALL_SQL_BD3NAME.'`;';
     	$sql .= 'DROP TABLE IF EXISTS `'._DB_PREFIX_.self::INSTALL_SQL_BD4NAME.'`;';
+    	$sql .= 'DROP TABLE IF EXISTS `'._DB_PREFIX_.self::INSTALL_SQL_BD5NAME.'`;';
     	
         //return Db::getInstance()->execute($sql);
     }
@@ -156,10 +161,13 @@ if (!defined('_PS_VERSION_'))
 	public function uninstall($keep = true)
 	{
 	  if (!parent::uninstall() || 
-	  		//!Configuration::deleteByName('EGAMERICA_') ||
-	  		//!$this->unregisterHook('displayFooter')||
-	  		!$this->uninstallAdminTab()||
-	  		($keep && !$this->deleteTables())
+	  		!Configuration::deleteByName('EGMS_PAGE_INDEX') ||
+	  		!Configuration::deleteByName('EGMS_PAGE_CONTACT') ||
+	  		!Configuration::deleteByName('EGMS_PAGE_SHIPSELF') ||
+	  		!Configuration::deleteByName('EGMS_PAGE_DELIVERY') ||
+	  		//!$this->unregisterHook('displayFooter')|| 		
+	  		//($keep && !$this->deleteTables())||
+	  		!$this->uninstallAdminTab()
 			)
 	    return false;
 	  return true;
