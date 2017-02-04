@@ -144,25 +144,51 @@ class AdminEGMSDeliveryController extends ModuleAdminController
 					'options' => array('query' => $this->manufacturers,
 						'id' => 'id',
 						'name' => 'name')
-				),	
+				),
+				array(
+                    'type' => 'checkbox',
+                    'label' => $this->l('Carriers'),
+                	'multiple' => true,
+                    'name' => 'carriers',
+                	'hint' => $this->l('Carriers hint'),
+                    'desc' => $this->l('Carriers'),
+                    'values' => array(
+		                            'query' => $this->getCarriers(),
+		                    		'id' => 'id',
+		                    		'name' => 'name'
+                					),
+             	),	
+				array(
+                    'type' => 'checkbox',
+                    'label' => $this->l('Payments'),
+                	'multiple' => true,
+                    'name' => 'payments',
+                	'hint' => $this->l('Payments hint'),
+                    'desc' => $this->l('Payments'),
+                    'values' => array(
+		                            'query' => $this->getPayments(),
+		                    		'id' => 'id',
+		                    		'name' => 'name'
+                					),
+             	),	             	
 				array(
 					'type' => 'text',
-					'label' => $this->l('dlex'),
+					'label' => $this->l('Free delivery amount'),
+					'name' => 'free_pay',
+					'hint' => $this->l('Free delivery amount')
+				),
+				array(
+					'type' => 'text',
+					'label' => $this->l('Delivery Amount'),
+					'name' => 'del_pay',
+					'hint' => $this->l('Delivery Amount')
+				),												
+				array(
+					'type' => 'text',
+					'label' => $this->l('Free delivery for'),
 					'name' => 'dlex',
-					'hint' => $this->l('dlex')
-				),															
-				array(
-					'type' => 'text',
-					'label' => $this->l('carriers'),
-					'name' => 'carriers',
-					'hint' => $this->l('carriers')
-				),		
-				array(
-					'type' => 'text',
-					'label' => $this->l('payments'),
-					'name' => 'payments',
-					'hint' => $this->l('payments')
-				),	
+					'hint' => $this->l('exception products for free delivery')
+				),																
 				array(
 					'type' => 'text',
 					'label' => $this->l('address'),
@@ -175,6 +201,18 @@ class AdminEGMSDeliveryController extends ModuleAdminController
 					'name' => 'chema',
 					'hint' => $this->l('chema')
 				),	
+				array(
+					'type' => 'textarea',
+					'label' => $this->l('shipself info'),
+					'name' => 'shipselfinfo',
+					'hint' => $this->l('shipself info')
+				),				
+				array(
+					'type' => 'textarea',
+					'label' => $this->l('Comment'),
+					'name' => 'comment',
+					'hint' => $this->l('Comment')
+				),					
 				array(
 					'type' => 'switch',
 					'label' => $this->l('Is Active'),
@@ -195,7 +233,37 @@ class AdminEGMSDeliveryController extends ModuleAdminController
        );	
 		
 		return parent::renderForm();
-	}	
+	}
+
+	public function getPayments()
+	{
+		$paym = array();
+		foreach (Module::getPaymentModules() as $module)
+		{
+			$paym[]= array('id' => $module['id_module'],	'name' => $module['name']);
+		}
+		return $paym;
+	}
+	
+	public function getFlagChecked($id, $values)
+	{
+		$items = explode(',',$values);
+		foreach ($items as $item){
+			if ($item == $id)
+				return true;
+		}
+		return false;
+	}
+	
+	public function getCarriers()
+	{
+		$carr = array();
+		foreach (Carrier::getCarriers($this->context->language->id, true) as $carrier)
+		{
+			$carr[]= array('id' => $carrier['id_carrier'],	'name' => $carrier['name']);
+		}
+		return $carr;
+	}
 	
     public function getFieldsValues()
     {
@@ -203,19 +271,33 @@ class AdminEGMSDeliveryController extends ModuleAdminController
     	$id_egms_delivery = Tools::getValue('id_egms_delivery');
     	if ($id_egms_delivery!=false)
     		$row = delivery::getDelivery($id_egms_delivery);
-        return array(
+        $vals = array(
             'id_egms_delivery' => $id_egms_delivery,
         	'id_egms_cu' => $row[0]['id_egms_cu'],
         	'id_manufacturer' => $row[0]['id_manufacturer'],
 			'del_pay' => $row[0]['del_pay'],
         	'free_pay' => $row[0]['free_pay'],
         	'dlex' => $row[0]['dlex'],
-        	'carriers' => $row[0]['carriers'],
-        	'payments' => $row[0]['payments'],
+        	//'carriers' => $row[0]['carriers'],
+        	//'payments' => $row[0]['payments'],
         	'address' => $row[0]['address'],
         	'chema' => $row[0]['chema'],
+        	'shipselfinfo' => $row[0]['shipselfinfo'],
+        	'comment' => $row[0]['comment'],
         	'active' => $row[0]['active'],
         );
+
+        foreach (Carrier::getCarriers($this->context->language->id, true) as $carrier)
+        {
+        	$vals['carriers_'.$carrier['id_carrier']]+= $this->getFlagChecked($carrier['id_carrier'],$row[0]['carriers']);
+        }
+                
+        foreach (Module::getPaymentModules() as $module)
+        {
+        	$vals['payments_'.$module['id_module']]+= $this->getFlagChecked($module['id_module'],$row[0]['payments']);
+        }
+        
+        return ($vals);
         
     }
  	

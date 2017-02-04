@@ -205,7 +205,43 @@ class AdminEGMSShopsController extends ModuleAdminControllerCore
 					'label' => $this->l('phone'),
 					'name' => 'phone',
 					'hint' => $this->l('phone')
-				),		
+				),
+				array(
+					'type' => 'select',
+					'label' => $this->l('Index Page'),
+					'name' => 'page_index',
+					'required' => true,  
+					'options' => array('query' => $this->getPages('index'),
+						'id' => 'id',
+						'name' => 'name')
+				),	
+				array(
+					'type' => 'select',
+					'label' => $this->l('Contact Page'),
+					'name' => 'page_contact',
+					'required' => true,  
+					'options' => array('query' => $this->getPages('contact'),
+						'id' => 'id',
+						'name' => 'name')
+				),	
+				array(
+					'type' => 'select',
+					'label' => $this->l('Delivery Page'),
+					'name' => 'page_delivery',
+					'required' => true,  
+					'options' => array('query' => $this->getPages('delivery'),
+						'id' => 'id',
+						'name' => 'name')
+				),	
+				array(
+					'type' => 'select',
+					'label' => $this->l('Shipself Page'),
+					'name' => 'page_shipself',
+					'required' => true,  
+					'options' => array('query' => $this->getPages('shipself'),
+						'id' => 'id',
+						'name' => 'name')
+				),													
 				array(
 					'type' => 'switch',
 					'label' => $this->l('Is Active'),
@@ -241,6 +277,21 @@ class AdminEGMSShopsController extends ModuleAdminControllerCore
 		return parent::renderForm();
 	}	
 	
+	public function getPages($type)
+	{
+		$sql = 'SELECT id_page as page_'.$type.', page_name as name FROM '._DB_PREFIX_.'egms_pages 
+				WHERE page_type=\''.$type.'\'';
+		$rows = Db::getInstance()->executeS($sql);
+		$items = array();
+		//$items[]= array('id' => 'null',	'name' => $this->l('default'));
+		foreach ($rows as $row)
+		{
+			$items[]= array('id' => $row['page_'.$type],	'name' => $row['name']);
+		}
+		
+		return $items;
+	}
+	
     public function getFieldsValues()
     {
     	$id_egms_cu = Tools::getValue('id_egms_cu');
@@ -253,6 +304,10 @@ class AdminEGMSShopsController extends ModuleAdminControllerCore
         	'veryf_google' => $row[0]['veryf_google'],
         	'veryf_mail' => $row[0]['veryf_mail'],
         	'phone' => $row[0]['phone'],
+        	'page_index' => $row[0]['page_index'],
+        	'page_contact' => $row[0]['page_contact'],
+        	'page_delivery' => $row[0]['page_delivery'],
+        	'page_delivery' => $row[0]['page_delivery'],
         	'active' => $row[0]['active']
         );
   

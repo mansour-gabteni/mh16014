@@ -14,12 +14,15 @@ class delivery extends ObjectModel
 	public $del_pay;
 	public $free_pay;
 	public $dlex;
-	public $carriers;
-	public $payments;
+	//public $carriers;
+	//public $payments;
 	public $address;
 	public $chema;
+	public $shipselfinfo;
+	public $comment;
 	public $active;	
-	
+	public $carriers = array();
+	public $payments = array();
 	/**
 	 * @see ObjectModel::$definition
 	 */
@@ -38,6 +41,8 @@ class delivery extends ObjectModel
 			'payments' => array('type' => self::TYPE_STRING),	
 			'address' => array('type' => self::TYPE_STRING),
 			'chema' => array('type' => self::TYPE_STRING),
+			'shipselfinfo' => array('type' => self::TYPE_STRING),
+			'comment' => array('type' => self::TYPE_STRING),
 			'active' => array('type' => self::TYPE_BOOL),
 		),
 	);
@@ -71,6 +76,61 @@ class delivery extends ObjectModel
 		$sql .= ' ORDER BY 1';
 			
 		return (Db::getInstance()->executeS($sql));
-	}  	
+	} 
+
+	public function update($null_values = false)
+	{
+		
+		$this->getFieldsValues();
+		//$this->updateCheckedFiled();
+		return parent::update($null_values);	
+	}
 	
+	public function add($autodate = true, $null_values = false)
+	{
+		$this->getFieldsValues();
+		$result = parent::add($autodate, $null_values);
+		//$this->updateCheckedFiled();
+		return $result;
+	}	
+	
+	public function getFieldsValues()
+	{		
+		$carriers = array();
+	    foreach (Carrier::getCarriers($this->context->language->id, true) as $item)
+        {
+        	if (Tools::getValue('carriers_'.(int)$item['id_carrier']))
+				$carriers[] = $item['id_carrier'];
+        }
+        $this->carriers = implode(',', $carriers);
+
+        $payments = array();
+        foreach (Module::getPaymentModules() as $item)
+        {
+        	if (Tools::getValue('payments_'.(int)$item['id_module']))
+				$payments[] = $item['id_module'];
+        }		
+        $this->payments = implode(',', $payments);
+	}	
+	/*
+	private function updateCheckedFiled($field )
+	{	
+		foreach($this->manufacturer as $manufacturer)
+		{
+			$sql = '';
+			if(!$this->deliveryExist($this->id, $manufacturer)){
+				$sql = 'INSERT INTO `'._DB_PREFIX_.'egms_delivery` (`id_egms_cu`, `id_manufacturer`,active)
+                            VALUES('.(int)$this->id.', '.(int)$manufacturer.', 0)';
+			} else {	
+				
+					$sql='	UPDATE '._DB_PREFIX_.'egms_delivery
+							SET
+							deleted = 0
+							WHERE id_egms_cu='.(int)$this->id.'
+							AND id_manufacturer='.(int)$manufacturer;
+			}
+			$res = Db::getInstance()->execute($sql);
+		}
+	}	
+	*/
 }

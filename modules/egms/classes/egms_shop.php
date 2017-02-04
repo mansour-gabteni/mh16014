@@ -14,6 +14,10 @@ class egms_shop extends ObjectModel
 	public $veryf_google;
 	public $veryf_mail;
 	public $phone;
+	public $page_index;
+	public $page_contact;
+	public $page_delivery;
+	public $page_shipself;
 	public $active;
 	public $manufacturer = array();
 	
@@ -31,6 +35,10 @@ class egms_shop extends ObjectModel
 			'veryf_google' => array('type' => self::TYPE_STRING),
 			'veryf_mail' => array('type' => self::TYPE_STRING),
 			'phone' => array('type' => self::TYPE_STRING),
+			'page_index' => array('type' => self::TYPE_INT),
+			'page_contact' => array('type' => self::TYPE_INT),
+			'page_delivery' => array('type' => self::TYPE_INT),
+			'page_shipself' => array('type' => self::TYPE_INT),	
 			'active' => array('type' => self::TYPE_BOOL),
 		),
 	);

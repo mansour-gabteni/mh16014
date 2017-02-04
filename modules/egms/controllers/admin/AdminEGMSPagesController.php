@@ -140,6 +140,7 @@ class AdminEGMSPagesController extends ModuleAdminControllerCore
 				array('id' => 'contact', 'name' => $this->l('Contact')), 
 				array('id' => 'delivery', 'name' => $this->l('Delivery')),
 				array('id' => 'shipself', 'name' => $this->l('Shipself')),
+				array('id' => 'shipself', 'name' => $this->l('Category')),
 				);
 	}
 	
