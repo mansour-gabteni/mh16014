@@ -92,6 +92,7 @@ imagejpeg($nm, $path_to_thumbs_directory . $filename);
 } 
 
 if (move_uploaded_file($nazwa_plik, $uploadfile)) {  
+	createThumbnail($plik1);
 		  echo "success:".$plik1;
 		// IMPORTANT
 } else {
